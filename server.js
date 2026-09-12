@@ -10,10 +10,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "25mb" }));
+app.use(express.urlencoded({ extended: true, limit: "25mb" }));
 
-// Serve index.html from the same folder as server.js
+// Serve index.html from this same folder
 app.use(express.static("."));
 
 const uploadDir = path.join(process.cwd(), "uploads");
@@ -25,14 +25,7 @@ if (!fs.existsSync(uploadDir)) {
 const upload = multer({
   dest: uploadDir,
   limits: {
-    fileSize: 50 * 1024 * 1024
-  },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype?.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Please upload an image file."));
-    }
+    fileSize: 100 * 1024 * 1024
   }
 });
 
@@ -46,19 +39,24 @@ const client = apiKey
   ? new OpenAI({ apiKey })
   : null;
 
+
+// ----------------------------------------------------
+// PHOTO INSPECTION
+// ----------------------------------------------------
+
 app.post("/api/analyze", upload.single("image"), async (req, res) => {
   let uploadedPath = null;
 
   try {
     if (!client) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY is missing. Add it to your .env file."
+        error: "OPENAI_API_KEY is missing from .env"
       });
     }
 
     if (!req.file) {
       return res.status(400).json({
-        error: "Please upload an image first."
+        error: "Please upload an image."
       });
     }
 
@@ -66,59 +64,66 @@ app.post("/api/analyze", upload.single("image"), async (req, res) => {
 
     const notes = String(req.body?.notes || "").trim();
 
-    const base64Image = fs
+    const imageBase64 = fs
       .readFileSync(uploadedPath)
       .toString("base64");
 
     const mimeType = req.file.mimetype || "image/jpeg";
 
     const prompt = `
-You are InspectIQ, an AI visual inspection assistant.
+You are InspectIQ, a visual inspection AI.
 
-Analyze the uploaded inspection image itself.
+Analyze ONLY what is actually visible in the uploaded image.
 
-IMPORTANT:
-Do NOT assume that the target dropdown, filename, field notes,
-or predefined asset list is correct.
+Do not trust:
+- dropdown selections
+- filenames
+- predefined assets
+- previous results
 
-The IMAGE is the primary evidence.
+The image is the primary evidence.
 
-Identify what is actually visible in the image.
+Identify the visible asset and any visible faults.
 
-Detect only faults or conditions supported by visible evidence.
-Do not invent defects, measurements, damage, or information.
+Do NOT invent:
+- measurements
+- damage
+- defects
+- causes
+- hidden conditions
 
-Determine:
-
-- what asset is visible
-- asset subtype if possible
-- visible faults or conditions
+For every visible finding provide:
+- fault/condition
+- description
+- approximate visible location
 - severity
-- potential risk
-- recommended corrective action
-- condition score
-- overall status
-- recommended next inspection interval
+- risk
+- corrective action
+- confidence
 
-If the image is unclear or there is not enough evidence,
-clearly say so.
+Also provide:
+- asset type
+- asset subtype
+- overall condition score
+- status
+- summary
+- recommended action
+- next inspection interval
 
 FIELD NOTES:
-${notes || "No field notes were provided."}
+${notes || "No field notes supplied."}
 
-Return ONLY valid JSON in exactly this structure:
+Return ONLY JSON:
 
 {
   "assetType": "string",
   "assetSubtype": "string",
   "confidence": 0,
-  "reason": "string",
   "score": 0,
   "status": "Healthy | Attention | At risk | Critical",
   "summary": "string",
   "recommendation": "string",
   "nextInspectionInterval": "string",
-  "inspectionReason": "string",
   "findings": [
     {
       "title": "string",
@@ -132,15 +137,11 @@ Return ONLY valid JSON in exactly this structure:
   ]
 }
 
-Scoring guidance:
-
-90-100 = Healthy
-75-89 = Attention
-50-74 = At risk
-0-49 = Critical
-
-Choose the score from the actual visible condition.
-Do not use a fixed score.
+Score:
+90-100 Healthy
+75-89 Attention
+50-74 At risk
+0-49 Critical
 `;
 
     const response = await client.responses.create({
@@ -155,7 +156,7 @@ Do not use a fixed score.
             },
             {
               type: "input_image",
-              image_url: `data:${mimeType};base64,${base64Image}`,
+              image_url: `data:${mimeType};base64,${imageBase64}`,
               detail: "low"
             }
           ]
@@ -163,117 +164,15 @@ Do not use a fixed score.
       ]
     });
 
-    const text = response.output_text || "";
+    const result = parseAIJson(response.output_text);
 
-    const cleaned = text
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/\s*```$/i, "")
-      .trim();
-
-    let result;
-
-    try {
-      result = JSON.parse(cleaned);
-    } catch {
-      console.error("AI returned invalid JSON:");
-      console.error(text);
-
-      return res.status(502).json({
-        error: "The AI returned an invalid inspection result."
-      });
-    }
-
-    const safeResult = {
-      assetType: String(
-        result.assetType || "Unknown asset"
-      ),
-
-      assetSubtype: String(
-        result.assetSubtype || ""
-      ),
-
-      confidence: Number(
-        result.confidence
-      ) || 0,
-
-      reason: String(
-        result.reason || ""
-      ),
-
-      score: Math.max(
-        0,
-        Math.min(
-          100,
-          Number(result.score) || 0
-        )
-      ),
-
-      status: String(
-        result.status || "Attention"
-      ),
-
-      summary: String(
-        result.summary ||
-        "The image was analyzed."
-      ),
-
-      recommendation: String(
-        result.recommendation ||
-        "Review the visible condition and perform appropriate follow-up inspection."
-      ),
-
-      nextInspectionInterval: String(
-        result.nextInspectionInterval ||
-        "Further inspection recommended based on site conditions."
-      ),
-
-      inspectionReason: String(
-        result.inspectionReason || ""
-      ),
-
-      findings: Array.isArray(result.findings)
-        ? result.findings.map((f) => ({
-            title: String(
-              f?.title || "Visible condition"
-            ),
-
-            description: String(
-              f?.description || ""
-            ),
-
-            location: String(
-              f?.location || ""
-            ),
-
-            severity: String(
-              f?.severity || "Minor"
-            ),
-
-            risk: String(
-              f?.risk || ""
-            ),
-
-            recommendation: String(
-              f?.recommendation || ""
-            ),
-
-            confidence: Number(
-              f?.confidence
-            ) || 0
-          }))
-        : []
-    };
-
-    return res.json(safeResult);
+    return res.json(cleanResult(result));
 
   } catch (error) {
-    console.error("Inspection error:", error);
+    console.error("PHOTO INSPECTION ERROR:", error);
 
     return res.status(500).json({
-      error:
-        error?.message ||
-        "The inspection could not be completed."
+      error: error?.message || "Photo inspection failed."
     });
 
   } finally {
@@ -283,31 +182,305 @@ Do not use a fixed score.
   }
 });
 
-app.use((error, req, res, next) => {
 
-  if (error instanceof multer.MulterError) {
+// ----------------------------------------------------
+// VIDEO INSPECTION
+// ----------------------------------------------------
 
-    if (error.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({
-        error: "The image is too large. Maximum size is 50 MB."
+app.post("/api/analyze-video", async (req, res) => {
+
+  try {
+
+    if (!client) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is missing from .env"
       });
     }
 
-    return res.status(400).json({
-      error: error.message
+    const frames = Array.isArray(req.body?.frames)
+      ? req.body.frames
+      : [];
+
+    const notes = String(req.body?.notes || "").trim();
+
+    if (!frames.length) {
+      return res.status(400).json({
+        error: "No video frames were supplied."
+      });
+    }
+
+    // Limit the number of frames for speed.
+    const selectedFrames = frames.slice(0, 30);
+
+    const frameInstructions = selectedFrames
+      .map((frame, index) => {
+        return `Frame ${index + 1}: timestamp ${formatTime(frame.timestamp)}`;
+      })
+      .join("\n");
+
+    const content = [
+      {
+        type: "input_text",
+        text: `
+You are InspectIQ performing a REAL video inspection.
+
+You are receiving frames extracted from one inspection video.
+
+Each frame has a real timestamp supplied by the application.
+
+Analyze the actual frames.
+
+IMPORTANT:
+Do not invent timestamps.
+
+Only report a timestamp from one of the supplied frames.
+
+For every visible fault:
+- identify the fault
+- give its timestamp
+- describe where it appears in the frame
+- give severity
+- explain risk
+- recommend corrective action
+- give confidence
+
+If the same fault appears in several frames, choose the clearest frame.
+
+The "location" should describe the position in the image,
+for example:
+"lower-left portion of the frame near the pipe joint"
+or
+"upper-right side of the machine housing".
+
+If possible also provide normalized bounding box coordinates:
+x, y, width, height
+where the image is treated as 0-1000.
+
+Do not claim a fault if the frames do not provide enough visual evidence.
+
+FIELD NOTES:
+${notes || "No field notes supplied."}
+
+AVAILABLE FRAME TIMESTAMPS:
+${frameInstructions}
+
+Return ONLY JSON:
+
+{
+  "assetType": "string",
+  "assetSubtype": "string",
+  "confidence": 0,
+  "score": 0,
+  "status": "Healthy | Attention | At risk | Critical",
+  "summary": "string",
+  "recommendation": "string",
+  "nextInspectionInterval": "string",
+  "findings": [
+    {
+      "title": "string",
+      "description": "string",
+      "timestamp": 0,
+      "location": "string",
+      "severity": "Minor | Moderate | Major | Critical",
+      "risk": "string",
+      "recommendation": "string",
+      "confidence": 0,
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      }
+    }
+  ]
+}
+`
+      }
+    ];
+
+    for (const frame of selectedFrames) {
+
+      if (!frame.dataUrl) continue;
+
+      content.push({
+        type: "input_image",
+        image_url: frame.dataUrl,
+        detail: "low"
+      });
+
+      content.push({
+        type: "input_text",
+        text: `This frame corresponds to timestamp ${formatTime(frame.timestamp)}.`
+      });
+    }
+
+    const response = await client.responses.create({
+      model: "gpt-5.6-luna",
+      input: [
+        {
+          role: "user",
+          content
+        }
+      ]
+    });
+
+    const result = parseAIJson(response.output_text);
+
+    const cleaned = cleanResult(result);
+
+    cleaned.findings = Array.isArray(cleaned.findings)
+      ? cleaned.findings.map((finding) => ({
+          ...finding,
+          timestamp: Number(finding.timestamp) || 0,
+          box: finding.box || null
+        }))
+      : [];
+
+    return res.json(cleaned);
+
+  } catch (error) {
+
+    console.error("VIDEO INSPECTION ERROR:", error);
+
+    return res.status(500).json({
+      error: error?.message || "Video inspection failed."
     });
   }
-
-  if (error) {
-    return res.status(400).json({
-      error:
-        error.message ||
-        "Upload failed."
-    });
-  }
-
-  next();
 });
+
+
+// ----------------------------------------------------
+// HELPERS
+// ----------------------------------------------------
+
+function parseAIJson(text) {
+
+  const cleaned = String(text || "")
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+
+  try {
+    return JSON.parse(cleaned);
+  } catch (error) {
+    console.error("AI returned invalid JSON:");
+    console.error(text);
+
+    throw new Error(
+      "The AI returned an invalid inspection result."
+    );
+  }
+}
+
+
+function cleanResult(result) {
+
+  return {
+    assetType: String(
+      result?.assetType || "Unknown asset"
+    ),
+
+    assetSubtype: String(
+      result?.assetSubtype || ""
+    ),
+
+    confidence: clamp(
+      Number(result?.confidence) || 0,
+      0,
+      100
+    ),
+
+    score: clamp(
+      Number(result?.score) || 0,
+      0,
+      100
+    ),
+
+    status: String(
+      result?.status || "Attention"
+    ),
+
+    summary: String(
+      result?.summary || "No summary was returned."
+    ),
+
+    recommendation: String(
+      result?.recommendation ||
+      "Review the detected condition."
+    ),
+
+    nextInspectionInterval: String(
+      result?.nextInspectionInterval ||
+      "Further inspection recommended based on condition."
+    ),
+
+    findings: Array.isArray(result?.findings)
+      ? result.findings.map((finding) => ({
+          title: String(
+            finding?.title || "Visible condition"
+          ),
+
+          description: String(
+            finding?.description || ""
+          ),
+
+          timestamp:
+            finding?.timestamp !== undefined
+              ? Number(finding.timestamp)
+              : null,
+
+          location: String(
+            finding?.location || ""
+          ),
+
+          severity: String(
+            finding?.severity || "Minor"
+          ),
+
+          risk: String(
+            finding?.risk || ""
+          ),
+
+          recommendation: String(
+            finding?.recommendation || ""
+          ),
+
+          confidence: clamp(
+            Number(finding?.confidence) || 0,
+            0,
+            100
+          ),
+
+          box: finding?.box || null
+        }))
+      : []
+  };
+}
+
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+
+function formatTime(seconds) {
+
+  const total = Math.max(
+    0,
+    Math.floor(Number(seconds) || 0)
+  );
+
+  const minutes = Math.floor(total / 60);
+  const secs = total % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+}
+
+
+// ----------------------------------------------------
+// START SERVER
+// ----------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(
