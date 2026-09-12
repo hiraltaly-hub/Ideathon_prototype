@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InspectIQ · Field Operations</title>
+  <style>
+    :root {
+      --bg: #07131c;
+      --panel: #0d202b;
+      --soft: #122b37;
+      --line: #20404e;
+      --text: #e9f5f5;
+      --muted: #91adb2;
+      --teal: #37d2bd;
+      --amber: #ffbe55;
+      --red: #ff6565;
+      --blue: #67aaf9
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 75% 0, #123744 0, transparent 38%), var(--bg);
+      color: var(--text);
+      font: 15px/1.45 Inter, ui-sans-serif, system-ui, sans-serif
+    }
+
+    .app {
+      max-width: 1240px;
+      margin: auto;
+      padding: 20px
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 18px
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: .04em
+    }
+
+    .brand i {
+      color: var(--teal);
+      font-style: normal
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: .12em
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px
+    }
+
+    .nav button,
+    .btn {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer
+    }
+
+    .nav button.active,
+    .btn.primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #02221f;
+      font-weight: 800
+    }
+
+    .btn:hover {
+      filter: brightness(1.14)
+    }
+
+    main {
+      padding: 28px 0 80px
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .13em
+    }
+
+    .hero {
+      display: flex;
+      gap: 30px;
+      align-items: end;
+      justify-content: space-between;
+      margin-bottom: 24px
+    }
+
+    h1 {
+      margin: 5px 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08
+    }
+
+    h2 {
+      margin: 0 0 5px;
+      font-size: 20px
+    }
+
+    p {
+      margin: 5px 0;
+      color: var(--muted)
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px
+    }
+
+    .card {
+      background: linear-gradient(145deg, #102936, #0b1d27);
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 18px
+    }
+
+    .metric {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 7px 0
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .up {
+      color: var(--teal)
+    }
+
+    .alert {
+      border-left: 4px solid var(--red);
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px
+    }
+
+    .table td,
+    .table th {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .table th {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .08em
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .healthy {
+      background: #164039;
+      color: #6fe5b9
+    }
+
+    .attention {
+      background: #4a3515;
+      color: #ffc66b
+    }
+
+    .risk {
+      background: #482226;
+      color: #ff9393
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px
+    }
+
+    .step {
+      border-left: 2px solid var(--teal);
+      padding-left: 14px;
+      margin: 17px 0
+    }
+
+    .select,
+    textarea,
+    input {
+      width: 100%;
+      background: #081720;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text);
+      font: inherit
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical
+    }
+
+    .samples {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px
+    }
+
+    .samples button {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 99px;
+      padding: 8px 10px;
+      cursor: pointer
+    }
+
+    .samples button.selected {
+      border-color: var(--teal);
+      color: var(--teal)
+    }
+
+    .drop {
+      margin-top: 12px;
+      border: 1px dashed #3d7380;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      color: var(--muted)
+    }
+
+    .result-score {
+      font-size: 72px;
+      line-height: 1;
+      color: var(--amber);
+      font-weight: 900
+    }
+
+    .bar {
+      height: 9px;
+      background: #061017;
+      border-radius: 9px;
+      overflow: hidden;
+      margin: 12px 0
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--red), var(--amber));
+      width: 64%
+    }
+
+    .find {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .find b {
+      display: block
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: #153c36;
+      color: #c8fff4;
+      padding: 12px 16px;
+      border: 1px solid var(--teal);
+      border-radius: 8px;
+      transform: translateY(100px);
+      transition: .25s
+    }
+
+    .toast.show {
+      transform: none
+    }
+
+    @media(max-width:780px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .two {
+        grid-template-columns: 1fr
+      }
+
+      .hero {
+        display: block
+      }
+
+      .nav {
+        overflow: auto
+      }
+
+      .top {
+        gap: 12px;
+        align-items: flex-start
+      }
+
+      .table {
+        font-size: 12px
+      }
+
+      .table th:nth-child(2),
+      .table td:nth-child(2) {
+        display: none
+      }
+    }
+
+    @media(max-width:440px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+
+      .app {
+        padding: 14px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="top">
+      <div>
+        <div class="brand"><i>◈</i> INSPECTIQ</div>
+        <div class="tag">AI INSPECTION ASSISTANCE</div>
+      </div>
+      <nav class="nav"><button data-page="dashboard" class="active">Dashboard</button><button
+          data-page="inspect">Inspect</button><button data-page="assets">Assets</button><button
+          data-page="reports">Reports</button></nav>
+    </header>
+    <main>
+      <section id="dashboard" class="page">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">FIELD OPS MODE ACTIVE · OFF-409</div>
+            <h1>Inspect smarter.<br>Maintain earlier.</h1>
+            <p>Real-time infrastructure and machine diagnostics for your field team.</p>
+          </div><button class="btn primary" onclick="go('inspect')">Start new inspection</button>
+        </div>
+        <div class="grid">
+          <div class="card"><span class="up">+4% this week</span>
+            <div class="metric">248</div>
+            <p>Total monitored assets</p>
+          </div>
+          <div class="card"><span class="up">75% complete</span>
+            <div class="metric">186</div>
+            <p>Verified in the last 30 days</p>
+          </div>
+          <div class="card"><span style="color:var(--amber)">14% scheduled</span>
+            <div class="metric">34</div>
+            <p>Need attention</p>
+          </div>
+          <div class="card"><span style="color:var(--red)">High alert</span>
+            <div class="metric">12</div>
+            <p>Critical severity</p>
+          </div>
+        </div>
+        <div class="two" style="margin-top:18px">
+          <div class="card">
+            <div class="eyebrow">ASSET HEALTH</div>
+            <h2>Overall health index</h2>
+            <div class="metric" style="color:var(--teal)">84 / 100</div>
+            <div class="bar"><span style="width:84%;background:var(--teal)"></span></div>
+            <p>Healthy 75% · Attention 14% · At risk 6% · Critical 5%</p>
+          </div>
+          <div class="card alert">
+            <div>
+              <div class="eyebrow" style="color:var(--red)">CRITICAL DEFECT DETECTED</div>
+              <h2>Bridge #102 · Primary Pier 4</h2>
+              <p>Estimated 3.8 mm shear crack on load-bearing concrete beam.</p>
+            </div><button class="btn" onclick="startSample('bridge')">Review</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px">
+          <div class="hero">
+            <div>
+              <h2>Recent inspections</h2>
+              <p>Completed visual and AI metrology audits</p>
+            </div><button class="btn" onclick="go('assets')">View assets</button>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>System</th>
+                <th>AI score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent"></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="inspect" class="page hidden">
+        <div class="eyebrow">PRECISION METROLOGY ENGINE · READY</div>
+        <h1>Start a new inspection</h1>
+        <p>Upload an asset image or choose a verified sample to generate a field-ready assessment.</p>
+        <div class="two" style="margin-top:22px">
+          <div class="card">
+            <div class="step">
+              <h2>1 · Capture asset</h2>
+              <p>Provide visual context for the asset's current condition.</p>
+              <div class="drop">▣ &nbsp; Drop an image here, or <label
+                  style="color:var(--teal);cursor:pointer">browse<input id="file" type="file" accept="image/*"
+                    class="hidden"></label>
+                <div id="fileLabel" class="small" style="margin-top:8px">PNG, JPG, HEIC · maximum 50 MB</div>
+              </div>
+              <div class="samples" id="samples"></div>
+            </div>
+            <div class="step">
+              <h2>2 · Describe condition</h2><textarea
+                id="notes">Select a sample asset or enter the observed condition here.</textarea>
+            </div>
+          </div>
+          <div class="card">
+            <div class="step">
+              <h2>3 · AI inspection</h2>
+              <p>The engine segments visible defects, estimates severity and calculates an asset health score.</p>
+            </div><label class="small">TARGET COMPONENT</label><select id="target" class="select">
+              <option value="machine">Industrial Machine #M-401 · Mechanical Hub</option>
+              <option value="bridge">Bridge #102 · Sector 5</option>
+              <option value="transformer">Transformer T-204 · Substation North</option>
+              <option value="pipeline">Pipeline P-201 · Sector 2</option>
+            </select>
+            <div class="card" style="margin:18px 0;background:#09232b">
+              <div class="eyebrow">ENGINE STATUS</div>
+              <p>Vision model online · sensor integrity verified · report generator ready</p>
+            </div><button class="btn primary" style="width:100%" id="analyze">Start AI inspection</button>
+          </div>
+        </div>
+      </section>
+      <section id="assets" class="page hidden">
+        <div class="eyebrow">ASSET REGISTRY</div>
+        <h1>Monitored assets</h1>
+        <div class="card">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Location / system</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="assetsTable"></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="reports" class="page hidden">
+        <div class="eyebrow">OFFICER WORK VAULT</div>
+        <h1>Saved inspection reports</h1>
+        <p>Reports are stored only in this browser, ready for field review.</p>
+        <div id="saved" class="card" style="margin-top:18px"></div>
+      </section>
+      <section id="result" class="page hidden">
+        <div class="eyebrow">AI INSPECTION COMPLETE · 98.5% CONFIDENCE</div>
+        <h1 id="resultTitle">Bridge #102 assessment</h1>
+        <div class="two">
+          <div class="card">
+            <div class="eyebrow">STRUCTURAL HEALTH SCORE</div>
+            <div class="result-score" id="score">64</div>
+            <div class="bar"><span id="scoreBar"></span></div>
+            <p id="summary"></p><button class="btn primary" id="save">Save to officer log</button> <button class="btn"
+              onclick="go('inspect')">New inspection</button>
+          </div>
+          <div class="card">
+            <div class="eyebrow">RECOMMENDED ACTION</div>
+            <h2 id="action">Schedule maintenance within 30 days</h2>
+            <p>Escalate to the asset owner, mark the area for review and perform a hands-on verification before the next
+              operational cycle.</p>
+            <div class="small" style="margin-top:20px">Generated from visual input and field notes. This prototype is
+              not a substitute for a certified engineering assessment.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px">
+          <h2>Detected findings</h2>
+          <div id="findings"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast">Saved to Officer Work Vault</div>
+  <script>
+    const assets = { bridge: { name: 'Bridge #102', system: 'Highway Viaduct · Sector 5', score: 64, status: 'At Risk', notes: 'Shear crack and surface spalling observed on load-bearing concrete pier.', findings: [['Shear crack · 3.8 mm', 'High severity tensile crack on primary pier 4.'], ['Surface spalling', 'Loss of cover concrete near the defect.'], ['Moisture staining', 'Monitor drainage and corrosion exposure.']] }, transformer: { name: 'Transformer T-204', system: 'Substation North', score: 82, status: 'Attention', notes: 'Surface oxidation and casing wear observed around the transformer enclosure.', findings: [['Casing corrosion', 'Moderate oxidation around lower panel seams.'], ['Thermal discoloration', 'Review terminal temperatures during next service.']] }, pipeline: { name: 'Pipeline P-201', system: 'Process Line · Sector 2', score: 76, status: 'Attention', notes: 'Coating loss and corrosion marks visible around manifold coupling.', findings: [['Coating degradation', 'Localised coating loss at the manifold coupling.'], ['Surface corrosion', 'Clean and recoat during planned shutdown.']] }, machine: { name: 'Industrial Machine #M-401', system: 'Mechanical Hub', score: 88, status: 'Healthy', notes: 'Structural rim crack detected on outer collar with light surface oxidation.', findings: [['Minor rim discontinuity', 'Monitor outer collar at next preventive maintenance cycle.'], ['Surface oxidation', 'Clean and apply protective treatment.']] } };
+    let chosen = 'bridge', current = assets.bridge; const $ = id => document.getElementById(id);
+    function status(s) { return s === 'Healthy' ? 'healthy' : s === 'Attention' ? 'attention' : 'risk' }
+    function renderTables() { const rows = Object.entries(assets).map(([k, a]) => `<tr><td><b>${a.name}</b></td><td>${a.system}</td><td>${a.score}</td><td><span class="pill ${status(a.status)}">${a.status}</span></td><td><button class="btn" onclick="startSample('${k}')">Inspect</button></td></tr>`).join(''); $('recent').innerHTML = rows; $('assetsTable').innerHTML = rows }
+    function renderSamples() { $('samples').innerHTML = Object.entries(assets).map(([k, a]) => `<button class="${k === chosen ? 'selected' : ''}" onclick="pick('${k}')">+ ${a.name}</button>`).join('') }
+    function pick(k) { chosen = k; current = assets[k]; $('target').value = k; $('notes').value = current.notes; renderSamples() }
+    function go(p) { document.querySelectorAll('.page').forEach(x => x.classList.add('hidden')); $(p).classList.remove('hidden'); document.querySelectorAll('.nav button').forEach(x => x.classList.toggle('active', x.dataset.page === p)); window.scrollTo({ top: 0, behavior: 'smooth' }); if (p === 'reports') renderSaved() }
+    function startSample(k) { pick(k); go('inspect') }
+    $('target').addEventListener('change', e => pick(e.target.value)); $('file').addEventListener('change', e => { $('fileLabel').textContent = e.target.files[0] ? `Loaded: ${e.target.files[0].name}` : 'PNG, JPG, HEIC · maximum 50 MB' });
+    $('analyze').onclick = () => { current = assets[chosen]; $('resultTitle').textContent = current.name + ' assessment'; $('score').textContent = current.score; $('scoreBar').style.width = current.score + '%'; $('summary').textContent = `${current.status} condition. Analysis combines the submitted visual context with your field observation notes.`; $('action').textContent = current.score < 70 ? 'Schedule mitigation within 30 days' : current.score < 85 ? 'Plan corrective maintenance' : 'Continue preventive monitoring'; $('findings').innerHTML = current.findings.map((f, i) => `<div class="find"><b><span class="pill ${i === 0 && current.score < 70 ? 'risk' : 'attention'}">${i === 0 && current.score < 70 ? 'Priority' : 'Finding'}</span> &nbsp;${f[0]}</b><p>${f[1]}</p></div>`).join(''); go('result') };
+    $('save').onclick = () => { const log = JSON.parse(localStorage.getItem('inspectiq-reports') || '[]'); log.unshift({ asset: current.name, score: current.score, status: current.status, date: new Date().toLocaleString() }); localStorage.setItem('inspectiq-reports', JSON.stringify(log)); $('toast').classList.add('show'); setTimeout(() => $('toast').classList.remove('show'), 2200) };
+    function renderSaved() { const log = JSON.parse(localStorage.getItem('inspectiq-reports') || '[]'); $('saved').innerHTML = log.length ? `<table class="table"><thead><tr><th>Asset</th><th>Score</th><th>Status</th><th>Saved</th></tr></thead><tbody>${log.map(r => `<tr><td><b>${r.asset}</b></td><td>${r.score}</td><td><span class="pill ${status(r.status)}">${r.status}</span></td><td>${r.date}</td></tr>`).join('')}</tbody></table>` : '<h2>No saved reports yet</h2><p>Run an inspection and choose “Save to officer log” to preserve the assessment here.</p>' }
+    document.querySelectorAll('.nav button').forEach(button => button.addEventListener('click', () => go(button.dataset.page)));
+    renderTables(); renderSamples(); pick('bridge');
+  </script>
+</body>
+
+</html>
