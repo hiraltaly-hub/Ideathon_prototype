@@ -521,7 +521,87 @@
   </div>
   <div class="toast" id="toast">Saved to Officer Work Vault</div>
   <script>
-    const assets = { bridge: { name: 'Bridge #102', system: 'Highway Viaduct · Sector 5', score: 64, status: 'At Risk', notes: 'Shear crack and surface spalling observed on load-bearing concrete pier.', findings: [['Shear crack · 3.8 mm', 'High severity tensile crack on primary pier 4.'], ['Surface spalling', 'Loss of cover concrete near the defect.'], ['Moisture staining', 'Monitor drainage and corrosion exposure.']] }, transformer: { name: 'Transformer T-204', system: 'Substation North', score: 82, status: 'Attention', notes: 'Surface oxidation and casing wear observed around the transformer enclosure.', findings: [['Casing corrosion', 'Moderate oxidation around lower panel seams.'], ['Thermal discoloration', 'Review terminal temperatures during next service.']] }, pipeline: { name: 'Pipeline P-201', system: 'Process Line · Sector 2', score: 76, status: 'Attention', notes: 'Coating loss and corrosion marks visible around manifold coupling.', findings: [['Coating degradation', 'Localised coating loss at the manifold coupling.'], ['Surface corrosion', 'Clean and recoat during planned shutdown.']] }, machine: { name: 'Industrial Machine #M-401', system: 'Mechanical Hub', score: 88, status: 'Healthy', notes: 'Structural rim crack detected on outer collar with light surface oxidation.', findings: [['Minor rim discontinuity', 'Monitor outer collar at next preventive maintenance cycle.'], ['Surface oxidation', 'Clean and apply protective treatment.']] } };
+    const assets = {
+  bridge: {
+    name: "Bridge",
+    type: "Infrastructure"
+  },
+
+  building: {
+    name: "Building",
+    type: "Structure"
+  },
+
+  factory: {
+    name: "Factory",
+    type: "Industrial"
+  },
+
+  warehouse: {
+    name: "Warehouse",
+    type: "Building"
+  },
+
+  machinery: {
+    name: "Machinery",
+    type: "Equipment"
+  },
+
+  crane: {
+    name: "Crane",
+    type: "Machinery"
+  },
+
+  transformer: {
+    name: "Transformer",
+    type: "Electrical Equipment"
+  },
+
+  pipeline: {
+    name: "Pipeline",
+    type: "Industrial Infrastructure"
+  },
+
+  dam: {
+    name: "Dam",
+    type: "Water Infrastructure"
+  },
+
+  lake: {
+    name: "Lake",
+    type: "Water Body"
+  },
+
+  reservoir: {
+    name: "Reservoir",
+    type: "Water Body"
+  },
+
+  water_tank: {
+    name: "Water Tank",
+    type: "Water Infrastructure"
+  },
+
+  tower: {
+    name: "Tower",
+    type: "Structure"
+  },
+
+  railway: {
+    name: "Railway",
+    type: "Transportation Infrastructure"
+  },
+
+  road: {
+    name: "Road",
+    type: "Transportation Infrastructure"
+  },
+
+  machine: {
+    name: "Machine",
+    type: "Machinery"
+  }
+};
     let chosen = 'bridge', current = assets.bridge; const $ = id => document.getElementById(id);
     function status(s) { return s === 'Healthy' ? 'healthy' : s === 'Attention' ? 'attention' : 'risk' }
     function renderTables() { const rows = Object.entries(assets).map(([k, a]) => `<tr><td><b>${a.name}</b></td><td>${a.system}</td><td>${a.score}</td><td><span class="pill ${status(a.status)}">${a.status}</span></td><td><button class="btn" onclick="startSample('${k}')">Inspect</button></td></tr>`).join(''); $('recent').innerHTML = rows; $('assetsTable').innerHTML = rows }
