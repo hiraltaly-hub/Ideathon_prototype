@@ -28,7 +28,7 @@ const upload =
 ========================================== */
 
 app.use(
-  express.static("outputs")
+  express.static(".")
 );
 
 
