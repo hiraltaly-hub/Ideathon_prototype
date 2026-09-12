@@ -4,8 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>InspectIQ · Field Operations</title>
+
+  <title>InspectIQ · AI Inspection</title>
+
   <style>
+
     :root {
       --bg: #07131c;
       --panel: #0d202b;
@@ -16,24 +19,36 @@
       --teal: #37d2bd;
       --amber: #ffbe55;
       --red: #ff6565;
-      --blue: #67aaf9
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      background: radial-gradient(circle at 75% 0, #123744 0, transparent 38%), var(--bg);
+      background:
+        radial-gradient(
+          circle at 75% 0,
+          #123744 0,
+          transparent 38%
+        ),
+        var(--bg);
+
       color: var(--text);
-      font: 15px/1.45 Inter, ui-sans-serif, system-ui, sans-serif
+
+      font:
+        15px/1.45
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        sans-serif;
     }
 
     .app {
       max-width: 1240px;
       margin: auto;
-      padding: 20px
+      padding: 20px;
     }
 
     .top {
@@ -41,28 +56,34 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--line);
-      padding: 0 0 18px
+      padding-bottom: 18px;
     }
 
     .brand {
       font-weight: 800;
-      letter-spacing: .04em
+      letter-spacing: .04em;
     }
 
     .brand i {
       color: var(--teal);
-      font-style: normal
+      font-style: normal;
     }
 
-    .tag {
-      font-size: 11px;
+    .tag,
+    .eyebrow {
       color: var(--teal);
-      letter-spacing: .12em
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .13em;
     }
 
     .nav {
       display: flex;
-      gap: 6px
+      gap: 6px;
+    }
+
+    button {
+      font: inherit;
     }
 
     .nav button,
@@ -72,7 +93,7 @@
       color: var(--text);
       padding: 9px 12px;
       border-radius: 8px;
-      cursor: pointer
+      cursor: pointer;
     }
 
     .nav button.active,
@@ -80,22 +101,36 @@
       background: var(--teal);
       border-color: var(--teal);
       color: #02221f;
-      font-weight: 800
+      font-weight: 800;
     }
 
-    .btn:hover {
-      filter: brightness(1.14)
+    .btn:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .btn:hover:not(:disabled) {
+      filter: brightness(1.14);
     }
 
     main {
-      padding: 28px 0 80px
+      padding: 28px 0 80px;
     }
 
-    .eyebrow {
-      color: var(--teal);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .13em
+    h1 {
+      margin: 5px 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08;
+    }
+
+    h2 {
+      margin: 0 0 5px;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 5px 0;
+      color: var(--muted);
     }
 
     .hero {
@@ -103,152 +138,49 @@
       gap: 30px;
       align-items: end;
       justify-content: space-between;
-      margin-bottom: 24px
-    }
-
-    h1 {
-      margin: 5px 0;
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.08
-    }
-
-    h2 {
-      margin: 0 0 5px;
-      font-size: 20px
-    }
-
-    p {
-      margin: 5px 0;
-      color: var(--muted)
+      margin-bottom: 24px;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px
+      gap: 14px;
     }
 
     .card {
-      background: linear-gradient(145deg, #102936, #0b1d27);
+      background:
+        linear-gradient(
+          145deg,
+          #102936,
+          #0b1d27
+        );
+
       border: 1px solid var(--line);
       border-radius: 13px;
-      padding: 18px
+      padding: 18px;
     }
 
     .metric {
       font-size: 32px;
       font-weight: 800;
-      margin: 7px 0
+      margin: 7px 0;
     }
 
     .small {
       font-size: 12px;
-      color: var(--muted)
-    }
-
-    .up {
-      color: var(--teal)
-    }
-
-    .alert {
-      border-left: 4px solid var(--red);
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px
-    }
-
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px
-    }
-
-    .table td,
-    .table th {
-      padding: 13px;
-      text-align: left;
-      border-bottom: 1px solid var(--line)
-    }
-
-    .table th {
-      font-size: 11px;
       color: var(--muted);
-      letter-spacing: .08em
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 99px;
-      font-size: 12px;
-      font-weight: 700
-    }
-
-    .healthy {
-      background: #164039;
-      color: #6fe5b9
-    }
-
-    .attention {
-      background: #4a3515;
-      color: #ffc66b
-    }
-
-    .risk {
-      background: #482226;
-      color: #ff9393
     }
 
     .two {
       display: grid;
       grid-template-columns: 1.1fr .9fr;
-      gap: 18px
+      gap: 18px;
     }
 
     .step {
       border-left: 2px solid var(--teal);
       padding-left: 14px;
-      margin: 17px 0
-    }
-
-    .select,
-    textarea,
-    input {
-      width: 100%;
-      background: #081720;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 12px;
-      color: var(--text);
-      font: inherit
-    }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical
-    }
-
-    .samples {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px
-    }
-
-    .samples button {
-      background: var(--soft);
-      border: 1px solid var(--line);
-      color: var(--text);
-      border-radius: 99px;
-      padding: 8px 10px;
-      cursor: pointer
-    }
-
-    .samples button.selected {
-      border-color: var(--teal);
-      color: var(--teal)
+      margin: 17px 0;
     }
 
     .drop {
@@ -257,14 +189,55 @@
       border-radius: 10px;
       padding: 25px;
       text-align: center;
-      color: var(--muted)
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background: #081720;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .preview {
+      width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-top: 15px;
+      background: #02090d;
+    }
+
+    .video-wrap {
+      position: relative;
+      margin-top: 18px;
+    }
+
+    video {
+      width: 100%;
+      max-height: 500px;
+      border-radius: 10px;
+      background: #02090d;
     }
 
     .result-score {
       font-size: 72px;
       line-height: 1;
       color: var(--amber);
-      font-weight: 900
+      font-weight: 900;
     }
 
     .bar {
@@ -272,27 +245,63 @@
       background: #061017;
       border-radius: 9px;
       overflow: hidden;
-      margin: 12px 0
+      margin: 12px 0;
     }
 
     .bar span {
       display: block;
       height: 100%;
-      background: linear-gradient(90deg, var(--red), var(--amber));
-      width: 64%
+      background: var(--teal);
+      width: 0%;
+      transition: width .4s ease;
     }
 
     .find {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--line)
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
     }
 
-    .find b {
-      display: block
+    .find:last-child {
+      border-bottom: none;
     }
 
-    .hidden {
-      display: none !important
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .healthy {
+      background: #164039;
+      color: #6fe5b9;
+    }
+
+    .attention {
+      background: #4a3515;
+      color: #ffc66b;
+    }
+
+    .risk {
+      background: #482226;
+      color: #ff9393;
+    }
+
+    .evidence-btn {
+      margin-top: 10px;
+      border: 1px solid var(--teal);
+      background: transparent;
+      color: var(--teal);
+      border-radius: 7px;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .evidence-btn:hover {
+      background: var(--teal);
+      color: #02221f;
     }
 
     .toast {
@@ -305,351 +314,2094 @@
       border: 1px solid var(--teal);
       border-radius: 8px;
       transform: translateY(100px);
-      transition: .25s
+      transition: .25s;
     }
 
     .toast.show {
-      transform: none
+      transform: none;
+    }
+
+    .empty {
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .status-line {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #09232b;
+      color: var(--muted);
+    }
+
+    .confidence {
+      color: var(--teal);
+      font-size: 12px;
     }
 
     @media(max-width:780px) {
+
       .grid {
-        grid-template-columns: repeat(2, 1fr)
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .two {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr;
       }
 
       .hero {
-        display: block
+        display: block;
       }
 
       .nav {
-        overflow: auto
+        overflow: auto;
       }
 
       .top {
         gap: 12px;
-        align-items: flex-start
-      }
-
-      .table {
-        font-size: 12px
-      }
-
-      .table th:nth-child(2),
-      .table td:nth-child(2) {
-        display: none
+        align-items: flex-start;
       }
     }
 
     @media(max-width:440px) {
+
       .grid {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr;
       }
 
       .app {
-        padding: 14px
+        padding: 14px;
       }
     }
+
   </style>
+
 </head>
 
+
 <body>
-  <div class="app">
-    <header class="top">
-      <div>
-        <div class="brand"><i>◈</i> INSPECTIQ</div>
-        <div class="tag">AI INSPECTION ASSISTANCE</div>
+
+<div class="app">
+
+<header class="top">
+
+  <div>
+    <div class="brand">
+      <i>◈</i> INSPECTIQ
+    </div>
+
+    <div class="tag">
+      AI INSPECTION ASSISTANCE
+    </div>
+  </div>
+
+  <nav class="nav">
+
+    <button
+      data-page="dashboard"
+      class="active">
+      Dashboard
+    </button>
+
+    <button data-page="inspect">
+      Inspect
+    </button>
+
+    <button data-page="assets">
+      Assets
+    </button>
+
+    <button data-page="reports">
+      Reports
+    </button>
+
+  </nav>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section id="dashboard" class="page">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        LIVE INSPECTION DATA
       </div>
-      <nav class="nav"><button data-page="dashboard" class="active">Dashboard</button><button
-          data-page="inspect">Inspect</button><button data-page="assets">Assets</button><button
-          data-page="reports">Reports</button></nav>
-    </header>
-    <main>
-      <section id="dashboard" class="page">
-        <div class="hero">
-          <div>
-            <div class="eyebrow">FIELD OPS MODE ACTIVE · OFF-409</div>
-            <h1>Inspect smarter.<br>Maintain earlier.</h1>
-            <p>Real-time infrastructure and machine diagnostics for your field team.</p>
-          </div><button class="btn primary" onclick="go('inspect')">Start new inspection</button>
+
+      <h1>
+        Inspect smarter.<br>
+        Maintain earlier.
+      </h1>
+
+      <p>
+        AI-powered visual inspection based on your actual inspections.
+      </p>
+
+    </div>
+
+    <button
+      class="btn primary"
+      onclick="go('inspect')">
+      Start new inspection
+    </button>
+
+  </div>
+
+
+  <div class="grid">
+
+    <div class="card">
+
+      <div class="small">
+        TOTAL INSPECTIONS
+      </div>
+
+      <div
+        class="metric"
+        id="metricInspections">
+        0
+      </div>
+
+      <p>
+        Actual inspections recorded
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="small">
+        INSPECTED ASSETS
+      </div>
+
+      <div
+        class="metric"
+        id="metricAssets">
+        0
+      </div>
+
+      <p>
+        Asset types detected by AI
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="small">
+        NEED ATTENTION
+      </div>
+
+      <div
+        class="metric"
+        id="metricAttention">
+        0
+      </div>
+
+      <p>
+        Inspections requiring follow-up
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="small">
+        CRITICAL
+      </div>
+
+      <div
+        class="metric"
+        id="metricCritical">
+        0
+      </div>
+
+      <p>
+        Critical inspections
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="card"
+    style="margin-top:18px">
+
+    <div class="eyebrow">
+      LIVE HEALTH INDEX
+    </div>
+
+    <h2>
+      Overall inspection health
+    </h2>
+
+    <div
+      class="metric"
+      id="healthIndex">
+      —
+    </div>
+
+    <div class="bar">
+
+      <span
+        id="healthBar">
+      </span>
+
+    </div>
+
+    <p id="healthText">
+      No inspections have been recorded yet.
+    </p>
+
+  </div>
+
+
+  <div
+    class="card"
+    style="margin-top:18px">
+
+    <div class="hero">
+
+      <div>
+
+        <h2>
+          Recent inspections
+        </h2>
+
+        <p>
+          Live records from your actual inspections
+        </p>
+
+      </div>
+
+      <button
+        class="btn"
+        onclick="go('reports')">
+        View reports
+      </button>
+
+    </div>
+
+    <div id="recent">
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     INSPECT
+===================================================== -->
+
+<section
+  id="inspect"
+  class="page hidden">
+
+  <div class="eyebrow">
+    REAL-TIME AI INSPECTION
+  </div>
+
+  <h1>
+    Start a new inspection
+  </h1>
+
+  <p>
+    Upload a photo or video. The AI analyzes the actual visual evidence.
+  </p>
+
+
+  <div
+    class="two"
+    style="margin-top:22px">
+
+
+    <div class="card">
+
+      <div class="step">
+
+        <h2>
+          1 · Upload evidence
+        </h2>
+
+        <p>
+          Choose a photo or inspection video.
+        </p>
+
+
+        <div class="drop">
+
+          <label
+            style="color:var(--teal);cursor:pointer">
+
+            📷 Upload photo
+
+            <input
+              id="file"
+              type="file"
+              accept="image/*"
+              class="hidden">
+
+          </label>
+
+          <br><br>
+
+          <label
+            style="color:var(--teal);cursor:pointer">
+
+            🎥 Upload video
+
+            <input
+              id="videoFile"
+              type="file"
+              accept="video/*"
+              class="hidden">
+
+          </label>
+
+
+          <div
+            id="fileLabel"
+            class="small"
+            style="margin-top:12px">
+
+            No evidence selected
+
+          </div>
+
         </div>
-        <div class="grid">
-          <div class="card"><span class="up">+4% this week</span>
-            <div class="metric">248</div>
-            <p>Total monitored assets</p>
-          </div>
-          <div class="card"><span class="up">75% complete</span>
-            <div class="metric">186</div>
-            <p>Verified in the last 30 days</p>
-          </div>
-          <div class="card"><span style="color:var(--amber)">14% scheduled</span>
-            <div class="metric">34</div>
-            <p>Need attention</p>
-          </div>
-          <div class="card"><span style="color:var(--red)">High alert</span>
-            <div class="metric">12</div>
-            <p>Critical severity</p>
-          </div>
+
+
+        <img
+          id="imagePreview"
+          class="preview hidden"
+          alt="Inspection preview">
+
+
+        <div
+          id="videoPreview"
+          class="video-wrap hidden">
+
+          <video
+            id="inspectionVideo"
+            controls>
+          </video>
+
         </div>
-        <div class="two" style="margin-top:18px">
-          <div class="card">
-            <div class="eyebrow">ASSET HEALTH</div>
-            <h2>Overall health index</h2>
-            <div class="metric" style="color:var(--teal)">84 / 100</div>
-            <div class="bar"><span style="width:84%;background:var(--teal)"></span></div>
-            <p>Healthy 75% · Attention 14% · At risk 6% · Critical 5%</p>
-          </div>
-          <div class="card alert">
-            <div>
-              <div class="eyebrow" style="color:var(--red)">CRITICAL DEFECT DETECTED</div>
-              <h2>Bridge #102 · Primary Pier 4</h2>
-              <p>Estimated 3.8 mm shear crack on load-bearing concrete beam.</p>
-            </div><button class="btn" onclick="startSample('bridge')">Review</button>
-          </div>
-        </div>
-        <div class="card" style="margin-top:18px">
-          <div class="hero">
-            <div>
-              <h2>Recent inspections</h2>
-              <p>Completed visual and AI metrology audits</p>
-            </div><button class="btn" onclick="go('assets')">View assets</button>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>System</th>
-                <th>AI score</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="recent"></tbody>
-          </table>
-        </div>
-      </section>
-      <section id="inspect" class="page hidden">
-        <div class="eyebrow">PRECISION METROLOGY ENGINE · READY</div>
-        <h1>Start a new inspection</h1>
-        <p>Upload an asset image or choose a verified sample to generate a field-ready assessment.</p>
-        <div class="two" style="margin-top:22px">
-          <div class="card">
-            <div class="step">
-              <h2>1 · Capture asset</h2>
-              <p>Provide visual context for the asset's current condition.</p>
-              <div class="drop">▣ &nbsp; Drop an image here, or <label
-                  style="color:var(--teal);cursor:pointer">browse<input id="file" type="file" accept="image/*"
-                    class="hidden"></label>
-                    <div style="margin-top:15px">
-  <label class="small">OR UPLOAD INSPECTION VIDEO</label>
-  <input id="videoUpload" type="file" accept="video/*">
+
+      </div>
+
+
+      <div class="step">
+
+        <h2>
+          2 · Field notes
+        </h2>
+
+        <textarea
+          id="notes"
+          placeholder="Optional: describe anything the inspector noticed..."></textarea>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="card">
+
+      <div class="step">
+
+        <h2>
+          3 · AI inspection
+        </h2>
+
+        <p>
+          AI identifies the visible asset, faults, severity, risk and recommended action.
+        </p>
+
+      </div>
+
+
+      <div class="status-line">
+
+        <b>
+          Vision engine
+        </b>
+
+        <br>
+
+        Actual uploaded evidence will be analyzed.
+
+      </div>
+
+
+      <button
+        class="btn primary"
+        style="width:100%;margin-top:18px"
+        id="analyze">
+
+        Start AI inspection
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ASSETS
+===================================================== -->
+
+<section
+  id="assets"
+  class="page hidden">
+
+  <div class="eyebrow">
+    ASSET REGISTRY
+  </div>
+
+  <h1>
+    Detected assets
+  </h1>
+
+  <p>
+    This list is created from actual inspections.
+  </p>
+
+
+  <div class="card">
+
+    <div id="assetsTable">
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     REPORTS
+===================================================== -->
+
+<section
+  id="reports"
+  class="page hidden">
+
+  <div class="eyebrow">
+    INSPECTION HISTORY
+  </div>
+
+  <h1>
+    Saved inspection reports
+  </h1>
+
+  <p>
+    Every saved inspection appears here.
+  </p>
+
+
+  <div
+    id="saved"
+    class="card"
+    style="margin-top:18px">
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RESULT
+===================================================== -->
+
+<section
+  id="result"
+  class="page hidden">
+
+  <div class="eyebrow">
+    AI INSPECTION COMPLETE
+  </div>
+
+
+  <h1 id="resultTitle">
+    Inspection result
+  </h1>
+
+
+  <div class="two">
+
+
+    <div class="card">
+
+      <div class="eyebrow">
+        CONDITION SCORE
+      </div>
+
+      <div
+        class="result-score"
+        id="score">
+        —
+      </div>
+
+      <div class="bar">
+
+        <span id="scoreBar">
+        </span>
+
+      </div>
+
+      <p id="summary">
+      </p>
+
+      <button
+        class="btn primary"
+        id="save">
+
+        Save inspection
+
+      </button>
+
+      <button
+        class="btn"
+        onclick="go('inspect')">
+
+        New inspection
+
+      </button>
+
+    </div>
+
+
+
+    <div class="card">
+
+      <div class="eyebrow">
+        RECOMMENDED ACTION
+      </div>
+
+      <h2 id="action">
+        —
+      </h2>
+
+      <p>
+        Next inspection:
+      </p>
+
+      <strong id="nextInspection">
+        —
+      </strong>
+
+      <p
+        style="margin-top:20px"
+        class="small">
+
+        AI output is based on visual evidence and should be verified by an appropriately qualified inspector or engineer.
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- VIDEO EVIDENCE -->
+
+  <div
+    id="resultVideoCard"
+    class="card hidden"
+    style="margin-top:18px">
+
+    <div class="eyebrow">
+      VIDEO EVIDENCE
+    </div>
+
+    <h2>
+      Inspection video
+    </h2>
+
+    <p>
+      Select an evidence button to jump to the AI-detected timestamp.
+    </p>
+
+    <video
+      id="resultVideo"
+      controls>
+    </video>
+
+  </div>
+
+
+  <!-- FINDINGS -->
+
+  <div
+    class="card"
+    style="margin-top:18px">
+
+    <h2>
+      Detected findings
+    </h2>
+
+    <div id="findings">
+    </div>
+
+  </div>
+
+</section>
+
+
+</main>
+
 </div>
 
-<video id="inspectionVideo"
-       controls
-       width="100%"
-       style="display:none;margin-top:15px;border-radius:10px;">
-</video>
 
-<div id="evidenceList" style="margin-top:15px"></div>
-                <div id="fileLabel" class="small" style="margin-top:8px">PNG, JPG, HEIC · maximum 50 MB</div>
-              </div>
-              <div class="samples" id="samples"></div>
-            </div>
-            <div class="step">
-              <h2>2 · Describe condition</h2><textarea
-                id="notes">Select a sample asset or enter the observed condition here.</textarea>
-            </div>
-          </div>
-          <div class="card">
-            <div class="step">
-              <h2>3 · AI inspection</h2>
-              <p>The engine segments visible defects, estimates severity and calculates an asset health score.</p>
-            </div><label class="small">TARGET COMPONENT</label><select id="target" class="select">
-              <option value="machine">Industrial Machine #M-401 · Mechanical Hub</option>
-              <option value="bridge">Bridge #102 · Sector 5</option>
-              <option value="transformer">Transformer T-204 · Substation North</option>
-              <option value="pipeline">Pipeline P-201 · Sector 2</option>
-            </select>
-            <div class="card" style="margin:18px 0;background:#09232b">
-              <div class="eyebrow">ENGINE STATUS</div>
-              <p>Vision model online · sensor integrity verified · report generator ready</p>
-            </div><button class="btn primary" style="width:100%" id="analyze">Start AI inspection</button>
-          </div>
-        </div>
-      </section>
-      <section id="assets" class="page hidden">
-        <div class="eyebrow">ASSET REGISTRY</div>
-        <h1>Monitored assets</h1>
-        <div class="card">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Location / system</th>
-                <th>Score</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="assetsTable"></tbody>
-          </table>
-        </div>
-      </section>
-      <section id="reports" class="page hidden">
-        <div class="eyebrow">OFFICER WORK VAULT</div>
-        <h1>Saved inspection reports</h1>
-        <p>Reports are stored only in this browser, ready for field review.</p>
-        <div id="saved" class="card" style="margin-top:18px"></div>
-      </section>
-      <section id="result" class="page hidden">
-        <div class="eyebrow">AI INSPECTION COMPLETE · 98.5% CONFIDENCE</div>
-        <h1 id="resultTitle">Bridge #102 assessment</h1>
-        <div class="two">
-          <div class="card">
-            <div class="eyebrow">STRUCTURAL HEALTH SCORE</div>
-            <div class="result-score" id="score">64</div>
-            <div class="bar"><span id="scoreBar"></span></div>
-            <p id="summary"></p><button class="btn primary" id="save">Save to officer log</button> <button class="btn"
-              onclick="go('inspect')">New inspection</button>
-          </div>
-          <div class="card">
-            <div class="eyebrow">RECOMMENDED ACTION</div>
-            <h2 id="action">Schedule maintenance within 30 days</h2>
-            <p>Escalate to the asset owner, mark the area for review and perform a hands-on verification before the next
-              operational cycle.</p>
-            <div class="small" style="margin-top:20px">Generated from visual input and field notes. This prototype is
-              not a substitute for a certified engineering assessment.</div>
-          </div>
-        </div>
-        <div class="card" style="margin-top:18px">
-          <h2>Detected findings</h2>
-          <div id="findings"></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <div class="toast" id="toast">Saved to Officer Work Vault</div>
-  <script>
-    const assets = {
-      bridge: {
-        name: "Bridge",
-        type: "Infrastructure"
-      },
+<div
+  class="toast"
+  id="toast">
 
-      building: {
-        name: "Building",
-        type: "Structure"
-      },
+  Inspection saved
 
-      factory: {
-        name: "Factory",
-        type: "Industrial"
-      },
+</div>
 
-      warehouse: {
-        name: "Warehouse",
-        type: "Building"
-      },
 
-      machinery: {
-        name: "Machinery",
-        type: "Equipment"
-      },
 
-      crane: {
-        name: "Crane",
-        type: "Machinery"
-      },
+<script>
 
-      transformer: {
-        name: "Transformer",
-        type: "Electrical Equipment"
-      },
 
-      pipeline: {
-        name: "Pipeline",
-        type: "Industrial Infrastructure"
-      },
+// =====================================================
+// STATE
+// =====================================================
 
-      dam: {
-        name: "Dam",
-        type: "Water Infrastructure"
-      },
+let currentResult = null;
 
-      lake: {
-        name: "Lake",
-        type: "Water Body"
-      },
+let currentVideoFile = null;
 
-      reservoir: {
-        name: "Reservoir",
-        type: "Water Body"
-      },
+let currentImageFile = null;
 
-      water_tank: {
-        name: "Water Tank",
-        type: "Water Infrastructure"
-      },
+const $ = id =>
+  document.getElementById(id);
 
-      tower: {
-        name: "Tower",
-        type: "Structure"
-      },
 
-      railway: {
-        name: "Railway",
-        type: "Transportation Infrastructure"
-      },
+// =====================================================
+// STORAGE
+// =====================================================
 
-      road: {
-        name: "Road",
-        type: "Transportation Infrastructure"
-      },
+const STORAGE_KEY =
+  "inspectiq-inspections";
 
-      machine: {
-        name: "Machine",
-        type: "Machinery"
-      }
+
+function getReports() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
+
+  } catch {
+
+    return [];
+
+  }
+}
+
+
+function saveReports(reports) {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(reports)
+  );
+
+}
+
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+
+function go(page) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(section => {
+      section.classList.add("hidden");
+    });
+
+
+  $(page).classList.remove("hidden");
+
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.page === page
+      );
+
+    });
+
+
+  if (page === "dashboard") {
+    renderDashboard();
+  }
+
+  if (page === "assets") {
+    renderAssets();
+  }
+
+  if (page === "reports") {
+    renderReports();
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+// =====================================================
+// FILE SELECTION
+// =====================================================
+
+$("file").addEventListener(
+  "change",
+  event => {
+
+    const file =
+      event.target.files[0];
+
+    if (!file) return;
+
+
+    currentImageFile = file;
+
+    currentVideoFile = null;
+
+    $("videoFile").value = "";
+
+    $("fileLabel").textContent =
+      `Photo: ${file.name}`;
+
+
+    const url =
+      URL.createObjectURL(file);
+
+
+    $("imagePreview").src = url;
+
+    $("imagePreview")
+      .classList.remove("hidden");
+
+
+    $("videoPreview")
+      .classList.add("hidden");
+
+  }
+);
+
+
+$("videoFile").addEventListener(
+  "change",
+  event => {
+
+    const file =
+      event.target.files[0];
+
+    if (!file) return;
+
+
+    currentVideoFile = file;
+
+    currentImageFile = null;
+
+    $("file").value = "";
+
+
+    $("fileLabel").textContent =
+      `Video: ${file.name}`;
+
+
+    const url =
+      URL.createObjectURL(file);
+
+
+    $("inspectionVideo").src = url;
+
+    $("videoPreview")
+      .classList.remove("hidden");
+
+
+    $("imagePreview")
+      .classList.add("hidden");
+
+  }
+);
+
+
+// =====================================================
+// PHOTO ANALYSIS
+// =====================================================
+
+async function analyzePhoto() {
+
+  const button = $("analyze");
+
+  button.disabled = true;
+
+  button.textContent =
+    "Analyzing image...";
+
+
+  try {
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "image",
+      currentImageFile
+    );
+
+    formData.append(
+      "notes",
+      $("notes").value
+    );
+
+
+    const response =
+      await fetch(
+        "/api/analyze",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (!response.ok) {
+      throw new Error(
+        result.error ||
+        "Photo analysis failed."
+      );
+    }
+
+
+    currentResult = {
+      ...result,
+      mediaType: "image",
+      filename: currentImageFile.name
     };
-    const videoUpload = document.getElementById('videoUpload');
-const inspectionVideo = document.getElementById('inspectionVideo');
-const evidenceList = document.getElementById('evidenceList');
 
-videoUpload.addEventListener('change', function () {
-  const file = this.files[0];
 
-  if (!file) return;
+    showResult(currentResult);
 
-  inspectionVideo.src = URL.createObjectURL(file);
-  inspectionVideo.style.display = 'block';
-});
+  } finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Start AI inspection";
+
+  }
+
+}
+
+
+// =====================================================
+// VIDEO FRAME EXTRACTION
+// =====================================================
+
+async function extractVideoFrames(videoFile) {
+
+  const video =
+    document.createElement("video");
+
+  video.preload = "metadata";
+
+  video.muted = true;
+
+  video.src =
+    URL.createObjectURL(videoFile);
+
+
+  await new Promise(
+    (resolve, reject) => {
+
+      video.onloadedmetadata =
+        resolve;
+
+      video.onerror =
+        () => reject(
+          new Error(
+            "The video could not be opened."
+          )
+        );
+
+    }
+  );
+
+
+  const duration =
+    video.duration;
+
+
+  if (!Number.isFinite(duration)) {
+
+    throw new Error(
+      "Could not determine video duration."
+    );
+
+  }
+
+
+  // Faster analysis:
+  // roughly one frame every 2 seconds,
+  // maximum 30 frames.
+
+  const interval =
+    duration > 60
+      ? 3
+      : 2;
+
+
+  const timestamps = [];
+
+
+  for (
+    let time = 0;
+    time < duration;
+    time += interval
+  ) {
+
+    timestamps.push(time);
+
+  }
+
+
+  if (
+    timestamps.length &&
+    timestamps[timestamps.length - 1] !== duration
+  ) {
+
+    timestamps.push(
+      Math.max(0, duration - 0.1)
+    );
+
+  }
+
+
+  const canvas =
+    document.createElement("canvas");
+
+
+  const context =
+    canvas.getContext("2d");
+
+
+  const frames = [];
+
+
+  for (const timestamp of timestamps) {
+
+    video.currentTime =
+      timestamp;
+
+
+    await new Promise(resolve => {
+
+      video.onseeked =
+        resolve;
+
+    });
+
+
+    const maxWidth = 768;
+
+    const scale =
+      Math.min(
+        1,
+        maxWidth / video.videoWidth
+      );
+
+
+    canvas.width =
+      Math.max(
+        1,
+        Math.round(
+          video.videoWidth * scale
+        )
+      );
+
+
+    canvas.height =
+      Math.max(
+        1,
+        Math.round(
+          video.videoHeight * scale
+        )
+      );
+
+
+    context.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+    const dataUrl =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.62
+      );
+
+
+    frames.push({
+      timestamp,
+      dataUrl
+    });
+
+  }
+
+
+  URL.revokeObjectURL(video.src);
+
+  return frames;
+
+}
+
+
+// =====================================================
+// VIDEO ANALYSIS
+// =====================================================
+
+async function analyzeVideo() {
+
+  const button =
+    $("analyze");
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Preparing video...";
+
+
+  try {
+
+    const frames =
+      await extractVideoFrames(
+        currentVideoFile
+      );
+
+
+    button.textContent =
+      `AI analyzing ${frames.length} frames...`;
+
+
+    const response =
+      await fetch(
+        "/api/analyze-video",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            frames,
+            notes: $("notes").value
+          })
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        result.error ||
+        "Video analysis failed."
+      );
+
+    }
+
+
+    currentResult = {
+      ...result,
+      mediaType: "video",
+      filename: currentVideoFile.name
+    };
+
+
+    showResult(currentResult);
+
+  } finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Start AI inspection";
+
+  }
+
+}
+
+
+// =====================================================
+// START ANALYSIS
+// =====================================================
+
+$("analyze").addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      if (
+        !currentImageFile &&
+        !currentVideoFile
+      ) {
+
+        alert(
+          "Please upload a photo or video first."
+        );
+
+        return;
+
+      }
+
+
+      if (currentImageFile) {
+
+        await analyzePhoto();
+
+      } else {
+
+        await analyzeVideo();
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.message ||
+        "Inspection failed."
+      );
+
+      $("analyze").disabled = false;
+
+      $("analyze").textContent =
+        "Start AI inspection";
+
+    }
+
+  }
+);
+
+
+// =====================================================
+// RESULT DISPLAY
+// =====================================================
+
+function showResult(result) {
+
+  $("resultTitle").textContent =
+    `${result.assetType} inspection`;
+
+
+  $("score").textContent =
+    Math.round(result.score);
+
+
+  $("scoreBar").style.width =
+    `${result.score}%`;
+
+
+  $("summary").textContent =
+    result.summary;
+
+
+  $("action").textContent =
+    result.recommendation;
+
+
+  $("nextInspection").textContent =
+    result.nextInspectionInterval;
+
+
+  renderFindings(
+    result.findings || [],
+    result.mediaType === "video"
+  );
+
+
+  if (
+    result.mediaType === "video"
+  ) {
+
+    const resultVideo =
+      $("resultVideo");
+
+
+    resultVideo.src =
+      $("inspectionVideo").src;
+
+
+    $("resultVideoCard")
+      .classList.remove("hidden");
+
+  } else {
+
+    $("resultVideoCard")
+      .classList.add("hidden");
+
+  }
+
+
+  go("result");
+
+}
+
+
+function severityClass(severity) {
+
+  const value =
+    String(severity || "")
+      .toLowerCase();
+
+
+  if (value === "minor") {
+    return "healthy";
+  }
+
+  if (value === "moderate") {
+    return "attention";
+  }
+
+  return "risk";
+
+}
+
+
+function renderFindings(
+  findings,
+  isVideo
+) {
+
+  if (!findings.length) {
+
+    $("findings").innerHTML =
+      `
+      <div class="empty">
+        No visible faults were identified
+        from the supplied evidence.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  $("findings").innerHTML =
+    findings
+      .map(
+        (finding, index) => {
+
+          const timestamp =
+            Number(finding.timestamp);
+
+
+          const hasTimestamp =
+            isVideo &&
+            Number.isFinite(timestamp);
+
+
+          return `
+            <div class="find">
+
+              <b>
+
+                <span class="pill ${severityClass(
+                  finding.severity
+                )}">
+
+                  ${escapeHtml(
+                    finding.severity || "Finding"
+                  )}
+
+                </span>
+
+                &nbsp;
+
+                ${escapeHtml(
+                  finding.title
+                )}
+
+              </b>
+
+
+              <p>
+                ${escapeHtml(
+                  finding.description
+                )}
+              </p>
+
+
+              ${
+                finding.location
+                  ? `
+                    <p>
+                      <b>Position:</b>
+                      ${escapeHtml(
+                        finding.location
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              ${
+                finding.risk
+                  ? `
+                    <p>
+                      <b>Risk:</b>
+                      ${escapeHtml(
+                        finding.risk
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              ${
+                finding.recommendation
+                  ? `
+                    <p>
+                      <b>Recommended action:</b>
+                      ${escapeHtml(
+                        finding.recommendation
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              <div class="confidence">
+
+                AI confidence:
+                ${Math.round(
+                  finding.confidence || 0
+                )}%
+
+              </div>
+
+
+              ${
+                hasTimestamp
+                  ? `
+                    <button
+                      class="evidence-btn"
+                      onclick="viewEvidence(${timestamp})">
+
+                      ▶ VIEW EVIDENCE ·
+                      ${formatTime(timestamp)}
+
+                    </button>
+                  `
+                  : ""
+              }
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+// =====================================================
+// REAL VIDEO EVIDENCE
+// =====================================================
 
 function viewEvidence(timestamp) {
-  inspectionVideo.currentTime = timestamp;
-  inspectionVideo.play();
 
-  inspectionVideo.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
+  const video =
+    $("resultVideo");
+
+
+  video.currentTime =
+    Number(timestamp) || 0;
+
+
+  video.play();
+
+
+  video.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
   });
-}
-    let chosen = 'bridge', current = assets.bridge; const $ = id => document.getElementById(id);
-    function status(s) { return s === 'Healthy' ? 'healthy' : s === 'Attention' ? 'attention' : 'risk' }
-    function renderTables() { const rows = Object.entries(assets).map(([k, a]) => `<tr><td><b>${a.name}</b></td><td>${a.system}</td><td>${a.score}</td><td><span class="pill ${status(a.status)}">${a.status}</span></td><td><button class="btn" onclick="startSample('${k}')">Inspect</button></td></tr>`).join(''); $('recent').innerHTML = rows; $('assetsTable').innerHTML = rows }
-    function renderSamples() { $('samples').innerHTML = Object.entries(assets).map(([k, a]) => `<button class="${k === chosen ? 'selected' : ''}" onclick="pick('${k}')">+ ${a.name}</button>`).join('') }
-    function pick(k) { chosen = k; current = assets[k]; $('target').value = k; $('notes').value = current.notes; renderSamples() }
-    function go(p) { document.querySelectorAll('.page').forEach(x => x.classList.add('hidden')); $(p).classList.remove('hidden'); document.querySelectorAll('.nav button').forEach(x => x.classList.toggle('active', x.dataset.page === p)); window.scrollTo({ top: 0, behavior: 'smooth' }); if (p === 'reports') renderSaved() }
-    function startSample(k) { pick(k); go('inspect') }
-    $('target').addEventListener('change', e => pick(e.target.value)); $('file').addEventListener('change', e => { $('fileLabel').textContent = e.target.files[0] ? `Loaded: ${e.target.files[0].name}` : 'PNG, JPG, HEIC · maximum 50 MB' });
-    $('analyze').onclick = () => { current = assets[chosen]; $('resultTitle').textContent = current.name + ' assessment'; $('score').textContent = current.score; $('scoreBar').style.width = current.score + '%'; $('summary').textContent = `${current.status} condition. Analysis combines the submitted visual context with your field observation notes.`; $('action').textContent = current.score < 70 ? 'Schedule mitigation within 30 days' : current.score < 85 ? 'Plan corrective maintenance' : 'Continue preventive monitoring'; $('findings').innerHTML = current.findings.map((f, i) => `<div class="find"><b><span class="pill ${i === 0 && current.score < 70 ? 'risk' : 'attention'}">${i === 0 && current.score < 70 ? 'Priority' : 'Finding'}</span> &nbsp;${f[0]}</b><p>${f[1]}</p></div>`).join(''); go('result') };
-    $('save').onclick = () => { const log = JSON.parse(localStorage.getItem('inspectiq-reports') || '[]'); log.unshift({ asset: current.name, score: current.score, status: current.status, date: new Date().toLocaleString() }); localStorage.setItem('inspectiq-reports', JSON.stringify(log)); $('toast').classList.add('show'); setTimeout(() => $('toast').classList.remove('show'), 2200) };
-    function renderSaved() { const log = JSON.parse(localStorage.getItem('inspectiq-reports') || '[]'); $('saved').innerHTML = log.length ? `<table class="table"><thead><tr><th>Asset</th><th>Score</th><th>Status</th><th>Saved</th></tr></thead><tbody>${log.map(r => `<tr><td><b>${r.asset}</b></td><td>${r.score}</td><td><span class="pill ${status(r.status)}">${r.status}</span></td><td>${r.date}</td></tr>`).join('')}</tbody></table>` : '<h2>No saved reports yet</h2><p>Run an inspection and choose “Save to officer log” to preserve the assessment here.</p>' }
-    document.querySelectorAll('.nav button').forEach(button => button.addEventListener('click', () => go(button.dataset.page)));
-    renderTables(); renderSamples(); pick('bridge');
-  </script>
-</body>
 
+}
+
+
+// =====================================================
+// SAVE INSPECTION
+// =====================================================
+
+$("save").addEventListener(
+  "click",
+  () => {
+
+    if (!currentResult) {
+      return;
+    }
+
+
+    const reports =
+      getReports();
+
+
+    reports.unshift({
+      id:
+        crypto.randomUUID(),
+
+      date:
+        new Date().toISOString(),
+
+      assetType:
+        currentResult.assetType,
+
+      assetSubtype:
+        currentResult.assetSubtype,
+
+      score:
+        currentResult.score,
+
+      status:
+        currentResult.status,
+
+      summary:
+        currentResult.summary,
+
+      recommendation:
+        currentResult.recommendation,
+
+      nextInspectionInterval:
+        currentResult.nextInspectionInterval,
+
+      findings:
+        currentResult.findings || [],
+
+      mediaType:
+        currentResult.mediaType,
+
+      filename:
+        currentResult.filename
+    });
+
+
+    saveReports(reports);
+
+
+    showToast(
+      "Inspection saved successfully"
+    );
+
+
+    renderDashboard();
+
+  }
+);
+
+
+// =====================================================
+// DASHBOARD
+// =====================================================
+
+function renderDashboard() {
+
+  const reports =
+    getReports();
+
+
+  const assetTypes =
+    new Set(
+      reports.map(
+        report =>
+          report.assetType
+      )
+    );
+
+
+  const attention =
+    reports.filter(
+      report =>
+        report.status === "Attention" ||
+        report.status === "At risk"
+    ).length;
+
+
+  const critical =
+    reports.filter(
+      report =>
+        report.status === "Critical"
+    ).length;
+
+
+  $("metricInspections")
+    .textContent =
+      reports.length;
+
+
+  $("metricAssets")
+    .textContent =
+      assetTypes.size;
+
+
+  $("metricAttention")
+    .textContent =
+      attention;
+
+
+  $("metricCritical")
+    .textContent =
+      critical;
+
+
+  if (!reports.length) {
+
+    $("healthIndex")
+      .textContent = "—";
+
+    $("healthBar")
+      .style.width = "0%";
+
+    $("healthText")
+      .textContent =
+        "No inspections have been recorded yet.";
+
+  } else {
+
+    const average =
+      Math.round(
+        reports.reduce(
+          (sum, report) =>
+            sum + Number(report.score || 0),
+          0
+        ) / reports.length
+      );
+
+
+    $("healthIndex")
+      .textContent =
+        `${average} / 100`;
+
+
+    $("healthBar")
+      .style.width =
+        `${average}%`;
+
+
+    $("healthText")
+      .textContent =
+        `${reports.length} real inspection${
+          reports.length === 1 ? "" : "s"
+        } recorded.`;
+
+  }
+
+
+  const recent =
+    reports.slice(0, 5);
+
+
+  if (!recent.length) {
+
+    $("recent").innerHTML =
+      `
+      <div class="empty">
+        No inspections yet.
+        Upload your first photo or video.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  $("recent").innerHTML =
+    `
+    <table style="width:100%;border-collapse:collapse">
+
+      <thead>
+
+        <tr>
+          <th style="text-align:left;padding:10px">
+            Asset
+          </th>
+
+          <th style="text-align:left;padding:10px">
+            Score
+          </th>
+
+          <th style="text-align:left;padding:10px">
+            Status
+          </th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${recent.map(
+          report => `
+
+            <tr>
+
+              <td style="padding:10px;border-top:1px solid var(--line)">
+
+                ${escapeHtml(
+                  report.assetType
+                )}
+
+              </td>
+
+
+              <td style="padding:10px;border-top:1px solid var(--line)">
+
+                ${Math.round(
+                  report.score
+                )}
+
+              </td>
+
+
+              <td style="padding:10px;border-top:1px solid var(--line)">
+
+                <span class="pill ${statusClass(
+                  report.status
+                )}">
+
+                  ${escapeHtml(
+                    report.status
+                  )}
+
+                </span>
+
+              </td>
+
+            </tr>
+
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+    `;
+
+}
+
+
+// =====================================================
+// ASSET LIST
+// =====================================================
+
+function renderAssets() {
+
+  const reports =
+    getReports();
+
+
+  if (!reports.length) {
+
+    $("assetsTable").innerHTML =
+      `
+      <div class="empty">
+        No assets have been detected yet.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  const groups = {};
+
+
+  reports.forEach(
+    report => {
+
+      const key =
+        report.assetType;
+
+
+      if (!groups[key]) {
+
+        groups[key] = {
+          count: 0,
+          totalScore: 0,
+          latest: report
+        };
+
+      }
+
+
+      groups[key].count++;
+
+      groups[key].totalScore +=
+        Number(report.score || 0);
+
+    }
+  );
+
+
+  $("assetsTable").innerHTML =
+    `
+    <table style="width:100%;border-collapse:collapse">
+
+      <thead>
+
+        <tr>
+
+          <th style="text-align:left;padding:10px">
+            Asset
+          </th>
+
+          <th style="text-align:left;padding:10px">
+            Inspections
+          </th>
+
+          <th style="text-align:left;padding:10px">
+            Average score
+          </th>
+
+          <th style="text-align:left;padding:10px">
+            Latest status
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${Object.entries(groups)
+          .map(
+            ([name, group]) => `
+
+              <tr>
+
+                <td style="padding:10px;border-top:1px solid var(--line)">
+                  <b>
+                    ${escapeHtml(name)}
+                  </b>
+                </td>
+
+                <td style="padding:10px;border-top:1px solid var(--line)">
+                  ${group.count}
+                </td>
+
+                <td style="padding:10px;border-top:1px solid var(--line)">
+                  ${Math.round(
+                    group.totalScore /
+                    group.count
+                  )}
+                </td>
+
+                <td style="padding:10px;border-top:1px solid var(--line)">
+
+                  <span class="pill ${statusClass(
+                    group.latest.status
+                  )}">
+
+                    ${escapeHtml(
+                      group.latest.status
+                    )}
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+            `
+          )
+          .join("")}
+
+      </tbody>
+
+    </table>
+    `;
+
+}
+
+
+// =====================================================
+// REPORTS
+// =====================================================
+
+function renderReports() {
+
+  const reports =
+    getReports();
+
+
+  if (!reports.length) {
+
+    $("saved").innerHTML =
+      `
+      <div class="empty">
+
+        <h2>
+          No inspections yet
+        </h2>
+
+        <p>
+          Upload evidence and run your first AI inspection.
+        </p>
+
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  $("saved").innerHTML =
+    reports
+      .map(
+        report => `
+
+          <div class="find">
+
+            <h2>
+              ${escapeHtml(
+                report.assetType
+              )}
+            </h2>
+
+            <p>
+
+              ${new Date(
+                report.date
+              ).toLocaleString()}
+
+              ·
+
+              ${escapeHtml(
+                report.mediaType
+              )}
+
+            </p>
+
+
+            <p>
+
+              Score:
+              <b>
+                ${Math.round(
+                  report.score
+                )}
+              </b>
+
+              ·
+
+              <span class="pill ${statusClass(
+                report.status
+              )}">
+
+                ${escapeHtml(
+                  report.status
+                )}
+
+              </span>
+
+            </p>
+
+
+            <p>
+              ${escapeHtml(
+                report.summary
+              )}
+            </p>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+// =====================================================
+// HELPERS
+// =====================================================
+
+function statusClass(status) {
+
+  if (status === "Healthy") {
+    return "healthy";
+  }
+
+  if (status === "Attention") {
+    return "attention";
+  }
+
+  return "risk";
+
+}
+
+
+function formatTime(seconds) {
+
+  const total =
+    Math.max(
+      0,
+      Math.floor(
+        Number(seconds) || 0
+      )
+    );
+
+
+  const minutes =
+    Math.floor(
+      total / 60
+    );
+
+
+  const secs =
+    total % 60;
+
+
+  return `${String(minutes).padStart(
+    2,
+    "0"
+  )}:${String(secs).padStart(
+    2,
+    "0"
+  )}`;
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function showToast(message) {
+
+  const toast =
+    $("toast");
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  setTimeout(
+    () => {
+      toast.classList.remove(
+        "show"
+      );
+    },
+    2200
+  );
+
+}
+
+
+// =====================================================
+// NAV BUTTONS
+// =====================================================
+
+document
+  .querySelectorAll(".nav button")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+          go(
+            button.dataset.page
+          );
+        }
+      );
+
+    }
+  );
+
+
+// Initial dashboard
+
+renderDashboard();
+
+</script>
+
+</body>
 </html>
