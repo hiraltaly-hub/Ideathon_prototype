@@ -1,0 +1,20 @@
+{
+  "name": "ideathon_prototype-main",
+  "version": "1.0.0",
+  "description": "This package preserves the original FieldLens prototype and adds **working clickable navigation** between the inspection, analysis/results, and report screens.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.3.0",
+    "openai": "^7.15.0"
+  }
+}
