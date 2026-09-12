@@ -156,7 +156,7 @@ Do not use a fixed score.
             {
               type: "input_image",
               image_url: `data:${mimeType};base64,${base64Image}`,
-              detail: "high"
+              detail: "low"
             }
           ]
         }
