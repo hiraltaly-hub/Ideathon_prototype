@@ -1184,4 +1184,571 @@
         12px;
 
       padding:
-       
+        15px 0;
+
+      border-bottom:
+        1px solid var(--line-light);
+
+    }
+
+
+    .asset-row:last-child {
+
+      border-bottom:
+        none;
+
+    }
+
+
+    .asset-name {
+
+      font-weight:
+        800;
+
+    }
+
+
+    .asset-remove {
+
+      padding:
+        8px 10px;
+
+      font-size:
+        12px;
+
+    }
+
+
+    /* ==================================================
+       EMPTY
+    ================================================== */
+
+    .empty {
+
+      padding:
+        34px 20px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+    }
+
+
+    /* ==================================================
+       TOAST
+    ================================================== */
+
+    .toast {
+
+      position:
+        fixed;
+
+      right:
+        20px;
+
+      bottom:
+        20px;
+
+      z-index:
+        1000;
+
+      padding:
+        12px 16px;
+
+      background:
+        #fff;
+
+      color:
+        var(--teal-dark);
+
+      border:
+        1px solid var(--teal);
+
+      border-radius:
+        9px;
+
+      box-shadow:
+        var(--shadow);
+
+      transform:
+        translateY(100px);
+
+      opacity:
+        0;
+
+      transition:
+        .25s ease;
+
+    }
+
+
+    .toast.show {
+
+      transform:
+        translateY(0);
+
+      opacity:
+        1;
+
+    }
+
+
+    /* ==================================================
+       MOBILE
+    ================================================== */
+
+    @media(max-width:850px) {
+
+      .grid {
+
+        grid-template-columns:
+          repeat(2,1fr);
+
+      }
+
+
+      .two {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .report-grid {
+
+        grid-template-columns:
+          repeat(2,1fr);
+
+      }
+
+
+      .asset-row {
+
+        grid-template-columns:
+          1fr 1fr;
+
+      }
+
+    }
+
+
+    @media(max-width:650px) {
+
+      .app {
+
+        width:
+          min(
+            100% - 20px,
+            1240px
+          );
+
+      }
+
+
+      .top {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .nav {
+
+        width:
+          100%;
+
+        overflow-x:
+          auto;
+
+        flex-wrap:
+          nowrap;
+
+      }
+
+
+      .nav button {
+
+        white-space:
+          nowrap;
+
+      }
+
+
+      .hero {
+
+        display:
+          block;
+
+      }
+
+
+      .report-header {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .report-score {
+
+        text-align:
+          left;
+
+      }
+
+
+      .delete-box {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+
+      }
+
+    }
+
+
+    @media(max-width:450px) {
+
+      .grid,
+      .report-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      h1 {
+
+        font-size:
+          31px;
+
+      }
+
+
+      .result-score {
+
+        font-size:
+          58px;
+
+      }
+
+
+      .asset-row {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+  <!-- ==================================================
+       HEADER
+  ================================================== -->
+
+  <header class="top">
+
+    <div>
+
+      <div class="brand">
+
+        <i>◈</i>
+        INSPECTIQ
+
+      </div>
+
+      <div class="tag">
+
+        AI INSPECTION ASSISTANCE
+
+      </div>
+
+    </div>
+
+
+    <nav class="nav">
+
+      <button
+        data-page="dashboard"
+        class="active">
+
+        Dashboard
+
+      </button>
+
+
+      <button
+        data-page="inspect">
+
+        Inspect
+
+      </button>
+
+
+      <button
+        data-page="assets">
+
+        Assets
+
+      </button>
+
+
+      <button
+        data-page="reports">
+
+        Reports
+
+      </button>
+
+    </nav>
+
+  </header>
+
+
+  <main>
+
+
+    <!-- ==================================================
+         DASHBOARD
+    ================================================== -->
+
+    <section
+      id="dashboard"
+      class="page">
+
+      <div class="hero">
+
+        <div>
+
+          <div class="eyebrow">
+            LIVE INSPECTION DATA
+          </div>
+
+          <h1>
+            Inspect smarter.<br>
+            Maintain earlier.
+          </h1>
+
+          <p>
+            AI-powered visual inspection based on your actual inspection records.
+          </p>
+
+        </div>
+
+
+        <button
+          class="btn primary"
+          onclick="go('inspect')">
+
+          + Start new inspection
+
+        </button>
+
+      </div>
+
+
+      <div class="grid">
+
+
+        <div class="card">
+
+          <div class="small">
+            TOTAL INSPECTIONS
+          </div>
+
+          <div
+            id="metricInspections"
+            class="metric">
+
+            0
+
+          </div>
+
+          <p>
+            Saved inspection records
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="small">
+            INSPECTED ASSETS
+          </div>
+
+          <div
+            id="metricAssets"
+            class="metric">
+
+            0
+
+          </div>
+
+          <p>
+            Asset types detected by AI
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="small">
+            NEED ATTENTION
+          </div>
+
+          <div
+            id="metricAttention"
+            class="metric">
+
+            0
+
+          </div>
+
+          <p>
+            Attention or at-risk records
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="small">
+            CRITICAL
+          </div>
+
+          <div
+            id="metricCritical"
+            class="metric">
+
+            0
+
+          </div>
+
+          <p>
+            Critical inspection records
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="card"
+        style="margin-top:18px">
+
+        <div class="eyebrow">
+          LIVE HEALTH INDEX
+        </div>
+
+        <h2>
+          Overall inspection health
+        </h2>
+
+        <div
+          id="healthIndex"
+          class="metric">
+
+          —
+
+        </div>
+
+        <div class="bar">
+
+          <span
+            id="healthBar">
+          </span>
+
+        </div>
+
+        <p id="healthText">
+
+          No inspections have been recorded yet.
+
+        </p>
+
+      </div>
+
+
+      <div
+        class="card"
+        style="margin-top:18px">
+
+        <div class="hero">
+
+          <div>
+
+            <h2>
+              Recent inspections
+            </h2>
+
+            <p>
+              Your latest saved inspection records.
+            </p>
+
+          </div>
+
+
+          <button
+            class="btn"
+            onclick="go('reports')">
+
+            View all reports
+
+          </button>
+
+        </div>
+
+
+        <div id="recent"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         INSPECT
+    ================================================== -->
+
+    <section
+      id="inspect"
+      class="page hidden">
+
+      <div class="eyebrow">
+        REAL-TIME AI INSPECTION
+      </div>
+
+      <h1>
+        Start a new inspection
+      </h1>
+
+      <p>
+        Upload a photo or video. AI will analyze 
