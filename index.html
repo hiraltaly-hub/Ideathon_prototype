@@ -126,6 +126,10 @@
       font-size: 20px;
     }
 
+    h3 {
+      margin: 6px 0 8px;
+    }
+
     p {
       margin: 5px 0;
       color: var(--muted);
@@ -356,9 +360,37 @@
       from {
         opacity: .3;
       }
+
       to {
         opacity: 1;
       }
+    }
+
+    .report-box {
+      margin-top: 18px;
+      padding: 16px;
+      background: #081720;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .report-stat {
+      padding: 12px;
+      background: #081720;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+
+    .report-stat strong {
+      display: block;
+      font-size: 21px;
+      margin-top: 4px;
     }
 
     @media(max-width:780px) {
@@ -383,11 +415,16 @@
         gap: 12px;
         align-items: flex-start;
       }
+
+      .report-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media(max-width:440px) {
 
-      .grid {
+      .grid,
+      .report-grid {
         grid-template-columns: 1fr;
       }
 
@@ -408,6 +445,7 @@
 <header class="top">
 
   <div>
+
     <div class="brand">
       <i>◈</i> INSPECTIQ
     </div>
@@ -415,7 +453,9 @@
     <div class="tag">
       AI INSPECTION ASSISTANCE
     </div>
+
   </div>
+
 
   <nav class="nav">
 
@@ -468,10 +508,13 @@
 
     </div>
 
+
     <button
       class="btn primary"
       onclick="go('inspect')">
+
       Start new inspection
+
     </button>
 
   </div>
@@ -485,8 +528,12 @@
         TOTAL INSPECTIONS
       </div>
 
-      <div class="metric" id="metricInspections">
+      <div
+        class="metric"
+        id="metricInspections">
+
         0
+
       </div>
 
       <p>
@@ -502,8 +549,12 @@
         INSPECTED ASSETS
       </div>
 
-      <div class="metric" id="metricAssets">
+      <div
+        class="metric"
+        id="metricAssets">
+
         0
+
       </div>
 
       <p>
@@ -519,8 +570,12 @@
         NEED ATTENTION
       </div>
 
-      <div class="metric" id="metricAttention">
+      <div
+        class="metric"
+        id="metricAttention">
+
         0
+
       </div>
 
       <p>
@@ -536,8 +591,12 @@
         CRITICAL
       </div>
 
-      <div class="metric" id="metricCritical">
+      <div
+        class="metric"
+        id="metricCritical">
+
         0
+
       </div>
 
       <p>
@@ -549,7 +608,9 @@
   </div>
 
 
-  <div class="card" style="margin-top:18px">
+  <div
+    class="card"
+    style="margin-top:18px">
 
     <div class="eyebrow">
       LIVE HEALTH INDEX
@@ -559,8 +620,12 @@
       Overall inspection health
     </h2>
 
-    <div class="metric" id="healthIndex">
+    <div
+      class="metric"
+      id="healthIndex">
+
       —
+
     </div>
 
     <div class="bar">
@@ -576,7 +641,9 @@
   </div>
 
 
-  <div class="card" style="margin-top:18px">
+  <div
+    class="card"
+    style="margin-top:18px">
 
     <div class="hero">
 
@@ -595,7 +662,9 @@
       <button
         class="btn"
         onclick="go('reports')">
+
         View reports
+
       </button>
 
     </div>
@@ -612,7 +681,9 @@
      INSPECT
 ===================================================== -->
 
-<section id="inspect" class="page hidden">
+<section
+  id="inspect"
+  class="page hidden">
 
   <div class="eyebrow">
     REAL-TIME AI INSPECTION
@@ -627,7 +698,9 @@
   </p>
 
 
-  <div class="two" style="margin-top:22px">
+  <div
+    class="two"
+    style="margin-top:22px">
 
 
     <div class="card">
@@ -645,7 +718,8 @@
 
         <div class="drop">
 
-          <label style="color:var(--teal);cursor:pointer">
+          <label
+            style="color:var(--teal);cursor:pointer">
 
             📷 Upload photo
 
@@ -659,7 +733,8 @@
 
           <br><br>
 
-          <label style="color:var(--teal);cursor:pointer">
+          <label
+            style="color:var(--teal);cursor:pointer">
 
             🎥 Upload video
 
@@ -735,7 +810,9 @@
       </div>
 
 
-      <div class="status-line" id="inspectionStatus">
+      <div
+        class="status-line"
+        id="inspectionStatus">
 
         <b>
           Vision engine
@@ -770,7 +847,9 @@
      ASSETS
 ===================================================== -->
 
-<section id="assets" class="page hidden">
+<section
+  id="assets"
+  class="page hidden">
 
   <div class="eyebrow">
     ASSET REGISTRY
@@ -796,22 +875,30 @@
 
 
 <!-- =====================================================
-     REPORTS
+     ANALYTICAL REPORTS
 ===================================================== -->
 
-<section id="reports" class="page hidden">
+<section
+  id="reports"
+  class="page hidden">
 
   <div class="eyebrow">
-    INSPECTION HISTORY
+    ANALYTICAL INSPECTION REPORT
   </div>
 
   <h1>
-    Saved inspection reports
+    Inspection analytics
   </h1>
 
   <p>
-    Every saved inspection appears here.
+    Detailed analysis generated from your actual saved inspections.
   </p>
+
+
+  <div
+    id="reportAnalytics"
+    style="margin-top:18px">
+  </div>
 
 
   <div
@@ -828,7 +915,9 @@
      RESULT
 ===================================================== -->
 
-<section id="result" class="page hidden">
+<section
+  id="result"
+  class="page hidden">
 
   <div class="eyebrow">
     AI INSPECTION COMPLETE
@@ -852,8 +941,11 @@
       <div
         class="result-score"
         id="score">
+
         —
+
       </div>
+
 
       <div class="bar">
 
@@ -861,7 +953,9 @@
 
       </div>
 
+
       <p id="summary"></p>
+
 
       <button
         class="btn primary"
@@ -870,6 +964,7 @@
         Save inspection
 
       </button>
+
 
       <button
         class="btn"
@@ -901,6 +996,7 @@
         —
       </strong>
 
+
       <p
         style="margin-top:20px"
         class="small">
@@ -912,6 +1008,7 @@
     </div>
 
   </div>
+
 
 
   <!-- VIDEO EVIDENCE -->
@@ -941,6 +1038,7 @@
   </div>
 
 
+
   <!-- FINDINGS -->
 
   <div
@@ -963,8 +1061,12 @@
 </div>
 
 
-<div class="toast" id="toast">
+<div
+  class="toast"
+  id="toast">
+
   Inspection saved
+
 </div>
 
 
@@ -986,14 +1088,17 @@ let currentVideoUrl = null;
 
 let currentImageUrl = null;
 
-const $ = id => document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
+
 
 
 // =====================================================
 // STORAGE
 // =====================================================
 
-const STORAGE_KEY = "inspectiq-inspections";
+const STORAGE_KEY =
+  "inspectiq-inspections";
 
 
 function getReports() {
@@ -1001,7 +1106,9 @@ function getReports() {
   try {
 
     return JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
+      localStorage.getItem(
+        STORAGE_KEY
+      ) || "[]"
     );
 
   } catch {
@@ -1013,7 +1120,9 @@ function getReports() {
 }
 
 
-function saveReports(reports) {
+function saveReports(
+  reports
+) {
 
   localStorage.setItem(
     STORAGE_KEY,
@@ -1021,6 +1130,7 @@ function saveReports(reports) {
   );
 
 }
+
 
 
 // =====================================================
@@ -1032,15 +1142,24 @@ function go(page) {
   document
     .querySelectorAll(".page")
     .forEach(section => {
-      section.classList.add("hidden");
+
+      section.classList.add(
+        "hidden"
+      );
+
     });
 
 
-  $(page).classList.remove("hidden");
+  $(page)
+    .classList.remove(
+      "hidden"
+    );
 
 
   document
-    .querySelectorAll(".nav button")
+    .querySelectorAll(
+      ".nav button"
+    )
     .forEach(button => {
 
       button.classList.toggle(
@@ -1051,16 +1170,30 @@ function go(page) {
     });
 
 
-  if (page === "dashboard") {
+  if (
+    page === "dashboard"
+  ) {
+
     renderDashboard();
+
   }
 
-  if (page === "assets") {
+
+  if (
+    page === "assets"
+  ) {
+
     renderAssets();
+
   }
 
-  if (page === "reports") {
+
+  if (
+    page === "reports"
+  ) {
+
     renderReports();
+
   }
 
 
@@ -1072,27 +1205,44 @@ function go(page) {
 }
 
 
+
 // =====================================================
 // STATUS
 // =====================================================
 
-function setInspectionStatus(message, loading = false) {
+function setInspectionStatus(
+  message,
+  loading = false
+) {
 
   if (loading) {
 
     $("inspectionStatus").innerHTML = `
+
       <div class="loading">
+
         <span class="dot"></span>
-        <b>${escapeHtml(message)}</b>
+
+        <b>
+          ${escapeHtml(message)}
+        </b>
+
       </div>
+
     `;
 
   } else {
 
     $("inspectionStatus").innerHTML = `
-      <b>Vision engine</b>
+
+      <b>
+        Vision engine
+      </b>
+
       <br>
+
       ${escapeHtml(message)}
+
     `;
 
   }
@@ -1100,8 +1250,9 @@ function setInspectionStatus(message, loading = false) {
 }
 
 
+
 // =====================================================
-// FILE SELECTION — PHOTO
+// PHOTO SELECTION
 // =====================================================
 
 $("file").addEventListener(
@@ -1114,24 +1265,37 @@ $("file").addEventListener(
     if (!file) return;
 
 
-    currentImageFile = file;
+    currentImageFile =
+      file;
 
-    currentVideoFile = null;
+    currentVideoFile =
+      null;
 
-    $("videoFile").value = "";
+
+    $("videoFile").value =
+      "";
 
 
-    $("fileLabel").textContent =
+    $("fileLabel")
+      .textContent =
       `Photo: ${file.name}`;
 
 
-    if (currentImageUrl) {
-      URL.revokeObjectURL(currentImageUrl);
+    if (
+      currentImageUrl
+    ) {
+
+      URL.revokeObjectURL(
+        currentImageUrl
+      );
+
     }
 
 
     currentImageUrl =
-      URL.createObjectURL(file);
+      URL.createObjectURL(
+        file
+      );
 
 
     $("imagePreview").src =
@@ -1139,17 +1303,18 @@ $("file").addEventListener(
 
 
     $("imagePreview")
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
 
 
     $("videoPreview")
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
 
 
-    /*
-      FAST FLOW:
-      Selecting the photo immediately starts AI.
-    */
+    // Automatically start AI
 
     await analyzePhoto();
 
@@ -1157,8 +1322,9 @@ $("file").addEventListener(
 );
 
 
+
 // =====================================================
-// FILE SELECTION — VIDEO
+// VIDEO SELECTION
 // =====================================================
 
 $("videoFile").addEventListener(
@@ -1171,24 +1337,37 @@ $("videoFile").addEventListener(
     if (!file) return;
 
 
-    currentVideoFile = file;
+    currentVideoFile =
+      file;
 
-    currentImageFile = null;
+    currentImageFile =
+      null;
 
-    $("file").value = "";
+
+    $("file").value =
+      "";
 
 
-    $("fileLabel").textContent =
+    $("fileLabel")
+      .textContent =
       `Video: ${file.name}`;
 
 
-    if (currentVideoUrl) {
-      URL.revokeObjectURL(currentVideoUrl);
+    if (
+      currentVideoUrl
+    ) {
+
+      URL.revokeObjectURL(
+        currentVideoUrl
+      );
+
     }
 
 
     currentVideoUrl =
-      URL.createObjectURL(file);
+      URL.createObjectURL(
+        file
+      );
 
 
     $("inspectionVideo").src =
@@ -1196,22 +1375,24 @@ $("videoFile").addEventListener(
 
 
     $("videoPreview")
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
 
 
     $("imagePreview")
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
 
 
-    /*
-      FAST FLOW:
-      Selecting the video immediately starts analysis.
-    */
+    // Automatically start AI
 
     await analyzeVideo();
 
   }
 );
+
 
 
 // =====================================================
@@ -1220,14 +1401,17 @@ $("videoFile").addEventListener(
 
 async function analyzePhoto() {
 
-  if (!currentImageFile) return;
+  if (!currentImageFile)
+    return;
 
 
   const button =
     $("analyze");
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
     "AI analyzing photo...";
@@ -1242,98 +1426,4 @@ async function analyzePhoto() {
   try {
 
     const formData =
-      new FormData();
-
-
-    formData.append(
-      "image",
-      currentImageFile
-    );
-
-
-    formData.append(
-      "notes",
-      $("notes").value
-    );
-
-
-    const response =
-      await fetch(
-        "/api/analyze",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-
-    const result =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        result.error ||
-        "Photo analysis failed."
-      );
-
-    }
-
-
-    currentResult = {
-      ...result,
-
-      mediaType: "image",
-
-      filename:
-        currentImageFile.name
-    };
-
-
-    showResult(
-      currentResult
-    );
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    setInspectionStatus(
-      error.message ||
-      "Photo analysis failed."
-    );
-
-
-    alert(
-      error.message ||
-      "Photo analysis failed."
-    );
-
-
-  } finally {
-
-    button.disabled = false;
-
-    button.textContent =
-      "Start AI inspection";
-
-  }
-
-}
-
-
-// =====================================================
-// VIDEO FRAME EXTRACTION
-// =====================================================
-
-async function extractVideoFrames(
-  videoFile
-) {
-
-  const video =
-    document.createElement("video");
-
-
-  video.p
+      new For
