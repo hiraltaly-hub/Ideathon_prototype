@@ -34,9 +34,7 @@
           transparent 38%
         ),
         var(--bg);
-
       color: var(--text);
-
       font:
         15px/1.45
         Inter,
@@ -154,7 +152,6 @@
           #102936,
           #0b1d27
         );
-
       border: 1px solid var(--line);
       border-radius: 13px;
       padding: 18px;
@@ -315,6 +312,7 @@
       border-radius: 8px;
       transform: translateY(100px);
       transition: .25s;
+      z-index: 1000;
     }
 
     .toast.show {
@@ -338,6 +336,29 @@
     .confidence {
       color: var(--teal);
       font-size: 12px;
+    }
+
+    .loading {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from {
+        opacity: .3;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     @media(max-width:780px) {
@@ -398,9 +419,7 @@
 
   <nav class="nav">
 
-    <button
-      data-page="dashboard"
-      class="active">
+    <button data-page="dashboard" class="active">
       Dashboard
     </button>
 
@@ -466,9 +485,7 @@
         TOTAL INSPECTIONS
       </div>
 
-      <div
-        class="metric"
-        id="metricInspections">
+      <div class="metric" id="metricInspections">
         0
       </div>
 
@@ -485,9 +502,7 @@
         INSPECTED ASSETS
       </div>
 
-      <div
-        class="metric"
-        id="metricAssets">
+      <div class="metric" id="metricAssets">
         0
       </div>
 
@@ -504,9 +519,7 @@
         NEED ATTENTION
       </div>
 
-      <div
-        class="metric"
-        id="metricAttention">
+      <div class="metric" id="metricAttention">
         0
       </div>
 
@@ -523,9 +536,7 @@
         CRITICAL
       </div>
 
-      <div
-        class="metric"
-        id="metricCritical">
+      <div class="metric" id="metricCritical">
         0
       </div>
 
@@ -538,9 +549,7 @@
   </div>
 
 
-  <div
-    class="card"
-    style="margin-top:18px">
+  <div class="card" style="margin-top:18px">
 
     <div class="eyebrow">
       LIVE HEALTH INDEX
@@ -550,17 +559,13 @@
       Overall inspection health
     </h2>
 
-    <div
-      class="metric"
-      id="healthIndex">
+    <div class="metric" id="healthIndex">
       —
     </div>
 
     <div class="bar">
 
-      <span
-        id="healthBar">
-      </span>
+      <span id="healthBar"></span>
 
     </div>
 
@@ -571,9 +576,7 @@
   </div>
 
 
-  <div
-    class="card"
-    style="margin-top:18px">
+  <div class="card" style="margin-top:18px">
 
     <div class="hero">
 
@@ -597,8 +600,7 @@
 
     </div>
 
-    <div id="recent">
-    </div>
+    <div id="recent"></div>
 
   </div>
 
@@ -610,9 +612,7 @@
      INSPECT
 ===================================================== -->
 
-<section
-  id="inspect"
-  class="page hidden">
+<section id="inspect" class="page hidden">
 
   <div class="eyebrow">
     REAL-TIME AI INSPECTION
@@ -623,13 +623,11 @@
   </h1>
 
   <p>
-    Upload a photo or video. The AI analyzes the actual visual evidence.
+    Upload a photo or video. AI starts automatically.
   </p>
 
 
-  <div
-    class="two"
-    style="margin-top:22px">
+  <div class="two" style="margin-top:22px">
 
 
     <div class="card">
@@ -647,8 +645,7 @@
 
         <div class="drop">
 
-          <label
-            style="color:var(--teal);cursor:pointer">
+          <label style="color:var(--teal);cursor:pointer">
 
             📷 Upload photo
 
@@ -662,8 +659,7 @@
 
           <br><br>
 
-          <label
-            style="color:var(--teal);cursor:pointer">
+          <label style="color:var(--teal);cursor:pointer">
 
             🎥 Upload video
 
@@ -733,13 +729,13 @@
         </h2>
 
         <p>
-          AI identifies the visible asset, faults, severity, risk and recommended action.
+          Uploading evidence automatically starts the inspection.
         </p>
 
       </div>
 
 
-      <div class="status-line">
+      <div class="status-line" id="inspectionStatus">
 
         <b>
           Vision engine
@@ -747,7 +743,7 @@
 
         <br>
 
-        Actual uploaded evidence will be analyzed.
+        Ready for actual visual evidence.
 
       </div>
 
@@ -755,9 +751,10 @@
       <button
         class="btn primary"
         style="width:100%;margin-top:18px"
-        id="analyze">
+        id="analyze"
+        disabled>
 
-        Start AI inspection
+        Select evidence to start
 
       </button>
 
@@ -773,9 +770,7 @@
      ASSETS
 ===================================================== -->
 
-<section
-  id="assets"
-  class="page hidden">
+<section id="assets" class="page hidden">
 
   <div class="eyebrow">
     ASSET REGISTRY
@@ -792,8 +787,7 @@
 
   <div class="card">
 
-    <div id="assetsTable">
-    </div>
+    <div id="assetsTable"></div>
 
   </div>
 
@@ -805,9 +799,7 @@
      REPORTS
 ===================================================== -->
 
-<section
-  id="reports"
-  class="page hidden">
+<section id="reports" class="page hidden">
 
   <div class="eyebrow">
     INSPECTION HISTORY
@@ -836,9 +828,7 @@
      RESULT
 ===================================================== -->
 
-<section
-  id="result"
-  class="page hidden">
+<section id="result" class="page hidden">
 
   <div class="eyebrow">
     AI INSPECTION COMPLETE
@@ -867,13 +857,11 @@
 
       <div class="bar">
 
-        <span id="scoreBar">
-        </span>
+        <span id="scoreBar"></span>
 
       </div>
 
-      <p id="summary">
-      </p>
+      <p id="summary"></p>
 
       <button
         class="btn primary"
@@ -963,8 +951,7 @@
       Detected findings
     </h2>
 
-    <div id="findings">
-    </div>
+    <div id="findings"></div>
 
   </div>
 
@@ -976,12 +963,8 @@
 </div>
 
 
-<div
-  class="toast"
-  id="toast">
-
+<div class="toast" id="toast">
   Inspection saved
-
 </div>
 
 
@@ -999,16 +982,18 @@ let currentVideoFile = null;
 
 let currentImageFile = null;
 
-const $ = id =>
-  document.getElementById(id);
+let currentVideoUrl = null;
+
+let currentImageUrl = null;
+
+const $ = id => document.getElementById(id);
 
 
 // =====================================================
 // STORAGE
 // =====================================================
 
-const STORAGE_KEY =
-  "inspectiq-inspections";
+const STORAGE_KEY = "inspectiq-inspections";
 
 
 function getReports() {
@@ -1024,6 +1009,7 @@ function getReports() {
     return [];
 
   }
+
 }
 
 
@@ -1087,12 +1073,40 @@ function go(page) {
 
 
 // =====================================================
-// FILE SELECTION
+// STATUS
+// =====================================================
+
+function setInspectionStatus(message, loading = false) {
+
+  if (loading) {
+
+    $("inspectionStatus").innerHTML = `
+      <div class="loading">
+        <span class="dot"></span>
+        <b>${escapeHtml(message)}</b>
+      </div>
+    `;
+
+  } else {
+
+    $("inspectionStatus").innerHTML = `
+      <b>Vision engine</b>
+      <br>
+      ${escapeHtml(message)}
+    `;
+
+  }
+
+}
+
+
+// =====================================================
+// FILE SELECTION — PHOTO
 // =====================================================
 
 $("file").addEventListener(
   "change",
-  event => {
+  async event => {
 
     const file =
       event.target.files[0];
@@ -1106,15 +1120,23 @@ $("file").addEventListener(
 
     $("videoFile").value = "";
 
+
     $("fileLabel").textContent =
       `Photo: ${file.name}`;
 
 
-    const url =
+    if (currentImageUrl) {
+      URL.revokeObjectURL(currentImageUrl);
+    }
+
+
+    currentImageUrl =
       URL.createObjectURL(file);
 
 
-    $("imagePreview").src = url;
+    $("imagePreview").src =
+      currentImageUrl;
+
 
     $("imagePreview")
       .classList.remove("hidden");
@@ -1123,13 +1145,25 @@ $("file").addEventListener(
     $("videoPreview")
       .classList.add("hidden");
 
+
+    /*
+      FAST FLOW:
+      Selecting the photo immediately starts AI.
+    */
+
+    await analyzePhoto();
+
   }
 );
 
 
+// =====================================================
+// FILE SELECTION — VIDEO
+// =====================================================
+
 $("videoFile").addEventListener(
   "change",
-  event => {
+  async event => {
 
     const file =
       event.target.files[0];
@@ -1148,11 +1182,18 @@ $("videoFile").addEventListener(
       `Video: ${file.name}`;
 
 
-    const url =
+    if (currentVideoUrl) {
+      URL.revokeObjectURL(currentVideoUrl);
+    }
+
+
+    currentVideoUrl =
       URL.createObjectURL(file);
 
 
-    $("inspectionVideo").src = url;
+    $("inspectionVideo").src =
+      currentVideoUrl;
+
 
     $("videoPreview")
       .classList.remove("hidden");
@@ -1160,6 +1201,14 @@ $("videoFile").addEventListener(
 
     $("imagePreview")
       .classList.add("hidden");
+
+
+    /*
+      FAST FLOW:
+      Selecting the video immediately starts analysis.
+    */
+
+    await analyzeVideo();
 
   }
 );
@@ -1171,12 +1220,23 @@ $("videoFile").addEventListener(
 
 async function analyzePhoto() {
 
-  const button = $("analyze");
+  if (!currentImageFile) return;
+
+
+  const button =
+    $("analyze");
+
 
   button.disabled = true;
 
   button.textContent =
-    "Analyzing image...";
+    "AI analyzing photo...";
+
+
+  setInspectionStatus(
+    "Analyzing the uploaded photo...",
+    true
+  );
 
 
   try {
@@ -1184,10 +1244,12 @@ async function analyzePhoto() {
     const formData =
       new FormData();
 
+
     formData.append(
       "image",
       currentImageFile
     );
+
 
     formData.append(
       "notes",
@@ -1210,21 +1272,45 @@ async function analyzePhoto() {
 
 
     if (!response.ok) {
+
       throw new Error(
         result.error ||
         "Photo analysis failed."
       );
+
     }
 
 
     currentResult = {
       ...result,
+
       mediaType: "image",
-      filename: currentImageFile.name
+
+      filename:
+        currentImageFile.name
     };
 
 
-    showResult(currentResult);
+    showResult(
+      currentResult
+    );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    setInspectionStatus(
+      error.message ||
+      "Photo analysis failed."
+    );
+
+
+    alert(
+      error.message ||
+      "Photo analysis failed."
+    );
+
 
   } finally {
 
@@ -1242,1166 +1328,12 @@ async function analyzePhoto() {
 // VIDEO FRAME EXTRACTION
 // =====================================================
 
-async function extractVideoFrames(videoFile) {
+async function extractVideoFrames(
+  videoFile
+) {
 
   const video =
     document.createElement("video");
 
-  video.preload = "metadata";
 
-  video.muted = true;
-
-  video.src =
-    URL.createObjectURL(videoFile);
-
-
-  await new Promise(
-    (resolve, reject) => {
-
-      video.onloadedmetadata =
-        resolve;
-
-      video.onerror =
-        () => reject(
-          new Error(
-            "The video could not be opened."
-          )
-        );
-
-    }
-  );
-
-
-  const duration =
-    video.duration;
-
-
-  if (!Number.isFinite(duration)) {
-
-    throw new Error(
-      "Could not determine video duration."
-    );
-
-  }
-
-
-  // Faster analysis:
-  // roughly one frame every 2 seconds,
-  // maximum 30 frames.
-
-  const interval =
-    duration > 60
-      ? 3
-      : 2;
-
-
-  const timestamps = [];
-
-
-  for (
-    let time = 0;
-    time < duration;
-    time += interval
-  ) {
-
-    timestamps.push(time);
-
-  }
-
-
-  if (
-    timestamps.length &&
-    timestamps[timestamps.length - 1] !== duration
-  ) {
-
-    timestamps.push(
-      Math.max(0, duration - 0.1)
-    );
-
-  }
-
-
-  const canvas =
-    document.createElement("canvas");
-
-
-  const context =
-    canvas.getContext("2d");
-
-
-  const frames = [];
-
-
-  for (const timestamp of timestamps) {
-
-    video.currentTime =
-      timestamp;
-
-
-    await new Promise(resolve => {
-
-      video.onseeked =
-        resolve;
-
-    });
-
-
-    const maxWidth = 768;
-
-    const scale =
-      Math.min(
-        1,
-        maxWidth / video.videoWidth
-      );
-
-
-    canvas.width =
-      Math.max(
-        1,
-        Math.round(
-          video.videoWidth * scale
-        )
-      );
-
-
-    canvas.height =
-      Math.max(
-        1,
-        Math.round(
-          video.videoHeight * scale
-        )
-      );
-
-
-    context.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-    const dataUrl =
-      canvas.toDataURL(
-        "image/jpeg",
-        0.62
-      );
-
-
-    frames.push({
-      timestamp,
-      dataUrl
-    });
-
-  }
-
-
-  URL.revokeObjectURL(video.src);
-
-  return frames;
-
-}
-
-
-// =====================================================
-// VIDEO ANALYSIS
-// =====================================================
-
-async function analyzeVideo() {
-
-  const button =
-    $("analyze");
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Preparing video...";
-
-
-  try {
-
-    const frames =
-      await extractVideoFrames(
-        currentVideoFile
-      );
-
-
-    button.textContent =
-      `AI analyzing ${frames.length} frames...`;
-
-
-    const response =
-      await fetch(
-        "/api/analyze-video",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-            frames,
-            notes: $("notes").value
-          })
-        }
-      );
-
-
-    const result =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        result.error ||
-        "Video analysis failed."
-      );
-
-    }
-
-
-    currentResult = {
-      ...result,
-      mediaType: "video",
-      filename: currentVideoFile.name
-    };
-
-
-    showResult(currentResult);
-
-  } finally {
-
-    button.disabled = false;
-
-    button.textContent =
-      "Start AI inspection";
-
-  }
-
-}
-
-
-// =====================================================
-// START ANALYSIS
-// =====================================================
-
-$("analyze").addEventListener(
-  "click",
-  async () => {
-
-    try {
-
-      if (
-        !currentImageFile &&
-        !currentVideoFile
-      ) {
-
-        alert(
-          "Please upload a photo or video first."
-        );
-
-        return;
-
-      }
-
-
-      if (currentImageFile) {
-
-        await analyzePhoto();
-
-      } else {
-
-        await analyzeVideo();
-
-      }
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        error.message ||
-        "Inspection failed."
-      );
-
-      $("analyze").disabled = false;
-
-      $("analyze").textContent =
-        "Start AI inspection";
-
-    }
-
-  }
-);
-
-
-// =====================================================
-// RESULT DISPLAY
-// =====================================================
-
-function showResult(result) {
-
-  $("resultTitle").textContent =
-    `${result.assetType} inspection`;
-
-
-  $("score").textContent =
-    Math.round(result.score);
-
-
-  $("scoreBar").style.width =
-    `${result.score}%`;
-
-
-  $("summary").textContent =
-    result.summary;
-
-
-  $("action").textContent =
-    result.recommendation;
-
-
-  $("nextInspection").textContent =
-    result.nextInspectionInterval;
-
-
-  renderFindings(
-    result.findings || [],
-    result.mediaType === "video"
-  );
-
-
-  if (
-    result.mediaType === "video"
-  ) {
-
-    const resultVideo =
-      $("resultVideo");
-
-
-    resultVideo.src =
-      $("inspectionVideo").src;
-
-
-    $("resultVideoCard")
-      .classList.remove("hidden");
-
-  } else {
-
-    $("resultVideoCard")
-      .classList.add("hidden");
-
-  }
-
-
-  go("result");
-
-}
-
-
-function severityClass(severity) {
-
-  const value =
-    String(severity || "")
-      .toLowerCase();
-
-
-  if (value === "minor") {
-    return "healthy";
-  }
-
-  if (value === "moderate") {
-    return "attention";
-  }
-
-  return "risk";
-
-}
-
-
-function renderFindings(
-  findings,
-  isVideo
-) {
-
-  if (!findings.length) {
-
-    $("findings").innerHTML =
-      `
-      <div class="empty">
-        No visible faults were identified
-        from the supplied evidence.
-      </div>
-      `;
-
-    return;
-
-  }
-
-
-  $("findings").innerHTML =
-    findings
-      .map(
-        (finding, index) => {
-
-          const timestamp =
-            Number(finding.timestamp);
-
-
-          const hasTimestamp =
-            isVideo &&
-            Number.isFinite(timestamp);
-
-
-          return `
-            <div class="find">
-
-              <b>
-
-                <span class="pill ${severityClass(
-                  finding.severity
-                )}">
-
-                  ${escapeHtml(
-                    finding.severity || "Finding"
-                  )}
-
-                </span>
-
-                &nbsp;
-
-                ${escapeHtml(
-                  finding.title
-                )}
-
-              </b>
-
-
-              <p>
-                ${escapeHtml(
-                  finding.description
-                )}
-              </p>
-
-
-              ${
-                finding.location
-                  ? `
-                    <p>
-                      <b>Position:</b>
-                      ${escapeHtml(
-                        finding.location
-                      )}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                finding.risk
-                  ? `
-                    <p>
-                      <b>Risk:</b>
-                      ${escapeHtml(
-                        finding.risk
-                      )}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                finding.recommendation
-                  ? `
-                    <p>
-                      <b>Recommended action:</b>
-                      ${escapeHtml(
-                        finding.recommendation
-                      )}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              <div class="confidence">
-
-                AI confidence:
-                ${Math.round(
-                  finding.confidence || 0
-                )}%
-
-              </div>
-
-
-              ${
-                hasTimestamp
-                  ? `
-                    <button
-                      class="evidence-btn"
-                      onclick="viewEvidence(${timestamp})">
-
-                      ▶ VIEW EVIDENCE ·
-                      ${formatTime(timestamp)}
-
-                    </button>
-                  `
-                  : ""
-              }
-
-            </div>
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-// =====================================================
-// REAL VIDEO EVIDENCE
-// =====================================================
-
-function viewEvidence(timestamp) {
-
-  const video =
-    $("resultVideo");
-
-
-  video.currentTime =
-    Number(timestamp) || 0;
-
-
-  video.play();
-
-
-  video.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-
-}
-
-
-// =====================================================
-// SAVE INSPECTION
-// =====================================================
-
-$("save").addEventListener(
-  "click",
-  () => {
-
-    if (!currentResult) {
-      return;
-    }
-
-
-    const reports =
-      getReports();
-
-
-    reports.unshift({
-      id:
-        crypto.randomUUID(),
-
-      date:
-        new Date().toISOString(),
-
-      assetType:
-        currentResult.assetType,
-
-      assetSubtype:
-        currentResult.assetSubtype,
-
-      score:
-        currentResult.score,
-
-      status:
-        currentResult.status,
-
-      summary:
-        currentResult.summary,
-
-      recommendation:
-        currentResult.recommendation,
-
-      nextInspectionInterval:
-        currentResult.nextInspectionInterval,
-
-      findings:
-        currentResult.findings || [],
-
-      mediaType:
-        currentResult.mediaType,
-
-      filename:
-        currentResult.filename
-    });
-
-
-    saveReports(reports);
-
-
-    showToast(
-      "Inspection saved successfully"
-    );
-
-
-    renderDashboard();
-
-  }
-);
-
-
-// =====================================================
-// DASHBOARD
-// =====================================================
-
-function renderDashboard() {
-
-  const reports =
-    getReports();
-
-
-  const assetTypes =
-    new Set(
-      reports.map(
-        report =>
-          report.assetType
-      )
-    );
-
-
-  const attention =
-    reports.filter(
-      report =>
-        report.status === "Attention" ||
-        report.status === "At risk"
-    ).length;
-
-
-  const critical =
-    reports.filter(
-      report =>
-        report.status === "Critical"
-    ).length;
-
-
-  $("metricInspections")
-    .textContent =
-      reports.length;
-
-
-  $("metricAssets")
-    .textContent =
-      assetTypes.size;
-
-
-  $("metricAttention")
-    .textContent =
-      attention;
-
-
-  $("metricCritical")
-    .textContent =
-      critical;
-
-
-  if (!reports.length) {
-
-    $("healthIndex")
-      .textContent = "—";
-
-    $("healthBar")
-      .style.width = "0%";
-
-    $("healthText")
-      .textContent =
-        "No inspections have been recorded yet.";
-
-  } else {
-
-    const average =
-      Math.round(
-        reports.reduce(
-          (sum, report) =>
-            sum + Number(report.score || 0),
-          0
-        ) / reports.length
-      );
-
-
-    $("healthIndex")
-      .textContent =
-        `${average} / 100`;
-
-
-    $("healthBar")
-      .style.width =
-        `${average}%`;
-
-
-    $("healthText")
-      .textContent =
-        `${reports.length} real inspection${
-          reports.length === 1 ? "" : "s"
-        } recorded.`;
-
-  }
-
-
-  const recent =
-    reports.slice(0, 5);
-
-
-  if (!recent.length) {
-
-    $("recent").innerHTML =
-      `
-      <div class="empty">
-        No inspections yet.
-        Upload your first photo or video.
-      </div>
-      `;
-
-    return;
-
-  }
-
-
-  $("recent").innerHTML =
-    `
-    <table style="width:100%;border-collapse:collapse">
-
-      <thead>
-
-        <tr>
-          <th style="text-align:left;padding:10px">
-            Asset
-          </th>
-
-          <th style="text-align:left;padding:10px">
-            Score
-          </th>
-
-          <th style="text-align:left;padding:10px">
-            Status
-          </th>
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        ${recent.map(
-          report => `
-
-            <tr>
-
-              <td style="padding:10px;border-top:1px solid var(--line)">
-
-                ${escapeHtml(
-                  report.assetType
-                )}
-
-              </td>
-
-
-              <td style="padding:10px;border-top:1px solid var(--line)">
-
-                ${Math.round(
-                  report.score
-                )}
-
-              </td>
-
-
-              <td style="padding:10px;border-top:1px solid var(--line)">
-
-                <span class="pill ${statusClass(
-                  report.status
-                )}">
-
-                  ${escapeHtml(
-                    report.status
-                  )}
-
-                </span>
-
-              </td>
-
-            </tr>
-
-          `
-        ).join("")}
-
-      </tbody>
-
-    </table>
-    `;
-
-}
-
-
-// =====================================================
-// ASSET LIST
-// =====================================================
-
-function renderAssets() {
-
-  const reports =
-    getReports();
-
-
-  if (!reports.length) {
-
-    $("assetsTable").innerHTML =
-      `
-      <div class="empty">
-        No assets have been detected yet.
-      </div>
-      `;
-
-    return;
-
-  }
-
-
-  const groups = {};
-
-
-  reports.forEach(
-    report => {
-
-      const key =
-        report.assetType;
-
-
-      if (!groups[key]) {
-
-        groups[key] = {
-          count: 0,
-          totalScore: 0,
-          latest: report
-        };
-
-      }
-
-
-      groups[key].count++;
-
-      groups[key].totalScore +=
-        Number(report.score || 0);
-
-    }
-  );
-
-
-  $("assetsTable").innerHTML =
-    `
-    <table style="width:100%;border-collapse:collapse">
-
-      <thead>
-
-        <tr>
-
-          <th style="text-align:left;padding:10px">
-            Asset
-          </th>
-
-          <th style="text-align:left;padding:10px">
-            Inspections
-          </th>
-
-          <th style="text-align:left;padding:10px">
-            Average score
-          </th>
-
-          <th style="text-align:left;padding:10px">
-            Latest status
-          </th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        ${Object.entries(groups)
-          .map(
-            ([name, group]) => `
-
-              <tr>
-
-                <td style="padding:10px;border-top:1px solid var(--line)">
-                  <b>
-                    ${escapeHtml(name)}
-                  </b>
-                </td>
-
-                <td style="padding:10px;border-top:1px solid var(--line)">
-                  ${group.count}
-                </td>
-
-                <td style="padding:10px;border-top:1px solid var(--line)">
-                  ${Math.round(
-                    group.totalScore /
-                    group.count
-                  )}
-                </td>
-
-                <td style="padding:10px;border-top:1px solid var(--line)">
-
-                  <span class="pill ${statusClass(
-                    group.latest.status
-                  )}">
-
-                    ${escapeHtml(
-                      group.latest.status
-                    )}
-
-                  </span>
-
-                </td>
-
-              </tr>
-
-            `
-          )
-          .join("")}
-
-      </tbody>
-
-    </table>
-    `;
-
-}
-
-
-// =====================================================
-// REPORTS
-// =====================================================
-
-function renderReports() {
-
-  const reports =
-    getReports();
-
-
-  if (!reports.length) {
-
-    $("saved").innerHTML =
-      `
-      <div class="empty">
-
-        <h2>
-          No inspections yet
-        </h2>
-
-        <p>
-          Upload evidence and run your first AI inspection.
-        </p>
-
-      </div>
-      `;
-
-    return;
-
-  }
-
-
-  $("saved").innerHTML =
-    reports
-      .map(
-        report => `
-
-          <div class="find">
-
-            <h2>
-              ${escapeHtml(
-                report.assetType
-              )}
-            </h2>
-
-            <p>
-
-              ${new Date(
-                report.date
-              ).toLocaleString()}
-
-              ·
-
-              ${escapeHtml(
-                report.mediaType
-              )}
-
-            </p>
-
-
-            <p>
-
-              Score:
-              <b>
-                ${Math.round(
-                  report.score
-                )}
-              </b>
-
-              ·
-
-              <span class="pill ${statusClass(
-                report.status
-              )}">
-
-                ${escapeHtml(
-                  report.status
-                )}
-
-              </span>
-
-            </p>
-
-
-            <p>
-              ${escapeHtml(
-                report.summary
-              )}
-            </p>
-
-          </div>
-
-        `
-      )
-      .join("");
-
-}
-
-
-// =====================================================
-// HELPERS
-// =====================================================
-
-function statusClass(status) {
-
-  if (status === "Healthy") {
-    return "healthy";
-  }
-
-  if (status === "Attention") {
-    return "attention";
-  }
-
-  return "risk";
-
-}
-
-
-function formatTime(seconds) {
-
-  const total =
-    Math.max(
-      0,
-      Math.floor(
-        Number(seconds) || 0
-      )
-    );
-
-
-  const minutes =
-    Math.floor(
-      total / 60
-    );
-
-
-  const secs =
-    total % 60;
-
-
-  return `${String(minutes).padStart(
-    2,
-    "0"
-  )}:${String(secs).padStart(
-    2,
-    "0"
-  )}`;
-
-}
-
-
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-
-}
-
-
-function showToast(message) {
-
-  const toast =
-    $("toast");
-
-
-  toast.textContent =
-    message;
-
-
-  toast.classList.add(
-    "show"
-  );
-
-
-  setTimeout(
-    () => {
-      toast.classList.remove(
-        "show"
-      );
-    },
-    2200
-  );
-
-}
-
-
-// =====================================================
-// NAV BUTTONS
-// =====================================================
-
-document
-  .querySelectorAll(".nav button")
-  .forEach(
-    button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-          go(
-            button.dataset.page
-          );
-        }
-      );
-
-    }
-  );
-
-
-// Initial dashboard
-
-renderDashboard();
-
-</script>
-
-</body>
-</html>
+  video.p
