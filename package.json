@@ -1,16 +1,12 @@
 {
-  "name": "ideathon_prototype-main",
+  "name": "ideathon_prototype",
   "version": "1.0.0",
-  "description": "This package preserves the original FieldLens prototype and adds **working clickable navigation** between the inspection, analysis/results, and report screens.",
+  "description": "InspectIQ AI visual inspection application",
+  "type": "module",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
