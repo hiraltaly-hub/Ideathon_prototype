@@ -36,7 +36,6 @@ body{
 }
 
 button,input,textarea{font:inherit}
-
 button{cursor:pointer}
 
 .hidden{display:none!important}
@@ -71,9 +70,7 @@ button{cursor:pointer}
   letter-spacing:.05em;
 }
 
-.logo span{
-  color:var(--primary);
-}
+.logo span{color:var(--primary)}
 
 .subtitle{
   color:var(--muted);
@@ -108,13 +105,9 @@ button{cursor:pointer}
 
 /* GENERAL */
 
-main{
-  padding:34px 0;
-}
+main{padding:34px 0}
 
-.page-head{
-  margin-bottom:25px;
-}
+.page-head{margin-bottom:25px}
 
 .eyebrow{
   color:var(--primary-dark);
@@ -216,7 +209,7 @@ p{
 
 .btn:disabled{
   opacity:.55;
-  cursor:wait;
+  cursor:not-allowed;
 }
 
 /* DASHBOARD */
@@ -236,9 +229,7 @@ p{
   letter-spacing:.08em;
 }
 
-.health{
-  margin-top:18px;
-}
+.health{margin-top:18px}
 
 .progress{
   height:9px;
@@ -285,9 +276,7 @@ p{
   cursor:pointer;
 }
 
-.upload:hover{
-  background:#d9f1ec;
-}
+.upload:hover{background:#d9f1ec}
 
 input,textarea{
   width:100%;
@@ -399,9 +388,7 @@ input:focus,textarea:focus{
   border-bottom:1px solid var(--border);
 }
 
-.finding:last-child{
-  border-bottom:none;
-}
+.finding:last-child{border-bottom:none}
 
 .meta{
   display:flex;
@@ -490,13 +477,9 @@ input:focus,textarea:focus{
   border-bottom:1px solid var(--border);
 }
 
-.asset:last-child{
-  border-bottom:none;
-}
+.asset:last-child{border-bottom:none}
 
-.asset-name{
-  font-weight:850;
-}
+.asset-name{font-weight:850}
 
 /* EMPTY */
 
@@ -532,6 +515,7 @@ input:focus,textarea:focus{
 /* MOBILE */
 
 @media(max-width:900px){
+
   .grid4,
   .report-grid{
     grid-template-columns:repeat(2,1fr);
@@ -547,6 +531,7 @@ input:focus,textarea:focus{
 }
 
 @media(max-width:650px){
+
   .app{
     width:calc(100% - 18px);
   }
@@ -588,6 +573,7 @@ input:focus,textarea:focus{
 }
 
 @media(max-width:430px){
+
   .grid4,
   .report-grid{
     grid-template-columns:1fr;
@@ -614,6 +600,7 @@ input:focus,textarea:focus{
     <div class="logo">
       <span>◈</span> INSPECTIQ
     </div>
+
     <div class="subtitle">
       AI VISUAL INSPECTION ASSISTANT
     </div>
@@ -641,12 +628,9 @@ input:focus,textarea:focus{
 
 </header>
 
-
 <main>
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
+<!-- DASHBOARD -->
 
 <section id="dashboard" class="page">
 
@@ -664,109 +648,52 @@ input:focus,textarea:focus{
       </h1>
 
       <p>
-        Your inspection dashboard is calculated from actual saved AI inspections.
+        Your inspection dashboard is calculated from actual saved inspections.
       </p>
 
     </div>
 
-    <button
-      class="btn primary"
-      onclick="go('inspect')">
-
+    <button class="btn primary" onclick="go('inspect')">
       + New inspection
-
     </button>
 
   </div>
 
-
   <div class="grid4">
 
     <div class="card">
-      <div class="stat-label">
-        TOTAL INSPECTIONS
-      </div>
-
-      <div
-        id="metricInspections"
-        class="metric">
-        0
-      </div>
-
-      <p>
-        Saved inspection records
-      </p>
+      <div class="stat-label">TOTAL INSPECTIONS</div>
+      <div id="metricInspections" class="metric">0</div>
+      <p>Saved inspection records</p>
     </div>
 
-
     <div class="card">
-      <div class="stat-label">
-        INSPECTED ASSETS
-      </div>
-
-      <div
-        id="metricAssets"
-        class="metric">
-        0
-      </div>
-
-      <p>
-        AI-detected asset types
-      </p>
+      <div class="stat-label">INSPECTED ASSETS</div>
+      <div id="metricAssets" class="metric">0</div>
+      <p>AI-detected asset types</p>
     </div>
 
-
     <div class="card">
-      <div class="stat-label">
-        NEED ATTENTION
-      </div>
-
-      <div
-        id="metricAttention"
-        class="metric">
-        0
-      </div>
-
-      <p>
-        Attention or at-risk
-      </p>
+      <div class="stat-label">NEED ATTENTION</div>
+      <div id="metricAttention" class="metric">0</div>
+      <p>Attention or at-risk</p>
     </div>
 
-
     <div class="card">
-      <div class="stat-label">
-        CRITICAL
-      </div>
-
-      <div
-        id="metricCritical"
-        class="metric">
-        0
-      </div>
-
-      <p>
-        Critical records
-      </p>
+      <div class="stat-label">CRITICAL</div>
+      <div id="metricCritical" class="metric">0</div>
+      <p>Critical records</p>
     </div>
 
   </div>
 
-
   <div class="card health">
 
-    <div class="eyebrow">
-      LIVE HEALTH INDEX
-    </div>
+    <div class="eyebrow">LIVE HEALTH INDEX</div>
 
-    <h2>
-      Overall inspection health
-    </h2>
+    <h2>Overall inspection health</h2>
 
-    <div
-      id="healthIndex"
-      class="metric">
-      —
-    </div>
+    <div id="healthIndex" class="metric">—</div>
 
     <div class="progress">
       <span id="healthBar"></span>
@@ -778,29 +705,17 @@ input:focus,textarea:focus{
 
   </div>
 
-
-  <div
-    class="card"
-    style="margin-top:18px">
+  <div class="card" style="margin-top:18px">
 
     <div class="dashboard-hero">
 
       <div>
-        <h2>
-          Recent inspections
-        </h2>
-
-        <p>
-          Latest saved inspection records.
-        </p>
+        <h2>Recent inspections</h2>
+        <p>Latest saved inspection records.</p>
       </div>
 
-      <button
-        class="btn"
-        onclick="go('reports')">
-
+      <button class="btn" onclick="go('reports')">
         View reports
-
       </button>
 
     </div>
@@ -812,9 +727,7 @@ input:focus,textarea:focus{
 </section>
 
 
-<!-- =====================================================
-     INSPECT
-===================================================== -->
+<!-- INSPECT -->
 
 <section id="inspect" class="page hidden">
 
@@ -824,16 +737,13 @@ input:focus,textarea:focus{
       REAL-TIME AI ANALYSIS
     </div>
 
-    <h1>
-      Start an inspection
-    </h1>
+    <h1>Start an inspection</h1>
 
     <p>
-      Upload visual evidence and InspectIQ will analyze what is actually visible.
+      Upload visual evidence and InspectIQ will analyze what is visible.
     </p>
 
   </div>
-
 
   <div class="two">
 
@@ -841,14 +751,9 @@ input:focus,textarea:focus{
 
       <div class="step">
 
-        <h2>
-          1 · Upload evidence
-        </h2>
+        <h2>1 · Upload evidence</h2>
 
-        <p>
-          Choose a photo or video.
-        </p>
-
+        <p>Choose a photo or video.</p>
 
         <div class="drop">
 
@@ -864,9 +769,7 @@ input:focus,textarea:focus{
 
           </label>
 
-
           <br><br>
-
 
           <label class="upload">
 
@@ -880,7 +783,6 @@ input:focus,textarea:focus{
 
           </label>
 
-
           <div
             id="fileLabel"
             class="small"
@@ -892,12 +794,10 @@ input:focus,textarea:focus{
 
         </div>
 
-
         <img
           id="imagePreview"
           class="preview hidden"
           alt="Inspection image preview">
-
 
         <video
           id="inspectionVideo"
@@ -907,16 +807,11 @@ input:focus,textarea:focus{
 
       </div>
 
-
       <div class="step">
 
-        <h2>
-          2 · Field notes
-        </h2>
+        <h2>2 · Field notes</h2>
 
-        <p>
-          Optional context for the AI.
-        </p>
+        <p>Optional context for the AI.</p>
 
         <textarea
           id="notes"
@@ -931,31 +826,24 @@ input:focus,textarea:focus{
 
       <div class="step">
 
-        <h2>
-          3 · AI inspection
-        </h2>
+        <h2>3 · AI inspection</h2>
 
         <p>
-          The AI identifies the visible asset, condition, faults, severity, location, risk and recommended action.
+          The inspection engine identifies the visible asset,
+          condition, faults, severity, risk and recommended action.
         </p>
 
       </div>
 
+      <div id="inspectionStatus" class="status">
 
-      <div
-        id="inspectionStatus"
-        class="status">
-
-        <b>
-          Vision engine
-        </b>
+        <b>Vision engine</b>
 
         <br>
 
         Ready for evidence.
 
       </div>
-
 
       <button
         id="analyze"
@@ -974,9 +862,7 @@ input:focus,textarea:focus{
 </section>
 
 
-<!-- =====================================================
-     ASSETS
-===================================================== -->
+<!-- ASSETS -->
 
 <section id="assets" class="page hidden">
 
@@ -986,16 +872,13 @@ input:focus,textarea:focus{
       ASSET REGISTRY
     </div>
 
-    <h1>
-      Detected assets
-    </h1>
+    <h1>Detected assets</h1>
 
     <p>
-      Assets are created from your actual saved AI inspections.
+      Assets are created from saved inspection results.
     </p>
 
   </div>
-
 
   <div class="card">
 
@@ -1006,9 +889,7 @@ input:focus,textarea:focus{
 </section>
 
 
-<!-- =====================================================
-     REPORTS
-===================================================== -->
+<!-- REPORTS -->
 
 <section id="reports" class="page hidden">
 
@@ -1018,30 +899,22 @@ input:focus,textarea:focus{
       ANALYTICAL INSPECTION REPORTS
     </div>
 
-    <h1>
-      Inspection analytics
-    </h1>
+    <h1>Inspection analytics</h1>
 
     <p>
-      Clear, detailed reports generated from your inspection evidence.
+      Detailed reports generated from your inspection records.
     </p>
 
   </div>
 
-
   <div id="reportAnalytics"></div>
 
-  <div
-    id="saved"
-    style="margin-top:18px">
-  </div>
+  <div id="saved" style="margin-top:18px"></div>
 
 </section>
 
 
-<!-- =====================================================
-     RESULT
-===================================================== -->
+<!-- RESULT -->
 
 <section id="result" class="page hidden">
 
@@ -1057,7 +930,6 @@ input:focus,textarea:focus{
 
   </div>
 
-
   <div class="two">
 
     <div class="card">
@@ -1066,23 +938,15 @@ input:focus,textarea:focus{
         CONDITION SCORE
       </div>
 
-      <div
-        id="score"
-        class="score">
-        —
-      </div>
+      <div id="score" class="score">—</div>
 
       <div class="progress">
         <span id="scoreBar"></span>
       </div>
 
-      <div
-        id="resultStatus"
-        style="margin:10px 0">
-      </div>
+      <div id="resultStatus" style="margin:10px 0"></div>
 
       <p id="resultConfidence"></p>
-
 
       <div class="info">
 
@@ -1090,31 +954,19 @@ input:focus,textarea:focus{
           AI SUMMARY
         </div>
 
-        <p id="summary">
-          —
-        </p>
+        <p id="summary">—</p>
 
       </div>
-
 
       <div
         style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
 
-        <button
-          id="save"
-          class="btn primary">
-
+        <button id="save" class="btn primary">
           Save inspection
-
         </button>
 
-
-        <button
-          class="btn"
-          onclick="go('inspect')">
-
+        <button class="btn" onclick="go('inspect')">
           New inspection
-
         </button>
 
       </div>
@@ -1128,41 +980,28 @@ input:focus,textarea:focus{
         MAINTENANCE DECISION
       </div>
 
-      <h2>
-        Recommended action
-      </h2>
-
+      <h2>Recommended action</h2>
 
       <div class="info">
 
-        <b>
-          🔧 Corrective action
-        </b>
+        <b>🔧 Corrective action</b>
 
-        <p id="action">
-          —
-        </p>
+        <p id="action">—</p>
 
       </div>
-
 
       <div class="info">
 
-        <b>
-          📅 Next inspection
-        </b>
+        <b>📅 Next inspection</b>
 
-        <p id="nextInspection">
-          —
-        </p>
+        <p id="nextInspection">—</p>
 
       </div>
 
-      <p
-        class="small"
-        style="margin-top:18px">
+      <p class="small" style="margin-top:18px">
 
-        AI findings are based on visual evidence and should be verified by a qualified inspector or engineer.
+        AI findings are based on visual evidence and should be
+        verified by a qualified inspector or engineer.
 
       </p>
 
@@ -1180,12 +1019,10 @@ input:focus,textarea:focus{
       VIDEO EVIDENCE
     </div>
 
-    <h2>
-      Inspection video
-    </h2>
+    <h2>Inspection video</h2>
 
     <p>
-      Evidence buttons jump to the actual timestamp used by the AI.
+      Evidence buttons jump to the relevant timestamp.
     </p>
 
     <video
@@ -1197,20 +1034,16 @@ input:focus,textarea:focus{
   </div>
 
 
-  <div
-    class="card"
-    style="margin-top:18px">
+  <div class="card" style="margin-top:18px">
 
     <div class="eyebrow">
       AI FINDINGS
     </div>
 
-    <h2>
-      Detected findings
-    </h2>
+    <h2>Detected findings</h2>
 
     <p>
-      Review exactly what the AI detected and why it matters.
+      Review exactly what the inspection engine detected.
     </p>
 
     <div id="findings"></div>
@@ -1254,14 +1087,15 @@ function getReports(){
 
   try{
 
-    const data =
-      JSON.parse(
-        localStorage.getItem(STORAGE_KEY) || "[]"
-      );
+    const data = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
 
     return Array.isArray(data) ? data : [];
 
-  }catch{
+  }catch(error){
+
+    console.error(error);
 
     return [];
 
@@ -1276,6 +1110,22 @@ function saveReports(reports){
     STORAGE_KEY,
     JSON.stringify(reports)
   );
+
+}
+
+
+/* =====================================================
+   SECURITY
+===================================================== */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
@@ -1304,13 +1154,11 @@ function go(page){
       section.classList.add("hidden")
     );
 
-
   const target = $(page);
 
   if(!target) return;
 
   target.classList.remove("hidden");
-
 
   document
     .querySelectorAll(".nav button")
@@ -1323,7 +1171,6 @@ function go(page){
 
     });
 
-
   if(page === "dashboard")
     renderDashboard();
 
@@ -1333,11 +1180,33 @@ function go(page){
   if(page === "reports")
     renderReports();
 
-
   window.scrollTo({
     top:0,
     behavior:"smooth"
   });
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+function toast(message){
+
+  const el = $("toast");
+
+  el.textContent = message;
+
+  el.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    el.classList.remove("show");
+  },2500);
 
 }
 
@@ -1371,12 +1240,63 @@ function setStatus(message,loading=false){
 
 
 /* =====================================================
-   PHOTO
+   FILE HANDLING
 ===================================================== */
+
+function resetEvidence(){
+
+  currentImageFile = null;
+  currentVideoFile = null;
+
+  if(currentImageUrl){
+
+    URL.revokeObjectURL(currentImageUrl);
+
+    currentImageUrl = null;
+
+  }
+
+  if(currentVideoUrl){
+
+    URL.revokeObjectURL(currentVideoUrl);
+
+    currentVideoUrl = null;
+
+  }
+
+  $("imagePreview").classList.add("hidden");
+
+  $("inspectionVideo").classList.add("hidden");
+
+  $("fileLabel").textContent =
+    "No evidence selected";
+
+  $("analyze").disabled = true;
+
+  $("analyze").textContent =
+    "Select evidence to start";
+
+}
+
 
 $("file").addEventListener(
   "change",
-  async event => {
+  event => {
 
-    const file =
-      event.target.files[0];
+    const file = event.target.files[0];
+
+    if(!file) return;
+
+    if(!file.type.startsWith("image/")){
+
+      toast("Please select an image file.");
+
+      return;
+
+    }
+
+    currentImageFile = file;
+    currentVideoFile = null;
+
+    if(currentImageUrl)
+      URL.revokeObje
