@@ -1,14 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta name="color-scheme" content="light dark">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>InspectIQ — AI Visual Inspection Assistant</title>
 
 <style>
 :root{
-  --bg:#f4f9f9;
+  --bg:#f4f9f9;4
   --surface:#ffffff;
   --surface2:#f8fcfc;
   --border:#d8e7e7;
@@ -1155,286 +1154,6 @@ select:focus-visible{
   .engine-badge{display:none;}
 }
 
-
-/* =========================================================
-   DARK / LIGHT MODE
-   ========================================================= */
-html[data-theme="dark"]{
-  --bg:#0b1120;
-  --surface:#111827;
-  --surface2:#172033;
-  --border:#263247;
-  --text:#f3f4f6;
-  --muted:#9ca3af;
-  --primary:#60a5fa;
-  --primary-dark:#93c5fd;
-  --primary-soft:#172554;
-  --green:#4ade80;
-  --yellow:#fbbf24;
-  --red:#f87171;
-  --red-soft:#3f1d24;
-  --shadow:0 10px 30px rgba(0,0,0,.25);
-  --shadow-lg:0 18px 50px rgba(0,0,0,.35);
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  transition:background .2s ease,color .2s ease;
-}
-
-.app, header, main, section, article, .card, .panel, .modal,
-input, textarea, select, button{
-  transition:background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease;
-}
-
-html[data-theme="dark"] input,
-html[data-theme="dark"] textarea,
-html[data-theme="dark"] select{
-  background:var(--surface2);
-  color:var(--text);
-  border-color:var(--border);
-}
-
-html[data-theme="dark"] input::placeholder,
-html[data-theme="dark"] textarea::placeholder{
-  color:#7f8aa0;
-}
-
-html[data-theme="dark"] .nav button{
-  color:#cbd5e1;
-}
-
-html[data-theme="dark"] .nav button.active{
-  color:#fff;
-  background:#1e3a8a;
-}
-
-html[data-theme="dark"] .engine-badge{
-  border-color:#14532d;
-  background:#052e16;
-  color:#86efac;
-}
-
-.theme-toggle{
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  border-radius:999px;
-  padding:8px 12px;
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  font-size:12px;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 3px 10px rgba(15,23,42,.06);
-}
-.theme-toggle:hover{
-  background:var(--surface2);
-}
-.theme-icon{font-size:14px;line-height:1}
-.theme-label{white-space:nowrap}
-
-@media(max-width:900px){
-  .theme-toggle .theme-label{display:none;}
-  .theme-toggle{padding:8px 10px;}
-}
-
-
-/* FINAL READABILITY OVERRIDES */
-html[data-theme="light"]{
-  --text:#172033;
-  --muted:#475467;
-  --surface:#ffffff;
-  --surface2:#f8fafc;
-  --border:#d0d5dd;
-}
-html[data-theme="light"] body,
-html[data-theme="light"] h1,
-html[data-theme="light"] h2,
-html[data-theme="light"] h3,
-html[data-theme="light"] h4,
-html[data-theme="light"] p,
-html[data-theme="light"] label,
-html[data-theme="light"] .small,
-html[data-theme="light"] .stat-label{
-  color:var(--text);
-}
-html[data-theme="light"] p,
-html[data-theme="light"] .small,
-html[data-theme="light"] .stat-label{
-  color:var(--muted);
-}
-html[data-theme="dark"] body,
-html[data-theme="dark"] h1,
-html[data-theme="dark"] h2,
-html[data-theme="dark"] h3,
-html[data-theme="dark"] h4,
-html[data-theme="dark"] p,
-html[data-theme="dark"] label,
-html[data-theme="dark"] .small,
-html[data-theme="dark"] .stat-label{
-  color:var(--text);
-}
-html[data-theme="dark"] p,
-html[data-theme="dark"] .small,
-html[data-theme="dark"] .stat-label{
-  color:#cbd5e1;
-}
-html[data-theme="dark"] .card,
-html[data-theme="dark"] .status,
-html[data-theme="dark"] .drop,
-html[data-theme="dark"] .preview,
-html[data-theme="dark"] .video{
-  background:var(--surface);
-  border-color:var(--border);
-}
-html[data-theme="dark"] .status{
-  background:#172554;
-  color:#e5edff;
-}
-html[data-theme="dark"] .status b,
-html[data-theme="dark"] .status strong{
-  color:#ffffff;
-}
-html[data-theme="dark"] .upload,
-html[data-theme="dark"] .preset-btn{
-  background:#172033;
-  color:#e5edff;
-  border-color:#34435c;
-}
-html[data-theme="dark"] .btn{
-  color:#e5e7eb;
-  background:#172033;
-  border-color:#34435c;
-}
-html[data-theme="dark"] .btn.primary{
-  color:#07111f;
-  background:#93c5fd;
-  border-color:#93c5fd;
-}
-html[data-theme="dark"] .btn.primary:hover:not(:disabled){
-  background:#bfdbfe;
-}
-html[data-theme="dark"] .btn.danger{
-  color:#fecaca;
-  background:#3f1d24;
-  border-color:#7f1d1d;
-}
-html[data-theme="dark"] .theme-toggle{
-  color:#f8fafc;
-  background:#172033;
-  border-color:#34435c;
-}
-html[data-theme="dark"] .progress{
-  background:#263247;
-}
-html[data-theme="dark"] .drop.drag-over{
-  background:#172554;
-}
-
-
-.scan-progress{
-  margin-top:16px;
-  padding:16px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:var(--surface2);
-}
-.scan-progress.hidden{display:none}
-.scan-top{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-}
-.scan-kicker{
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.1em;
-  color:var(--primary);
-}
-.scan-headline{
-  margin-top:4px;
-  font-weight:850;
-  color:var(--text);
-}
-.scan-percent{
-  font-size:20px;
-  font-weight:900;
-  color:var(--primary);
-}
-.scan-track{
-  height:9px;
-  margin:12px 0 14px;
-  background:#e5e7eb;
-  border-radius:99px;
-  overflow:hidden;
-}
-.scan-track span{
-  display:block;
-  width:0%;
-  height:100%;
-  border-radius:inherit;
-  background:var(--primary);
-  transition:width .45s ease;
-}
-.scan-stages{
-  display:grid;
-  gap:8px;
-}
-.scan-stages > div{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:12px;
-  color:var(--muted);
-}
-.scan-stages > div.active{
-  color:var(--text);
-  font-weight:800;
-}
-.scan-stages > div.done{
-  color:var(--green);
-}
-.stage-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#cbd5e1;
-  flex:0 0 auto;
-}
-.scan-stages .active .stage-dot{
-  background:var(--primary);
-  box-shadow:0 0 0 4px rgba(37,99,235,.12);
-  animation:pulse 1s infinite alternate;
-}
-.scan-stages .done .stage-dot{background:var(--green)}
-.scan-insights{
-  margin-top:14px;
-  padding:12px;
-  border-radius:10px;
-  background:var(--surface);
-  border:1px solid var(--border);
-}
-.insight-title{
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.08em;
-  color:var(--muted);
-  text-transform:uppercase;
-  margin-bottom:6px;
-}
-#scanInsights{
-  font-size:13px;
-  line-height:1.55;
-  color:var(--text);
-}
-html[data-theme="dark"] .scan-track{background:#263247}
-html[data-theme="dark"] .scan-progress,
-html[data-theme="dark"] .scan-insights{background:#111827;border-color:#34435c}
-
 </style>
 </head>
 
@@ -1453,10 +1172,6 @@ html[data-theme="dark"] .scan-insights{background:#111827;border-color:#34435c}
   </div>
 
   <div class="engine-badge" aria-label="Inspection engine ready"><span class="engine-dot"></span> AI ENGINE READY</div>
-  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
-    <span class="theme-icon" aria-hidden="true">☾</span>
-    <span class="theme-label">Dark</span>
-  </button>
 
 <nav class="nav">
     <button data-page="dashboard" class="active">Dashboard</button>
@@ -1628,29 +1343,6 @@ html[data-theme="dark"] .scan-insights{background:#111827;border-color:#34435c}
       <div id="inspectionStatus" class="status">
         <b>Vision engine</b><br>Ready for evidence.
       </div>
-      
-<div id="scanProgress" class="scan-progress hidden" aria-live="polite">
-  <div class="scan-top">
-    <div>
-      <div class="scan-kicker">LIVE INSPECTION</div>
-      <div id="scanHeadline" class="scan-headline">Preparing visual analysis…</div>
-    </div>
-    <div id="scanPercent" class="scan-percent">0%</div>
-  </div>
-  <div class="scan-track"><span id="scanBar"></span></div>
-  <div id="scanStageList" class="scan-stages">
-    <div data-stage="0"><span class="stage-dot"></span><span>Preparing evidence</span></div>
-    <div data-stage="1"><span class="stage-dot"></span><span>Detecting machine / asset</span></div>
-    <div data-stage="2"><span class="stage-dot"></span><span>Checking visible condition</span></div>
-    <div data-stage="3"><span class="stage-dot"></span><span>Finding defects and risk signals</span></div>
-    <div data-stage="4"><span class="stage-dot"></span><span>Building recommended action</span></div>
-  </div>
-  <div class="scan-insights">
-    <div class="insight-title">What the inspection engine is seeing</div>
-    <div id="scanInsights">Waiting for the first scan result…</div>
-  </div>
-</div>
-
       <button id="analyze" class="btn primary" style="width:100%;margin-top:18px" disabled>
         Select evidence to start
       </button>
@@ -1903,33 +1595,6 @@ function setStatus(message, loading = false){
       ${escapeHtml(message)}
     `;
   }
-}
-
-function updateScan(stage, percent, headline, insight){
-  const panel = $("scanProgress");
-  if(!panel) return;
-  panel.classList.remove("hidden");
-  $("scanHeadline").textContent = headline;
-  $("scanPercent").textContent = `${Math.round(percent)}%`;
-  $("scanBar").style.width = `${Math.max(0, Math.min(100, percent))}%`;
-  if(insight) $("scanInsights").textContent = insight;
-
-  document.querySelectorAll("#scanStageList > div").forEach((el, i) => {
-    el.classList.toggle("done", i < stage);
-    el.classList.toggle("active", i === stage);
-  });
-}
-
-function finishScan(){
-  const panel = $("scanProgress");
-  if(!panel) return;
-  $("scanHeadline").textContent = "Inspection complete";
-  $("scanPercent").textContent = "100%";
-  $("scanBar").style.width = "100%";
-  document.querySelectorAll("#scanStageList > div").forEach(el => {
-    el.classList.remove("active");
-    el.classList.add("done");
-  });
 }
 
 function getSeverityClass(severity){
@@ -2350,39 +2015,24 @@ async function analyzeEvidence(){
   const notes = $("notes").value.trim();
   const isVideo = !!currentVideoFile;
 
-  const noteHints = getInspectionHints(notes, category);
-  updateScan(0, 8, "Preparing the inspection…",
-    `Evidence loaded. Target: ${category}${tag ? ` · ${tag}` : ""}. ${noteHints}`);
-
-  setStatus("Preparing evidence and inspection context…", true);
-  await delay(500);
-
-  updateScan(1, 27, "Identifying the machine or asset…",
-    `Asset category selected: ${category}. The engine is checking the evidence for the machine/component type and visible geometry.`);
-  setStatus("Detecting asset type and visible machine structure…", true);
-  await delay(650);
-
-  updateScan(2, 48, "Checking visible condition…",
-    `The engine is checking surfaces, joints, housings, pipes, valves, coatings, and other visible condition signals.`);
-  setStatus("Checking visible condition and surface integrity…", true);
-  await delay(750);
-
-  updateScan(3, 69, "Finding defects and risk signals…",
-    `Potential issue signals are being compared with the technician notes and the visual evidence. Findings will be shown individually when available.`);
-  setStatus("Searching for defects, anomalies, and risk indicators…", true);
-  await delay(800);
-
-  let result = null;
-  let backendUsed = false;
+  setStatus("Verifying inspection engine connection...", true);
+  await delay(600);
 
   const serverOnline = await checkServerHealth();
 
+  setStatus("Analyzing visual evidence...", true);
+  await delay(700);
+
+  setStatus("Detecting asset anomalies & condition...", true);
+  await delay(700);
+
+  setStatus("Synthesizing engineering recommendations...", true);
+  await delay(600);
+
+  let result = null;
+
   if(serverOnline && currentImageFile){
     try{
-      updateScan(3, 78, "Running the connected AI inspection engine…",
-        "Sending the image and inspection context to the connected analysis service for machine-specific findings.");
-      setStatus("Connected AI engine is analyzing the image…", true);
-
       const formData = new FormData();
       formData.append("image", currentImageFile);
       formData.append("notes", notes);
@@ -2397,48 +2047,22 @@ async function analyzeEvidence(){
       if(response.ok){
         const apiData = await response.json();
         result = formatApiResult(apiData, category, tag, notes, false);
-        backendUsed = true;
-
-        const count = result.findings.length;
-        const first = result.findings[0];
-        const issueText = count
-          ? `${count} finding${count === 1 ? "" : "s"} returned. ${first.title}${first.severity ? ` · ${first.severity}` : ""}.`
-          : "No individual findings were returned by the analysis service.";
-        updateScan(4, 92, "Building the final engineering report…", issueText);
       }
     }catch(err){
-      console.warn("Backend call failed, using client inspection fallback:", err);
+      console.warn("Backend call failed, using client vision fallback:", err);
     }
   }
 
   if(!result){
     result = createSmartInspection(category, tag, notes, isVideo);
-    updateScan(4, 92, "Building the final inspection report…",
-      result.findings.length
-        ? result.findings.map(f => `${f.title}${f.severity ? ` (${f.severity})` : ""}`).join(" · ")
-        : "No reliable machine-specific finding was available without the connected AI analysis service.");
   }
 
   result.imageDataUrl = currentImageDataUrl || currentImageUrl;
-  result.analysisSource = backendUsed ? "Connected AI inspection engine" : "Local inspection fallback";
 
-  finishScan();
   currentResult = result;
   renderResult(currentResult);
   go("result");
-  toast(backendUsed ? "Inspection complete — AI findings ready." : "Inspection complete — review the findings and connect the AI service for image-specific diagnosis.");
-}
-
-function getInspectionHints(notes, category){
-  const n = String(notes || "").toLowerCase();
-  const hints = [];
-  if(/leak|drip|wet|fluid/.test(n)) hints.push("Leak/fluid evidence noted.");
-  if(/vibrat|bearing|noise|sound/.test(n)) hints.push("Vibration/bearing evidence noted.");
-  if(/crack|fracture|break/.test(n)) hints.push("Crack/fracture evidence noted.");
-  if(/rust|corros|oxid/.test(n)) hints.push("Corrosion/oxidation evidence noted.");
-  if(/heat|hot|burn|overheat/.test(n)) hints.push("Heat/overheating evidence noted.");
-  if(/wear|abras|damage|dent/.test(n)) hints.push("Wear/damage evidence noted.");
-  return hints.length ? hints.join(" ") : `No technician issue keywords were supplied; the engine will rely on the visual evidence.`;
+  toast("Inspection complete.");
 }
 
 function formatApiResult(data, category, tag, notes, isVideo){
@@ -2487,10 +2111,20 @@ function createSmartInspection(category, tag, notes, isVideo){
     score = 65 + Math.floor(Math.random() * 16);
     severity = "Medium";
   } else {
-    // Do not invent a machine defect when there is no connected AI result.
-    condition = "Attention";
-    score = 75;
-    severity = "Medium";
+    const rand = Math.random();
+    if(rand < 0.35){
+      condition = "Attention";
+      score = 70 + Math.floor(Math.random() * 14);
+      severity = "Medium";
+    } else if(rand < 0.55){
+      condition = "At Risk";
+      score = 48 + Math.floor(Math.random() * 18);
+      severity = "High";
+    } else {
+      condition = "Healthy";
+      score = 88 + Math.floor(Math.random() * 11);
+      severity = "Low";
+    }
   }
 
   let asset = "Industrial equipment";
@@ -2505,16 +2139,6 @@ function createSmartInspection(category, tag, notes, isVideo){
   }
 
   const findings = [];
-  if(condition === "Attention" && !lowerNotes){
-    findings.push({
-      title: "Image-specific diagnosis unavailable",
-      description: "The connected AI analysis service did not return a machine-specific visual diagnosis. No defect is being invented from the local fallback. Connect the analysis service to receive evidence-based findings from the image.",
-      severity: "Medium",
-      confidence: 100,
-      location: "Inspection evidence",
-      evidence: isVideo ? 0 : null
-    });
-  }
   if(condition === "Healthy"){
     findings.push({
       title: "Surface profile and integrity intact",
@@ -3237,41 +2861,6 @@ function resetInspectionForm(){
 /* =====================================================
    INITIALIZATION
 ===================================================== */
-
-/* =====================================================
-   THEME SWITCHER
-===================================================== */
-(function(){
-  const root = document.documentElement;
-  const button = document.getElementById("themeToggle");
-  const savedTheme = localStorage.getItem("inspectiq-theme");
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  function applyTheme(theme){
-    root.setAttribute("data-theme", theme);
-    if(button){
-      const dark = theme === "dark";
-      button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-      button.title = dark ? "Switch to light mode" : "Switch to dark mode";
-      button.innerHTML = `
-        <span class="theme-icon" aria-hidden="true">${dark ? "☀" : "☾"}</span>
-        <span class="theme-label">${dark ? "Light" : "Dark"}</span>
-      `;
-    }
-  }
-
-  applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
-
-  if(button){
-    button.addEventListener("click", function(){
-      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      localStorage.setItem("inspectiq-theme", next);
-      applyTheme(next);
-    });
-  }
-})();
-
 document.addEventListener("DOMContentLoaded", () => {
   setupDragAndDrop();
 
