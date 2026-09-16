@@ -1013,6 +1013,9 @@ html[data-theme="dark"] .engine-badge{background:#052e16;color:#bbf7d0;border-co
       <div id="inspectionStatus" class="status">
         <b>Vision engine</b><br>Ready for evidence.
       </div>
+      <div class="small" style="margin-top:8px;color:var(--muted)!important">
+        Image-specific diagnosis requires connected AI. A local fallback will never label an arbitrary uploaded photo as a machine defect.
+      </div>
       <div id="scanProgress" class="scan-progress hidden" aria-live="polite">
         <div class="scan-top"><div><div class="scan-kicker">LIVE AI INSPECTION</div><div id="scanHeadline" class="scan-headline">Preparing evidence…</div></div><div id="scanPercent" class="scan-percent">0%</div></div>
         <div class="scan-track"><span id="scanBar"></span></div>
@@ -1877,116 +1880,43 @@ function formatApiResult(data, category, tag, notes, isVideo){
 }
 
 function createSmartInspection(category, tag, notes, isVideo){
-  const lowerNotes = notes.toLowerCase();
-  let condition = "Healthy";
-  let score = 92;
-  let severity = "Low";
+  /*
+    IMPORTANT:
+    The browser cannot reliably determine whether an arbitrary photo is an
+    industrial asset. Do NOT turn every uploaded image into an "Attention 75"
+    diagnosis. Only technician notes can be summarized locally when the
+    connected visual AI service is unavailable.
+  */
+  const lowerNotes = String(notes || "").toLowerCase();
 
-  if(lowerNotes.includes("leak") || lowerNotes.includes("vibrat") || lowerNotes.includes("crack") || lowerNotes.includes("fail") || lowerNotes.includes("risk") || lowerNotes.includes("severe")){
-    condition = "At Risk";
-    score = 42 + Math.floor(Math.random() * 15);
-    severity = "High";
-  } else if(lowerNotes.includes("wear") || lowerNotes.includes("rust") || lowerNotes.includes("corros") || lowerNotes.includes("heat") || lowerNotes.includes("stain") || lowerNotes.includes("flange")){
-    condition = "Attention";
-    score = 65 + Math.floor(Math.random() * 16);
-    severity = "Medium";
-  } else {
-    condition = "Attention";
-    score = 75;
-    severity = "Medium";
-  }
-
-  let asset = "Industrial equipment";
-  if(category === "Industrial system" || lowerNotes.includes("pipe")){
+  let asset = "Industrial asset";
+  if(category === "Industrial system" || /pipe|pipeline/.test(lowerNotes)){
     asset = "Pipeline assembly";
-  } else if(category === "Equipment" || lowerNotes.includes("motor") || lowerNotes.includes("pump")){
+  } else if(category === "Equipment" || /motor|pump|bearing/.test(lowerNotes)){
     asset = "Pump / motor assembly";
-  } else if(category === "Structure" || lowerNotes.includes("weld") || lowerNotes.includes("beam")){
+  } else if(category === "Structure" || /weld|beam|structure/.test(lowerNotes)){
     asset = "Welded structural joint";
-  } else if(category === "Large component" || lowerNotes.includes("valve")){
+  } else if(category === "Large component" || /valve/.test(lowerNotes)){
     asset = "Industrial control valve";
   }
 
-  const findings = [];
-  if(condition === "Attention" && !lowerNotes){
-    findings.push({title:"Image-specific diagnosis unavailable",description:"The connected AI analysis service did not return a machine-specific visual diagnosis. The local fallback will not invent a defect from an unseen image.",severity:"Medium",confidence:100,location:"Inspection evidence",evidence:isVideo?0:null});
-  }
-  if(condition === "Healthy"){
-    findings.push({
-      title: "Surface profile and integrity intact",
-      description: "Visual evidence demonstrates uniform surface condition without significant geometric distortion or fracture.",
-      severity: "Low",
-      confidence: 94,
-      location: "Primary structural profile",
-      evidence: isVideo ? 3.5 : null
-    });
-    findings.push({
-      title: "Protective coating acceptable",
-      description: "Surface barrier shows no peeling, flaking, or active oxidation.",
-      severity: "Low",
-      confidence: 89,
-      location: "Exterior coating envelope",
-      evidence: isVideo ? 8.2 : null
-    });
-  } else if(condition === "Attention"){
-    if(lowerNotes){
-      findings.push({
-        title: "Technician-reported condition requires review",
-        description: "The local fallback is using the supplied technician notes; it is not claiming that an unseen image proves the condition.",
-        severity: "Medium",
-        confidence: 100,
-        location: "Technician notes",
-        evidence: isVideo ? 5.8 : null
-      });
-    } else {
-      findings.push({
-        title: "Image-specific diagnosis unavailable",
-        description: "No connected AI visual result was returned. The local fallback will not invent a defect from an image it could not analyze.",
-        severity: "Medium",
-        confidence: 100,
-        location: "Inspection evidence",
-        evidence: isVideo ? 0 : null
-      });
-    }
-    findings.push({
-      title: "Preventive maintenance surveillance recommended",
-      description: "Operating integrity remains functional, but trending inspection should monitor defect progression.",
-      severity: "Medium",
-      confidence: 82,
-      location: "Surrounding housing",
-      evidence: isVideo ? 12.4 : null
-    });
-  } else {
-    findings.push({
-      title: "High-priority defect indication",
-      description: "Visual anomaly displays signs of severe localized stress, fluid egress, or thermal degradation requiring intervention.",
-      severity: "High",
-      confidence: 93,
-      location: "Primary stress concentration zone",
-      evidence: isVideo ? 6.2 : null
-    });
-    findings.push({
-      title: "Corrective intervention required",
-      description: "Potential risk of operational outage or structural degradation under continued load.",
-      severity: "High",
-      confidence: 91,
-      location: "Critical component interface",
-      evidence: isVideo ? 14.7 : null
-    });
-  }
+  const finding = {
+    title: "Visual AI analysis unavailable",
+    description: "The connected inspection AI did not return an image-specific result. The local browser fallback will not claim that an uploaded photo contains an industrial defect.",
+    severity: "Unclassified",
+    confidence: 0,
+    location: "Uploaded evidence",
+    evidence: isVideo ? 0 : null
+  };
 
-  let action = "No immediate corrective action required. Continue normal preventive maintenance schedule.";
-  let nextInspection = "30 days";
-
-  if(condition === "Attention"){
-    action = "Schedule a routine maintenance inspection to clean, verify, and service affected components.";
-    nextInspection = "14 days";
-  } else if(condition === "At Risk"){
-    action = "Prompt qualified engineering assessment and immediate corrective maintenance within 24–48 hours.";
-    nextInspection = "Within 24–48 hours";
+  if(lowerNotes){
+    finding.title = "Technician notes captured";
+    finding.description =
+      "The connected visual AI is unavailable, so this screen is showing the technician's notes only. The notes are not being treated as proof of a visual defect.";
+    finding.severity = "Review";
+    finding.confidence = 100;
+    finding.location = "Technician notes";
   }
-
-  const confidence = Math.round(findings.reduce((acc, f) => acc + f.confidence, 0) / findings.length);
 
   return {
     id: "INS-" + Date.now(),
@@ -1994,21 +1924,19 @@ function createSmartInspection(category, tag, notes, isVideo){
     asset,
     assetCategory: category,
     assetTag: tag,
-    condition,
-    score,
-    severity,
-    confidence,
-    summary: condition === "Healthy"
-      ? `The ${asset.toLowerCase()} (${tag}) appears in sound visible condition with no active defect detected.`
-      : condition === "Attention"
-        ? `The ${asset.toLowerCase()} (${tag}) displays visible wear or environmental degradation warranting maintenance review.`
-        : `The ${asset.toLowerCase()} (${tag}) exhibits critical defect indicators requiring prompt maintenance intervention.`,
-    action,
-    nextInspection,
+    condition: "Awaiting AI",
+    score: null,
+    severity: finding.severity,
+    confidence: finding.confidence,
+    summary: lowerNotes
+      ? `Evidence uploaded for ${asset.toLowerCase()} (${tag}). Connected visual AI is required to determine the machine condition from the image.`
+      : `Evidence uploaded for ${asset.toLowerCase()} (${tag}). Connected visual AI is required before a condition or defect can be determined.`,
+    action: "Connect the visual AI inspection service and run the analysis again. Do not make a maintenance decision from this fallback result.",
+    nextInspection: "Not determined",
     notes,
     evidenceType: isVideo ? "video" : "image",
-    fileName: isVideo ? currentVideoFile.name : currentImageFile.name,
-    findings
+    fileName: isVideo ? (currentVideoFile?.name || "video.mp4") : (currentImageFile?.name || "image.jpg"),
+    findings: [finding]
   };
 }
 
@@ -2020,12 +1948,13 @@ function renderResult(result){
 
   $("resultTitle").textContent = result.asset;
   $("resultAssetMeta").textContent = `Tag: ${result.assetTag || "N/A"} · Category: ${result.assetCategory || "Equipment"} · Inspected: ${formatDate(result.timestamp)}`;
-  $("score").textContent = result.score;
-  $("scoreBar").style.width = result.score + "%";
+  $("score").textContent = result.score == null ? "—" : result.score;
+  $("scoreBar").style.width = result.score == null ? "0%" : Math.max(0, Math.min(100, result.score)) + "%";
 
   let statusClass = "healthy";
   if(result.condition === "Attention") statusClass = "attention";
   if(result.condition === "At Risk") statusClass = "risk";
+  if(result.condition === "Awaiting AI") statusClass = "neutral";
 
   $("resultStatus").innerHTML = `
     <span class="pill ${statusClass}">
