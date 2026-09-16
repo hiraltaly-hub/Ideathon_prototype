@@ -930,6 +930,7 @@ html[data-theme="dark"] .engine-badge{background:#052e16;color:#bbf7d0;border-co
           <div>
             <label class="stat-label" for="assetCategory">ASSET CATEGORY</label>
             <select id="assetCategory" style="margin-top:5px;width:100%;padding:10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:700">
+              <option value="Auto-detect" selected>Auto-detect from image</option>
               <option value="Equipment">Equipment</option>
               <option value="Industrial system">Industrial system</option>
               <option value="Structure">Structure</option>
@@ -1017,7 +1018,7 @@ html[data-theme="dark"] .engine-badge{background:#052e16;color:#bbf7d0;border-co
         Image-specific diagnosis requires connected AI. A local fallback will never label an arbitrary uploaded photo as a machine defect.
       </div>
       <div id="scanProgress" class="scan-progress hidden" aria-live="polite">
-        <div class="scan-top"><div><div class="scan-kicker">LIVE AI INSPECTION</div><div id="scanHeadline" class="scan-headline">Preparing evidence…</div></div><div id="scanPercent" class="scan-percent">0%</div></div>
+        <div class="scan-top"><div><div class="scan-kicker">LIVE AI INSPECTION · AI BACKEND CONNECTED</div><div id="scanHeadline" class="scan-headline">Preparing evidence…</div></div><div id="scanPercent" class="scan-percent">0%</div></div>
         <div class="scan-track"><span id="scanBar"></span></div>
         <div id="scanStageList" class="scan-stages">
           <div><span class="stage-dot"></span><span>Preparing evidence</span></div>
@@ -1711,7 +1712,7 @@ async function checkServerHealth(){
   try{
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 1800);
-    const res = await fetch("/api/health", { signal: controller.signal });
+    const res = await fetch("https://ai-inspect-assistant.onrender.com/api/health", { signal: controller.signal });
     clearTimeout(timer);
     if(res.ok){
       const data = await res.json();
@@ -1809,8 +1810,11 @@ async function analyzeEvidence(){
       fd.append("notes",notes);
       fd.append("category",category);
       fd.append("tag",tag);
+      fd.append("inspectionType","industrial_visual_inspection");
+      fd.append("rejectNonIndustrial","true");
+      fd.append("requireEvidenceBasedDiagnosis","true");
 
-      const response=await fetch("/api/analyze",{method:"POST",body:fd});
+      const response=await fetch("https://ai-inspect-assistant.onrender.com/api/analyze",{method:"POST",body:fd});
       if(!response.ok) throw new Error("Analysis service returned HTTP "+response.status);
 
       const apiData=await response.json();
@@ -1826,10 +1830,20 @@ async function analyzeEvidence(){
   }
 
   if(!result){
-    result=createSmartInspection(category,tag,notes,isVideo);
-    showScanFindings(result.findings||[]);
-    updateScan(4,94,"Preparing the inspection report…",result.summary);
-    await delay(400);
+    finishScan();
+    setStatus(
+      "AI analysis could not be completed. No condition score, defect, severity, or maintenance recommendation was generated.",
+      false
+    );
+    updateScan(
+      4,
+      100,
+      "AI diagnosis unavailable",
+      "The connected AI service did not return a valid machine-specific result. The app will not invent a diagnosis."
+    );
+    analyzeBtn.disabled=false;
+    toast("AI analysis unavailable — no fake diagnosis was created.");
+    return;
   }
 
   result.imageDataUrl=currentImageDataUrl||currentImageUrl;
@@ -1859,9 +1873,9 @@ function formatApiResult(data, category, tag, notes, isVideo){
     assetCategory: category,
     assetTag: tag,
     condition: cond,
-    score: Number(data.score) || 75,
-    severity: (data.findings?.[0]?.severity) || "Medium",
-    confidence: Number(data.confidence) || 90,
+    score: Number.isFinite(Number(data.score)) ? Number(data.score) : null,
+    severity: data.findings?.[0]?.severity || data.severity || "Unclassified",
+    confidence: Number.isFinite(Number(data.confidence)) ? Number(data.confidence) : null,
     summary: data.summary || "Visual analysis completed successfully.",
     action: data.recommendation || "Maintain periodic surveillance.",
     nextInspection: data.nextInspectionInterval || "30 days",
@@ -1947,7 +1961,7 @@ function renderResult(result){
   if(!result) return;
 
   $("resultTitle").textContent = result.asset;
-  $("resultAssetMeta").textContent = `Tag: ${result.assetTag || "N/A"} · Category: ${result.assetCategory || "Equipment"} · Inspected: ${formatDate(result.timestamp)}`;
+  $("resultAssetMeta").textContent = `Tag: ${result.assetTag || "N/A"} · Category: ${result.assetCategory || "AI detected"} · Inspected: ${formatDate(result.timestamp)}`;
   $("score").textContent = result.score == null ? "—" : result.score;
   $("scoreBar").style.width = result.score == null ? "0%" : Math.max(0, Math.min(100, result.score)) + "%";
 
