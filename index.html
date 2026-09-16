@@ -673,6 +673,487 @@ input:focus,textarea:focus,select:focus{
   .page:not(.hidden){display:block!important;}
   h1, h2, h3{color:#000!important;}
 }
+
+/* =========================================================
+   REFERENCE-INSPIRED UI REFRESH
+   Keeps existing InspectIQ functionality intact.
+   ========================================================= */
+
+:root{
+  --bg:#f6f8fb;
+  --surface:#ffffff;
+  --surface2:#f8fafc;
+  --border:#e5e7eb;
+  --text:#101828;
+  --muted:#667085;
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --primary-soft:#eff6ff;
+  --green:#16a34a;
+  --yellow:#d97706;
+  --red:#dc2626;
+  --red-soft:#fef2f2;
+  --shadow:0 10px 30px rgba(15,23,42,.06);
+  --shadow-lg:0 18px 50px rgba(15,23,42,.10);
+  --radius:18px;
+}
+
+body{
+  background:
+    radial-gradient(circle at 85% 0%, rgba(37,99,235,.055), transparent 30rem),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.app{
+  width:min(1240px,calc(100% - 32px));
+  padding:22px 0 72px;
+}
+
+.header{
+  top:14px;
+  padding:13px 16px;
+  border:1px solid rgba(226,232,240,.9);
+  border-radius:18px;
+  box-shadow:0 8px 28px rgba(15,23,42,.07);
+}
+
+.logo{
+  font-size:18px;
+  letter-spacing:.07em;
+}
+
+.logo span{color:var(--primary)}
+
+.subtitle{
+  color:#98a2b3;
+  letter-spacing:.12em;
+}
+
+.nav{
+  gap:4px;
+}
+
+.nav button{
+  color:#667085;
+  border-radius:10px;
+  padding:9px 14px;
+  transition:all .18s ease;
+}
+
+.nav button:hover{
+  background:#f2f4f7;
+  color:#344054;
+}
+
+.nav button.active{
+  background:#111827;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(17,24,39,.18);
+}
+
+main{padding:40px 0}
+
+.page-head{margin-bottom:28px}
+
+.eyebrow{
+  color:var(--primary);
+  font-size:10px;
+  letter-spacing:.15em;
+}
+
+h1{
+  color:#101828;
+  font-weight:800;
+  letter-spacing:-.045em;
+}
+
+h2{
+  color:#101828;
+  font-weight:800;
+}
+
+h3{
+  color:#182230;
+  font-weight:750;
+}
+
+p{color:#667085}
+
+.card{
+  border:1px solid #e4e7ec;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:var(--shadow);
+  transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease;
+}
+
+.card:hover{
+  border-color:#d9dee8;
+}
+
+.grid4{
+  gap:16px;
+}
+
+.grid4 .card{
+  min-height:132px;
+}
+
+.stat-label{
+  color:#98a2b3;
+  letter-spacing:.09em;
+}
+
+.metric{
+  color:#101828;
+  font-size:32px;
+  letter-spacing:-.04em;
+}
+
+.btn{
+  border:1px solid #d0d5dd;
+  background:#fff;
+  color:#344054;
+  border-radius:10px;
+  padding:10px 15px;
+  transition:all .16s ease;
+}
+
+.btn:hover:not(:disabled){
+  border-color:#b8c0cc;
+  background:#f9fafb;
+  transform:translateY(-1px);
+}
+
+.btn.primary{
+  background:var(--primary);
+  border-color:var(--primary);
+  box-shadow:0 5px 14px rgba(37,99,235,.18);
+}
+
+.btn.primary:hover:not(:disabled){
+  background:var(--primary-dark);
+}
+
+.health{
+  margin-top:18px;
+  background:linear-gradient(135deg,#fff 0%,#f8fbff 100%);
+}
+
+.progress{
+  height:10px;
+  background:#eaecf0;
+  margin:15px 0;
+}
+
+.progress span{
+  background:linear-gradient(90deg,#2563eb,#60a5fa);
+}
+
+.step{
+  border-left:0;
+  border-top:1px solid #eef0f3;
+  padding:22px 0 0;
+  margin:0 0 22px;
+}
+
+.step:first-child{
+  border-top:0;
+  padding-top:0;
+}
+
+.step h2{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.drop{
+  margin-top:16px;
+  min-height:190px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:34px 18px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.9),rgba(248,250,252,.95));
+  border:1.5px dashed #b8c2d0;
+  border-radius:16px;
+}
+
+.drop.drag-over{
+  background:#eff6ff;
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+.upload{
+  border:1px solid #cbd5e1;
+  background:#fff;
+  color:#344054;
+  border-radius:10px;
+  padding:11px 15px;
+  box-shadow:0 2px 6px rgba(15,23,42,.04);
+}
+
+.upload:hover{
+  background:#f8fafc;
+  border-color:#94a3b8;
+}
+
+input,textarea,select{
+  border:1px solid #d0d5dd;
+  background:#fff;
+  color:#101828;
+  border-radius:10px;
+}
+
+input:focus,textarea:focus,select:focus{
+  border-color:#84adff;
+  box-shadow:0 0 0 4px rgba(37,99,235,.10);
+}
+
+.preview,.video{
+  border:1px solid #e4e7ec;
+  border-radius:14px;
+  background:#0f172a;
+}
+
+.status{
+  padding:16px;
+  background:#f0f6ff;
+  border:1px solid #dbeafe;
+  color:#1e3a8a;
+  border-radius:12px;
+}
+
+.dot{
+  background:var(--primary);
+}
+
+.pill{
+  padding:5px 10px;
+  font-size:11px;
+  border-radius:999px;
+}
+
+.healthy{
+  background:#ecfdf3;
+  color:#027a48;
+}
+
+.attention{
+  background:#fffaeb;
+  color:#b54708;
+}
+
+.risk{
+  background:#fef3f2;
+  color:#b42318;
+}
+
+.neutral{
+  background:#f2f4f7;
+  color:#667085;
+}
+
+.score{
+  color:#111827;
+  font-size:70px;
+  letter-spacing:-.06em;
+}
+
+.info{
+  background:#f8fafc;
+  border:1px solid #eaecf0;
+  border-radius:12px;
+}
+
+.finding{
+  padding:18px 0;
+  border-bottom:1px solid #eaecf0;
+}
+
+.finding.clickable:hover{
+  background:#f8fafc;
+  transform:none;
+}
+
+.confidence{
+  color:#475467;
+}
+
+.evidence{
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  color:#1d4ed8;
+}
+
+.evidence:hover{
+  background:#2563eb;
+}
+
+.report-stat{
+  border:1px solid #e4e7ec;
+  border-radius:12px;
+  background:#fff;
+}
+
+.report-box{
+  background:#fff;
+  border:1px solid #e4e7ec;
+  border-radius:16px;
+  box-shadow:0 5px 18px rgba(15,23,42,.04);
+}
+
+.report-number{
+  color:#111827;
+}
+
+.progress-multi{
+  height:12px;
+  background:#eaecf0;
+}
+
+.presets-grid{
+  gap:10px;
+}
+
+.preset-btn{
+  border:1px solid #e4e7ec;
+  background:#fff;
+  border-radius:11px;
+  padding:12px;
+}
+
+.preset-btn:hover{
+  border-color:#93b4ff;
+  background:#f5f8ff;
+  color:#1d4ed8;
+}
+
+.camera-modal{
+  background:rgba(15,23,42,.72);
+}
+
+.camera-box{
+  border-radius:20px;
+  padding:22px;
+}
+
+.toast{
+  border:1px solid #bfdbfe;
+  color:#1d4ed8;
+  border-radius:12px;
+  box-shadow:var(--shadow-lg);
+}
+
+/* Dashboard hero visual hierarchy */
+.dashboard-hero{
+  align-items:center;
+}
+
+.dashboard-hero .page-head{
+  margin-bottom:0;
+}
+
+.dashboard-hero .page-head p{
+  max-width:650px;
+}
+
+/* Make the main inspection workspace feel like an application shell */
+#inspect .two{
+  align-items:start;
+}
+
+#inspect .two > .card:last-child{
+  position:sticky;
+  top:96px;
+}
+
+#inspect .two > .card:last-child .step{
+  padding-bottom:8px;
+}
+
+/* Result emphasis */
+#result .two > .card:first-child{
+  background:linear-gradient(135deg,#fff 0%,#f8fbff 100%);
+}
+
+#result .two > .card:last-child{
+  background:#fff;
+}
+
+/* Subtle section separators */
+#assets .card,
+#reports .card{
+  overflow:hidden;
+}
+
+/* Better mobile navigation */
+@media(max-width:760px){
+  .app{width:calc(100% - 20px);}
+  .header{
+    position:relative;
+    top:0;
+  }
+  .nav{
+    width:100%;
+    padding-bottom:2px;
+  }
+  .nav button{
+    flex:1 0 auto;
+  }
+  #inspect .two > .card:last-child{
+    position:static;
+  }
+}
+
+@media(max-width:650px){
+  main{padding:28px 0}
+  .dashboard-hero{display:block}
+  .card{padding:18px}
+  .drop{min-height:165px}
+}
+
+/* Accessibility */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+  outline:3px solid rgba(37,99,235,.22);
+  outline-offset:2px;
+}
+
+
+.engine-badge{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 10px;
+  border:1px solid #d1fadf;
+  background:#f0fdf4;
+  color:#15803d;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+.engine-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 0 3px rgba(34,197,94,.12);
+}
+@media(max-width:900px){
+  .engine-badge{display:none;}
+}
+
 </style>
 </head>
 
@@ -690,7 +1171,9 @@ input:focus,textarea:focus,select:focus{
     </div>
   </div>
 
-  <nav class="nav">
+  <div class="engine-badge" aria-label="Inspection engine ready"><span class="engine-dot"></span> AI ENGINE READY</div>
+
+<nav class="nav">
     <button data-page="dashboard" class="active">Dashboard</button>
     <button data-page="inspect">Inspect</button>
     <button data-page="assets">Assets</button>
