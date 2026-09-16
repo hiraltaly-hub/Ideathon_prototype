@@ -1299,4 +1299,1545 @@ $("file").addEventListener(
     currentVideoFile = null;
 
     if(currentImageUrl)
-      URL.revokeObje
+      URL.revokeObjectURL(currentImageUrl);
+
+    currentImageUrl =
+      URL.createObjectURL(file);
+
+    $("imagePreview").src =
+      currentImageUrl;
+
+    $("imagePreview")
+      .classList
+      .remove("hidden");
+
+    $("inspectionVideo")
+      .classList
+      .add("hidden");
+
+    $("fileLabel").textContent =
+      `${file.name} · ${formatBytes(file.size)}`;
+
+    $("analyze").disabled = false;
+
+    $("analyze").textContent =
+      "Analyze photo";
+
+    setStatus(
+      "Photo selected. Ready for analysis."
+    );
+
+  }
+);
+
+
+$("videoFile").addEventListener(
+  "change",
+  event => {
+
+    const file = event.target.files[0];
+
+    if(!file) return;
+
+    if(!file.type.startsWith("video/")){
+
+      toast("Please select a video file.");
+
+      return;
+
+    }
+
+    currentVideoFile = file;
+    currentImageFile = null;
+
+    if(currentVideoUrl)
+      URL.revokeObjectURL(currentVideoUrl);
+
+    currentVideoUrl =
+      URL.createObjectURL(file);
+
+    $("inspectionVideo").src =
+      currentVideoUrl;
+
+    $("inspectionVideo")
+      .classList
+      .remove("hidden");
+
+    $("imagePreview")
+      .classList
+      .add("hidden");
+
+    $("fileLabel").textContent =
+      `${file.name} · ${formatBytes(file.size)}`;
+
+    $("analyze").disabled = false;
+
+    $("analyze").textContent =
+      "Analyze video";
+
+    setStatus(
+      "Video selected. Ready for analysis."
+    );
+
+  }
+);
+
+
+function formatBytes(bytes){
+
+  if(!bytes) return "0 B";
+
+  const units = [
+    "B",
+    "KB",
+    "MB",
+    "GB"
+  ];
+
+  const i =
+    Math.floor(
+      Math.log(bytes) /
+      Math.log(1024)
+    );
+
+  return (
+    bytes /
+    Math.pow(1024,i)
+  ).toFixed(i ? 1 : 0)
+  + " "
+  + units[i];
+
+}
+
+
+/* =====================================================
+   ANALYZE BUTTON
+===================================================== */
+
+$("analyze").addEventListener(
+  "click",
+  analyzeEvidence
+);
+
+
+async function analyzeEvidence(){
+
+  if(!currentImageFile && !currentVideoFile){
+
+    toast("Select photo or video first.");
+
+    return;
+
+  }
+
+  $("analyze").disabled = true;
+
+  setStatus(
+    "Analyzing visual evidence...",
+    true
+  );
+
+  await delay(900);
+
+  setStatus(
+    "Detecting asset and condition...",
+    true
+  );
+
+  await delay(900);
+
+  setStatus(
+    "Generating maintenance assessment...",
+    true
+  );
+
+  await delay(700);
+
+
+  /*
+    -----------------------------------------------------
+    DEMO AI RESULT
+
+    Replace this function with your real AI API call.
+    -----------------------------------------------------
+  */
+
+  const isVideo = !!currentVideoFile;
+
+  const notes =
+    $("notes").value.trim();
+
+
+  currentResult = createDemoResult(
+    isVideo,
+    notes
+  );
+
+
+  renderResult(currentResult);
+
+  go("result");
+
+}
+
+
+/* =====================================================
+   DEMO AI ENGINE
+===================================================== */
+
+function createDemoResult(isVideo,notes){
+
+  const random =
+    Math.random();
+
+  let condition;
+  let score;
+  let severity;
+
+  if(random < .55){
+
+    condition = "Healthy";
+    score = 88 + Math.floor(Math.random()*10);
+    severity = "Low";
+
+  }else if(random < .85){
+
+    condition = "Attention";
+    score = 62 + Math.floor(Math.random()*18);
+    severity = "Medium";
+
+  }else{
+
+    condition = "At Risk";
+    score = 35 + Math.floor(Math.random()*25);
+    severity = "High";
+
+  }
+
+
+  let asset =
+    "Industrial equipment";
+
+  if(notes){
+
+    const lower =
+      notes.toLowerCase();
+
+    if(
+      lower.includes("pipe") ||
+      lower.includes("pipeline")
+    ){
+
+      asset = "Pipeline";
+
+    }else if(
+      lower.includes("motor") ||
+      lower.includes("pump")
+    ){
+
+      asset = "Pump / motor assembly";
+
+    }else if(
+      lower.includes("joint") ||
+      lower.includes("weld")
+    ){
+
+      asset = "Welded joint";
+
+    }else if(
+      lower.includes("valve")
+    ){
+
+      asset = "Industrial valve";
+
+    }else if(
+      lower.includes("belt")
+    ){
+
+      asset = "Conveyor belt";
+
+    }
+
+  }
+
+
+  const findings = [];
+
+  if(condition === "Healthy"){
+
+    findings.push({
+
+      title:"No significant visible defect",
+
+      description:
+        "The available visual evidence does not show an obvious structural or operational defect.",
+
+      severity:"Low",
+
+      confidence:92,
+
+      location:"Primary inspection area",
+
+      evidence:isVideo
+        ? 4.2
+        : null
+
+    });
+
+    findings.push({
+
+      title:"Surface condition acceptable",
+
+      description:
+        "Visible surfaces appear generally intact with no clear severe damage.",
+
+      severity:"Low",
+
+      confidence:87,
+
+      location:"Visible exterior surface",
+
+      evidence:isVideo
+        ? 8.7
+        : null
+
+    });
+
+  }else if(condition === "Attention"){
+
+    findings.push({
+
+      title:"Possible surface deterioration",
+
+      description:
+        "The evidence suggests localized wear, discoloration or surface deterioration that should be reviewed during maintenance.",
+
+      severity:"Medium",
+
+      confidence:84,
+
+      location:"Visible equipment surface",
+
+      evidence:isVideo
+        ? 12.5
+        : null
+
+    });
+
+    findings.push({
+
+      title:"Maintenance follow-up recommended",
+
+      description:
+        "The condition does not appear immediately critical, but continued operation should be accompanied by a follow-up inspection.",
+
+      severity:"Medium",
+
+      confidence:79,
+
+      location:"Inspection area",
+
+      evidence:isVideo
+        ? 19.4
+        : null
+
+    });
+
+  }else{
+
+    findings.push({
+
+      title:"Potential significant defect",
+
+      description:
+        "The visual evidence indicates a potentially significant condition requiring qualified inspection.",
+
+      severity:"High",
+
+      confidence:88,
+
+      location:"Primary visible defect area",
+
+      evidence:isVideo
+        ? 7.8
+        : null
+
+    });
+
+    findings.push({
+
+      title:"Corrective maintenance required",
+
+      description:
+        "Further engineering assessment and corrective maintenance should be considered before continued operation.",
+
+      severity:"High",
+
+      confidence:91,
+
+      location:"Affected component",
+
+      evidence:isVideo
+        ? 15.3
+        : null
+
+    });
+
+  }
+
+
+  let action;
+  let nextInspection;
+
+  if(condition === "Healthy"){
+
+    action =
+      "No immediate corrective action indicated. Continue normal preventive maintenance.";
+
+    nextInspection =
+      "30 days";
+
+  }else if(condition === "Attention"){
+
+    action =
+      "Schedule a maintenance review and verify the suspected wear or deterioration.";
+
+    nextInspection =
+      "14 days";
+
+  }else{
+
+    action =
+      "Arrange a qualified inspection promptly and evaluate whether corrective maintenance is required.";
+
+    nextInspection =
+      "Within 24–72 hours";
+
+  }
+
+
+  return {
+
+    id:
+      "INS-" +
+      Date.now(),
+
+    timestamp:
+      new Date().toISOString(),
+
+    asset,
+
+    condition,
+
+    score,
+
+    severity,
+
+    confidence:
+      Math.round(
+        findings.reduce(
+          (sum,item) =>
+            sum + item.confidence,
+          0
+        ) / findings.length
+      ),
+
+    summary:
+      condition === "Healthy"
+        ? `The ${asset.toLowerCase()} appears to be in generally healthy visible condition. No significant defect is apparent from the supplied evidence.`
+        : condition === "Attention"
+          ? `The ${asset.toLowerCase()} shows visible conditions that warrant maintenance attention and follow-up inspection.`
+          : `The ${asset.toLowerCase()} shows a potentially significant condition that should be reviewed by a qualified inspector.`,
+
+    action,
+
+    nextInspection,
+
+    notes,
+
+    evidenceType:
+      isVideo
+        ? "video"
+        : "image",
+
+    fileName:
+      isVideo
+        ? currentVideoFile.name
+        : currentImageFile.name,
+
+    findings
+
+  };
+
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function renderResult(result){
+
+  if(!result) return;
+
+
+  $("resultTitle").textContent =
+    result.asset;
+
+
+  $("score").textContent =
+    result.score;
+
+
+  $("scoreBar").style.width =
+    result.score + "%";
+
+
+  let statusClass =
+    "healthy";
+
+  if(result.condition === "Attention")
+    statusClass = "attention";
+
+  if(result.condition === "At Risk")
+    statusClass = "risk";
+
+
+  $("resultStatus").innerHTML = `
+    <span class="pill ${statusClass}">
+      ${escapeHtml(result.condition)}
+    </span>
+  `;
+
+
+  $("resultConfidence").textContent =
+    `AI confidence: ${result.confidence}% · ${result.severity} severity`;
+
+
+  $("summary").textContent =
+    result.summary;
+
+
+  $("action").textContent =
+    result.action;
+
+
+  $("nextInspection").textContent =
+    result.nextInspection;
+
+
+  renderFindings(result);
+
+
+  if(result.evidenceType === "video"){
+
+    $("resultVideoCard")
+      .classList
+      .remove("hidden");
+
+    $("resultVideo").src =
+      currentVideoUrl;
+
+  }else{
+
+    $("resultVideoCard")
+      .classList
+      .add("hidden");
+
+  }
+
+
+  $("save").disabled = false;
+
+}
+
+
+function renderFindings(result){
+
+  const container =
+    $("findings");
+
+  if(!result.findings?.length){
+
+    container.innerHTML =
+      `<div class="empty">No findings recorded.</div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    result.findings
+      .map((finding,index) => {
+
+        let cls =
+          finding.severity === "Low"
+            ? "healthy"
+            : finding.severity === "Medium"
+              ? "attention"
+              : "risk";
+
+
+        const evidenceButton =
+          finding.evidence !== null &&
+          finding.evidence !== undefined
+            ? `
+              <button
+                class="evidence"
+                onclick="jumpToEvidence(${finding.evidence})">
+
+                ▶ View evidence at
+                ${finding.evidence.toFixed(1)}s
+
+              </button>
+            `
+            : "";
+
+
+        return `
+
+          <div class="finding">
+
+            <h3>
+              ${index + 1}. ${escapeHtml(finding.title)}
+            </h3>
+
+            <div class="meta">
+
+              <span class="pill ${cls}">
+                ${escapeHtml(finding.severity)}
+              </span>
+
+              <span class="pill healthy">
+                ${escapeHtml(finding.location)}
+              </span>
+
+            </div>
+
+            <p>
+              ${escapeHtml(finding.description)}
+            </p>
+
+            <div class="confidence">
+              Confidence: ${finding.confidence}%
+            </div>
+
+            ${evidenceButton}
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+function jumpToEvidence(seconds){
+
+  const video =
+    $("resultVideo");
+
+  if(!video) return;
+
+  video.currentTime =
+    Number(seconds);
+
+  video.play().catch(() => {});
+
+}
+
+
+/* =====================================================
+   SAVE RESULT
+===================================================== */
+
+$("save").addEventListener(
+  "click",
+  saveCurrentInspection
+);
+
+
+function saveCurrentInspection(){
+
+  if(!currentResult){
+
+    toast("Nothing to save.");
+
+    return;
+
+  }
+
+
+  const reports =
+    getReports();
+
+
+  /*
+    Avoid accidentally saving the exact
+    same result twice.
+  */
+
+  const exists =
+    reports.some(
+      report =>
+        report.id === currentResult.id
+    );
+
+
+  if(exists){
+
+    toast("Inspection already saved.");
+
+    return;
+
+  }
+
+
+  reports.unshift(
+    currentResult
+  );
+
+
+  saveReports(reports);
+
+
+  $("save").disabled = true;
+
+  $("save").textContent =
+    "Inspection saved";
+
+  toast("Inspection saved successfully.");
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function renderDashboard(){
+
+  const reports =
+    getReports();
+
+
+  const total =
+    reports.length;
+
+
+  const assets =
+    new Set(
+      reports.map(
+        report => report.asset
+      )
+    ).size;
+
+
+  const attention =
+    reports.filter(
+      report =>
+        report.condition === "Attention" ||
+        report.condition === "At Risk"
+    ).length;
+
+
+  const critical =
+    reports.filter(
+      report =>
+        report.severity === "High" ||
+        report.condition === "At Risk"
+    ).length;
+
+
+  $("metricInspections").textContent =
+    total;
+
+
+  $("metricAssets").textContent =
+    assets;
+
+
+  $("metricAttention").textContent =
+    attention;
+
+
+  $("metricCritical").textContent =
+    critical;
+
+
+  if(total === 0){
+
+    $("healthIndex").textContent =
+      "—";
+
+    $("healthBar").style.width =
+      "0%";
+
+    $("healthText").textContent =
+      "No inspections have been saved yet.";
+
+  }else{
+
+    const health =
+      Math.round(
+        reports.reduce(
+          (sum,report) =>
+            sum + Number(report.score || 0),
+          0
+        ) / total
+      );
+
+
+    $("healthIndex").textContent =
+      health + "%";
+
+
+    $("healthBar").style.width =
+      health + "%";
+
+
+    $("healthText").textContent =
+      health >= 85
+        ? "Overall asset condition is healthy."
+        : health >= 65
+          ? "Several assets require maintenance attention."
+          : "Multiple inspections indicate elevated maintenance risk.";
+
+  }
+
+
+  renderRecent(reports);
+
+}
+
+
+function renderRecent(reports){
+
+  const container =
+    $("recent");
+
+
+  if(!reports.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        <h3>No inspections yet</h3>
+        <p>
+          Upload your first photo or video to create an inspection.
+        </p>
+
+        <button
+          class="btn primary"
+          onclick="go('inspect')"
+          style="margin-top:12px">
+
+          Start inspection
+
+        </button>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    reports
+      .slice(0,5)
+      .map(report => {
+
+        const cls =
+          report.condition === "Healthy"
+            ? "healthy"
+            : report.condition === "Attention"
+              ? "attention"
+              : "risk";
+
+
+        return `
+
+          <div class="finding">
+
+            <div
+              style="
+                display:flex;
+                justify-content:space-between;
+                gap:15px;
+                flex-wrap:wrap;
+              ">
+
+              <div>
+
+                <h3>
+                  ${escapeHtml(report.asset)}
+                </h3>
+
+                <p>
+                  ${escapeHtml(
+                    formatDate(report.timestamp)
+                  )}
+                </p>
+
+              </div>
+
+              <div>
+
+                <span class="pill ${cls}">
+                  ${escapeHtml(report.condition)}
+                </span>
+
+                <strong
+                  style="margin-left:8px">
+
+                  ${report.score}
+
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =====================================================
+   ASSETS
+===================================================== */
+
+function renderAssets(){
+
+  const reports =
+    getReports();
+
+
+  const container =
+    $("assetsTable");
+
+
+  if(!reports.length){
+
+    container.innerHTML = `
+      <div class="empty">
+
+        <h3>No detected assets</h3>
+
+        <p>
+          Save an inspection to create an asset record.
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const map =
+    new Map();
+
+
+  reports.forEach(report => {
+
+    const key =
+      report.asset;
+
+
+    if(!map.has(key)){
+
+      map.set(
+        key,
+        {
+          name:key,
+          inspections:0,
+          totalScore:0,
+          latest:report.timestamp,
+          worst:"Healthy"
+        }
+      );
+
+    }
+
+
+    const asset =
+      map.get(key);
+
+
+    asset.inspections++;
+
+    asset.totalScore +=
+      Number(report.score || 0);
+
+
+    if(
+      new Date(report.timestamp) >
+      new Date(asset.latest)
+    ){
+
+      asset.latest =
+        report.timestamp;
+
+    }
+
+
+    const rank = {
+      Healthy:1,
+      Attention:2,
+      "At Risk":3
+    };
+
+
+    if(
+      rank[report.condition] >
+      rank[asset.worst]
+    ){
+
+      asset.worst =
+        report.condition;
+
+    }
+
+  });
+
+
+  const assets =
+    Array.from(map.values());
+
+
+  container.innerHTML = `
+
+    <div
+      class="asset"
+      style="font-size:11px;font-weight:900;color:var(--muted)">
+
+      <div>ASSET</div>
+      <div>INSPECTIONS</div>
+      <div>AVG SCORE</div>
+      <div>STATUS</div>
+      <div></div>
+
+    </div>
+
+    ${
+      assets.map(asset => {
+
+        const avg =
+          Math.round(
+            asset.totalScore /
+            asset.inspections
+          );
+
+
+        const cls =
+          asset.worst === "Healthy"
+            ? "healthy"
+            : asset.worst === "Attention"
+              ? "attention"
+              : "risk";
+
+
+        return `
+
+          <div class="asset">
+
+            <div class="asset-name">
+              ${escapeHtml(asset.name)}
+            </div>
+
+            <div>
+              ${asset.inspections}
+            </div>
+
+            <div>
+              ${avg}%
+            </div>
+
+            <div>
+              <span class="pill ${cls}">
+                ${escapeHtml(asset.worst)}
+              </span>
+            </div>
+
+            <div>
+              <button
+                class="btn"
+                onclick="go('reports')">
+
+                Reports
+
+              </button>
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("")
+    }
+
+  `;
+
+}
+
+
+/* =====================================================
+   REPORTS
+===================================================== */
+
+function renderReports(){
+
+  const reports =
+    getReports();
+
+
+  renderReportAnalytics(
+    reports
+  );
+
+
+  renderSavedReports(
+    reports
+  );
+
+}
+
+
+function renderReportAnalytics(reports){
+
+  const container =
+    $("reportAnalytics");
+
+
+  if(!reports.length){
+
+    container.innerHTML = `
+      <div class="card empty">
+
+        <h3>No analytics available</h3>
+
+        <p>
+          Complete and save an inspection to generate analytics.
+        </p>
+
+        <button
+          class="btn primary"
+          onclick="go('inspect')"
+          style="margin-top:12px">
+
+          Start inspection
+
+        </button>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const total =
+    reports.length;
+
+
+  const avg =
+    Math.round(
+      reports.reduce(
+        (sum,r) =>
+          sum + Number(r.score || 0),
+        0
+      ) / total
+    );
+
+
+  const healthy =
+    reports.filter(
+      r => r.condition === "Healthy"
+    ).length;
+
+
+  const attention =
+    reports.filter(
+      r =>
+        r.condition === "Attention"
+    ).length;
+
+
+  const risk =
+    reports.filter(
+      r =>
+        r.condition === "At Risk"
+    ).length;
+
+
+  container.innerHTML = `
+
+    <div class="report-grid">
+
+      <div class="report-stat">
+
+        <span class="small">
+          TOTAL
+        </span>
+
+        <strong>
+          ${total}
+        </strong>
+
+      </div>
+
+      <div class="report-stat">
+
+        <span class="small">
+          AVG SCORE
+        </span>
+
+        <strong>
+          ${avg}%
+        </strong>
+
+      </div>
+
+      <div class="report-stat">
+
+        <span class="small">
+          HEALTHY
+        </span>
+
+        <strong>
+          ${healthy}
+        </strong>
+
+      </div>
+
+      <div class="report-stat">
+
+        <span class="small">
+          AT RISK
+        </span>
+
+        <strong>
+          ${risk}
+        </strong>
+
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:18px">
+
+      <h2>Condition distribution</h2>
+
+      <div class="progress">
+        <span
+          style="
+            width:${(healthy/total)*100}%
+          ">
+        </span>
+      </div>
+
+      <p>
+        Healthy: ${healthy}
+        · Attention: ${attention}
+        · At Risk: ${risk}
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderSavedReports(reports){
+
+  const container =
+    $("saved");
+
+
+  if(!reports.length){
+
+    container.innerHTML = "";
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="card">
+
+      <div class="report-head">
+
+        <div>
+
+          <div class="eyebrow">
+            SAVED INSPECTIONS
+          </div>
+
+          <h2>
+            Inspection history
+          </h2>
+
+        </div>
+
+        <button
+          class="btn danger"
+          onclick="clearAllReports()">
+
+          Clear all
+
+        </button>
+
+      </div>
+
+      ${
+        reports.map(
+          (report,index) =>
+            reportCard(report,index)
+        ).join("")
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function reportCard(report,index){
+
+  const cls =
+    report.condition === "Healthy"
+      ? "healthy"
+      : report.condition === "Attention"
+        ? "attention"
+        : "risk";
+
+
+  return `
+
+    <div class="report-box">
+
+      <div class="report-head">
+
+        <div>
+
+          <div class="eyebrow">
+            ${escapeHtml(report.id)}
+          </div>
+
+          <h3>
+            ${escapeHtml(report.asset)}
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              formatDate(report.timestamp)
+            )}
+          </p>
+
+          <div class="meta">
+
+            <span class="pill ${cls}">
+              ${escapeHtml(report.condition)}
+            </span>
+
+            <span class="pill healthy">
+              ${escapeHtml(report.evidenceType)}
+            </span>
+
+            <span class="pill healthy">
+              ${escapeHtml(report.severity)}
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="report-score">
+
+          <div class="report-number">
+            ${report.score}
+          </div>
+
+          <div class="small">
+            Condition score
+          </div>
+
+        </div>
+
+      </div>
+
+      <p>
+        ${escapeHtml(report.summary)}
+      </p>
+
+      <div class="info">
+
+        <b>Recommended action</b>
+
+        <p>
+          ${escapeHtml(report.action)}
+        </p>
+
+      </div>
+
+      <button
+        class="btn danger"
+        style="margin-top:12px"
+        onclick="deleteReport('${escapeHtml(report.id)}')">
+
+        Delete inspection
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+function deleteReport(id){
+
+  const reports =
+    getReports()
+      .filter(
+        report =>
+          report.id !== id
+      );
+
+
+  saveReports(reports);
+
+  renderReports();
+  renderDashboard();
+  renderAssets();
+
+  toast("Inspection deleted.");
+
+}
+
+
+function clearAllReports(){
+
+  if(!confirm(
+    "Delete all saved inspections?"
+  )){
+
+    return;
+
+  }
+
+
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
+
+
+  renderReports();
+  renderDashboard();
+  renderAssets();
+
+  toast(
+    "All inspections deleted."
+  );
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function formatDate(value){
+
+  try{
+
+    return new Intl.DateTimeFormat(
+      undefined,
+      {
+        dateStyle:"medium",
+        timeStyle:"short"
+      }
+    ).format(
+      new Date(value)
+    );
+
+  }catch{
+
+    return value;
+
+  }
+
+}
+
+
+function delay(ms){
+
+  return new Promise(
+    resolve =>
+      setTimeout(resolve,ms)
+  );
+
+}
+
+
+/* =====================================================
+   NEW INSPECTION RESET
+===================================================== */
+
+function resetInspectionForm(){
+
+  $("file").value = "";
+  $("videoFile").value = "";
+
+  $("notes").value = "";
+
+  currentResult = null;
+
+  resetEvidence();
+
+  $("inspectionStatus").innerHTML = `
+    <b>Vision engine</b>
+    <br>
+    Ready for evidence.
+  `;
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    renderDashboard();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
