@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta name="color-scheme" content="light dark">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>InspectIQ — AI Visual Inspection Assistant</title>
 
 <style>
 :root{
-  --bg:#f4f9f9;4
+  --bg:#f4f9f9;
   --surface:#ffffff;
   --surface2:#f8fcfc;
   --border:#d8e7e7;
@@ -674,485 +675,51 @@ input:focus,textarea:focus,select:focus{
   h1, h2, h3{color:#000!important;}
 }
 
-/* =========================================================
-   REFERENCE-INSPIRED UI REFRESH
-   Keeps existing InspectIQ functionality intact.
-   ========================================================= */
-
-:root{
-  --bg:#f6f8fb;
-  --surface:#ffffff;
-  --surface2:#f8fafc;
-  --border:#e5e7eb;
-  --text:#101828;
-  --muted:#667085;
-  --primary:#2563eb;
-  --primary-dark:#1d4ed8;
-  --primary-soft:#eff6ff;
-  --green:#16a34a;
-  --yellow:#d97706;
-  --red:#dc2626;
-  --red-soft:#fef2f2;
-  --shadow:0 10px 30px rgba(15,23,42,.06);
-  --shadow-lg:0 18px 50px rgba(15,23,42,.10);
-  --radius:18px;
-}
-
-body{
-  background:
-    radial-gradient(circle at 85% 0%, rgba(37,99,235,.055), transparent 30rem),
-    var(--bg);
-  color:var(--text);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-.app{
-  width:min(1240px,calc(100% - 32px));
-  padding:22px 0 72px;
-}
-
-.header{
-  top:14px;
-  padding:13px 16px;
-  border:1px solid rgba(226,232,240,.9);
-  border-radius:18px;
-  box-shadow:0 8px 28px rgba(15,23,42,.07);
-}
-
-.logo{
-  font-size:18px;
-  letter-spacing:.07em;
-}
-
-.logo span{color:var(--primary)}
-
-.subtitle{
-  color:#98a2b3;
-  letter-spacing:.12em;
-}
-
-.nav{
-  gap:4px;
-}
-
-.nav button{
-  color:#667085;
-  border-radius:10px;
-  padding:9px 14px;
-  transition:all .18s ease;
-}
-
-.nav button:hover{
-  background:#f2f4f7;
-  color:#344054;
-}
-
-.nav button.active{
-  background:#111827;
-  color:#fff;
-  box-shadow:0 4px 12px rgba(17,24,39,.18);
-}
-
-main{padding:40px 0}
-
-.page-head{margin-bottom:28px}
-
-.eyebrow{
-  color:var(--primary);
-  font-size:10px;
-  letter-spacing:.15em;
-}
-
-h1{
-  color:#101828;
-  font-weight:800;
-  letter-spacing:-.045em;
-}
-
-h2{
-  color:#101828;
-  font-weight:800;
-}
-
-h3{
-  color:#182230;
-  font-weight:750;
-}
-
-p{color:#667085}
-
-.card{
-  border:1px solid #e4e7ec;
-  border-radius:18px;
-  padding:22px;
-  box-shadow:var(--shadow);
-  transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease;
-}
-
-.card:hover{
-  border-color:#d9dee8;
-}
-
-.grid4{
-  gap:16px;
-}
-
-.grid4 .card{
-  min-height:132px;
-}
-
-.stat-label{
-  color:#98a2b3;
-  letter-spacing:.09em;
-}
-
-.metric{
-  color:#101828;
-  font-size:32px;
-  letter-spacing:-.04em;
-}
-
-.btn{
-  border:1px solid #d0d5dd;
-  background:#fff;
-  color:#344054;
-  border-radius:10px;
-  padding:10px 15px;
-  transition:all .16s ease;
-}
-
-.btn:hover:not(:disabled){
-  border-color:#b8c0cc;
-  background:#f9fafb;
-  transform:translateY(-1px);
-}
-
-.btn.primary{
-  background:var(--primary);
-  border-color:var(--primary);
-  box-shadow:0 5px 14px rgba(37,99,235,.18);
-}
-
-.btn.primary:hover:not(:disabled){
-  background:var(--primary-dark);
-}
-
-.health{
-  margin-top:18px;
-  background:linear-gradient(135deg,#fff 0%,#f8fbff 100%);
-}
-
-.progress{
-  height:10px;
-  background:#eaecf0;
-  margin:15px 0;
-}
-
-.progress span{
-  background:linear-gradient(90deg,#2563eb,#60a5fa);
-}
-
-.step{
-  border-left:0;
-  border-top:1px solid #eef0f3;
-  padding:22px 0 0;
-  margin:0 0 22px;
-}
-
-.step:first-child{
-  border-top:0;
-  padding-top:0;
-}
-
-.step h2{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.drop{
-  margin-top:16px;
-  min-height:190px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:34px 18px;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.9),rgba(248,250,252,.95));
-  border:1.5px dashed #b8c2d0;
-  border-radius:16px;
-}
-
-.drop.drag-over{
-  background:#eff6ff;
-  border-color:var(--primary);
-  box-shadow:0 0 0 4px rgba(37,99,235,.08);
-}
-
-.upload{
-  border:1px solid #cbd5e1;
-  background:#fff;
-  color:#344054;
-  border-radius:10px;
-  padding:11px 15px;
-  box-shadow:0 2px 6px rgba(15,23,42,.04);
-}
-
-.upload:hover{
-  background:#f8fafc;
-  border-color:#94a3b8;
-}
-
-input,textarea,select{
-  border:1px solid #d0d5dd;
-  background:#fff;
-  color:#101828;
-  border-radius:10px;
-}
-
-input:focus,textarea:focus,select:focus{
-  border-color:#84adff;
-  box-shadow:0 0 0 4px rgba(37,99,235,.10);
-}
-
-.preview,.video{
-  border:1px solid #e4e7ec;
-  border-radius:14px;
-  background:#0f172a;
-}
-
-.status{
-  padding:16px;
-  background:#f0f6ff;
-  border:1px solid #dbeafe;
-  color:#1e3a8a;
-  border-radius:12px;
-}
-
-.dot{
-  background:var(--primary);
-}
-
-.pill{
-  padding:5px 10px;
-  font-size:11px;
-  border-radius:999px;
-}
-
-.healthy{
-  background:#ecfdf3;
-  color:#027a48;
-}
-
-.attention{
-  background:#fffaeb;
-  color:#b54708;
-}
-
-.risk{
-  background:#fef3f2;
-  color:#b42318;
-}
-
-.neutral{
-  background:#f2f4f7;
-  color:#667085;
-}
-
-.score{
-  color:#111827;
-  font-size:70px;
-  letter-spacing:-.06em;
-}
-
-.info{
-  background:#f8fafc;
-  border:1px solid #eaecf0;
-  border-radius:12px;
-}
-
-.finding{
-  padding:18px 0;
-  border-bottom:1px solid #eaecf0;
-}
-
-.finding.clickable:hover{
-  background:#f8fafc;
-  transform:none;
-}
-
-.confidence{
-  color:#475467;
-}
-
-.evidence{
-  background:#eff6ff;
-  border:1px solid #bfdbfe;
-  color:#1d4ed8;
-}
-
-.evidence:hover{
-  background:#2563eb;
-}
-
-.report-stat{
-  border:1px solid #e4e7ec;
-  border-radius:12px;
-  background:#fff;
-}
-
-.report-box{
-  background:#fff;
-  border:1px solid #e4e7ec;
-  border-radius:16px;
-  box-shadow:0 5px 18px rgba(15,23,42,.04);
-}
-
-.report-number{
-  color:#111827;
-}
-
-.progress-multi{
-  height:12px;
-  background:#eaecf0;
-}
-
-.presets-grid{
-  gap:10px;
-}
-
-.preset-btn{
-  border:1px solid #e4e7ec;
-  background:#fff;
-  border-radius:11px;
-  padding:12px;
-}
-
-.preset-btn:hover{
-  border-color:#93b4ff;
-  background:#f5f8ff;
-  color:#1d4ed8;
-}
-
-.camera-modal{
-  background:rgba(15,23,42,.72);
-}
-
-.camera-box{
-  border-radius:20px;
-  padding:22px;
-}
-
-.toast{
-  border:1px solid #bfdbfe;
-  color:#1d4ed8;
-  border-radius:12px;
-  box-shadow:var(--shadow-lg);
-}
-
-/* Dashboard hero visual hierarchy */
-.dashboard-hero{
-  align-items:center;
-}
-
-.dashboard-hero .page-head{
-  margin-bottom:0;
-}
-
-.dashboard-hero .page-head p{
-  max-width:650px;
-}
-
-/* Make the main inspection workspace feel like an application shell */
-#inspect .two{
-  align-items:start;
-}
-
-#inspect .two > .card:last-child{
-  position:sticky;
-  top:96px;
-}
-
-#inspect .two > .card:last-child .step{
-  padding-bottom:8px;
-}
-
-/* Result emphasis */
-#result .two > .card:first-child{
-  background:linear-gradient(135deg,#fff 0%,#f8fbff 100%);
-}
-
-#result .two > .card:last-child{
-  background:#fff;
-}
-
-/* Subtle section separators */
-#assets .card,
-#reports .card{
-  overflow:hidden;
-}
-
-/* Better mobile navigation */
-@media(max-width:760px){
-  .app{width:calc(100% - 20px);}
-  .header{
-    position:relative;
-    top:0;
-  }
-  .nav{
-    width:100%;
-    padding-bottom:2px;
-  }
-  .nav button{
-    flex:1 0 auto;
-  }
-  #inspect .two > .card:last-child{
-    position:static;
-  }
-}
-
-@media(max-width:650px){
-  main{padding:28px 0}
-  .dashboard-hero{display:block}
-  .card{padding:18px}
-  .drop{min-height:165px}
-}
-
-/* Accessibility */
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible{
-  outline:3px solid rgba(37,99,235,.22);
-  outline-offset:2px;
-}
-
-
-.engine-badge{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  padding:7px 10px;
-  border:1px solid #d1fadf;
-  background:#f0fdf4;
-  color:#15803d;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.08em;
-  white-space:nowrap;
-}
-.engine-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#22c55e;
-  box-shadow:0 0 0 3px rgba(34,197,94,.12);
-}
-@media(max-width:900px){
-  .engine-badge{display:none;}
-}
+/* ===== InspectIQ FINAL THEME + LIVE AI SCAN ===== */
+:root{--bg:#f7f9fc;--surface:#fff;--surface2:#f1f5f9;--border:#d8dee9;--text:#182230;--muted:#475467;--primary:#2563eb;--primary-dark:#1d4ed8;--green:#15803d;--red:#b42318;--yellow:#b54708;}
+html[data-theme="dark"]{--bg:#070b14;--surface:#111827;--surface2:#182235;--border:#344054;--text:#f8fafc;--muted:#d0d5dd;--primary:#93c5fd;--primary-dark:#bfdbfe;--green:#86efac;--red:#fda4af;--yellow:#fcd34d;}
+body{background:var(--bg)!important;color:var(--text)!important;transition:background .2s,color .2s;}
+h1,h2,h3,h4,strong,b,label,.logo,.subtitle,.eyebrow,.stat-label,.metric{color:var(--text);}
+p,.small,.muted{color:var(--muted);}
+.card,.step,.status,.drop,.preview,.video,.modal-card{background:var(--surface);border-color:var(--border);color:var(--text);}
+input,textarea,select{background:var(--surface);color:var(--text);border-color:var(--border);}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.9;}
+.btn:not(.primary){background:var(--surface);color:var(--text);border-color:var(--border);}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#07111f;}
+.nav button{color:var(--muted);}
+.nav button.active{color:var(--text);}
+html[data-theme="dark"] .nav button.active{background:#1e3a5f;color:#fff;}
+html[data-theme="dark"] .progress{background:#273449;}
+html[data-theme="dark"] .status{background:#172554;}
+html[data-theme="dark"] .drop.drag-over{background:#172554;}
+.theme-toggle{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer;display:inline-flex;gap:7px;align-items:center;}
+.header-tools{display:flex;align-items:center;gap:10px;}
+.engine-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#ecfdf3;color:#15803d;border:1px solid #bbf7d0;font-size:10px;font-weight:900;letter-spacing:.07em;}
+.engine-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px #dcfce7;}
+html[data-theme="dark"] .engine-badge{background:#052e16;color:#bbf7d0;border-color:#166534;}
+.scan-progress{margin-top:16px;padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--surface2);}
+.scan-progress.hidden{display:none;}
+.scan-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+.scan-kicker{font-size:10px;font-weight:900;letter-spacing:.1em;color:var(--primary);}
+.scan-headline{margin-top:4px;font-weight:900;color:var(--text);}
+.scan-percent{font-size:20px;font-weight:900;color:var(--primary);}
+.scan-track{height:9px;margin:12px 0 14px;border-radius:99px;overflow:hidden;background:#dbe2ea;}
+.scan-track span{display:block;width:0;height:100%;border-radius:inherit;background:var(--primary);transition:width .45s ease;}
+.scan-stages{display:grid;gap:8px;}
+.scan-stages>div{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--muted);}
+.scan-stages>div.active{color:var(--text);font-weight:800;}
+.scan-stages>div.done{color:var(--green);}
+.stage-dot{width:8px;height:8px;border-radius:50%;background:#aab4c2;flex:0 0 auto;}
+.scan-stages .active .stage-dot{background:var(--primary);box-shadow:0 0 0 4px #dbeafe;}
+.scan-stages .done .stage-dot{background:var(--green);}
+.scan-insights{margin-top:14px;padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--border);}
+.insight-title{font-size:10px;font-weight:900;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+#scanInsights{font-size:13px;line-height:1.55;color:var(--text);}
+.scan-findings{margin-top:10px;display:grid;gap:8px;}
+.scan-finding{padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--surface);}
+.scan-finding strong{display:block;color:var(--text);}
+.scan-finding span{display:block;margin-top:3px;font-size:12px;color:var(--muted);}
+@media(max-width:900px){.engine-badge{display:none}.theme-toggle .theme-label{display:none}.theme-toggle{padding:8px 10px}}
 
 </style>
 </head>
@@ -1171,9 +738,12 @@ select:focus-visible{
     </div>
   </div>
 
-  <div class="engine-badge" aria-label="Inspection engine ready"><span class="engine-dot"></span> AI ENGINE READY</div>
+  <div class="header-tools">
+    <span class="engine-badge"><span class="engine-dot"></span> AI ENGINE READY</span>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><span>☾</span><span class="theme-label">Dark</span></button>
+  </div>
 
-<nav class="nav">
+  <nav class="nav">
     <button data-page="dashboard" class="active">Dashboard</button>
     <button data-page="inspect">Inspect</button>
     <button data-page="assets">Assets</button>
@@ -1343,6 +913,19 @@ select:focus-visible{
       <div id="inspectionStatus" class="status">
         <b>Vision engine</b><br>Ready for evidence.
       </div>
+      <div id="scanProgress" class="scan-progress hidden" aria-live="polite">
+        <div class="scan-top"><div><div class="scan-kicker">LIVE AI INSPECTION</div><div id="scanHeadline" class="scan-headline">Preparing evidence…</div></div><div id="scanPercent" class="scan-percent">0%</div></div>
+        <div class="scan-track"><span id="scanBar"></span></div>
+        <div id="scanStageList" class="scan-stages">
+          <div><span class="stage-dot"></span><span>Preparing evidence</span></div>
+          <div><span class="stage-dot"></span><span>Identifying machine / asset</span></div>
+          <div><span class="stage-dot"></span><span>Checking visible condition</span></div>
+          <div><span class="stage-dot"></span><span>Finding defects and risk signals</span></div>
+          <div><span class="stage-dot"></span><span>Building diagnosis and action</span></div>
+        </div>
+        <div class="scan-insights"><div class="insight-title">What the inspection engine knows so far</div><div id="scanInsights">Waiting for evidence…</div><div id="scanFindings" class="scan-findings"></div></div>
+      </div>
+
       <button id="analyze" class="btn primary" style="width:100%;margin-top:18px" disabled>
         Select evidence to start
       </button>
@@ -2003,66 +1586,84 @@ async function checkServerHealth(){
 }
 
 async function analyzeEvidence(){
-  if(!currentImageFile && !currentVideoFile){
-    toast("Select photo or video evidence first.");
-    return;
-  }
+  if(!currentImageFile && !currentVideoFile){ toast("Select photo or video evidence first."); return; }
+  const analyzeBtn=$("analyze");
+  analyzeBtn.disabled=true;
+  const category=$("assetCategory").value;
+  const tag=$("assetTag").value.trim() || ("TAG-"+Math.floor(100+Math.random()*900));
+  const notes=$("notes").value.trim();
+  const isVideo=!!currentVideoFile;
+  const hints=getInspectionHints(notes);
+  updateScan(0,8,"Preparing the inspection…",`Evidence received for ${category}, asset ${tag}. ${hints}`);
+  setStatus("Preparing evidence and inspection context…",true); await delay(500);
+  updateScan(1,25,"Identifying the machine / asset…",`Checking the selected asset category and visible machine structure. ${hints}`);
+  setStatus("Identifying the asset and visible machine structure…",true); await delay(650);
+  updateScan(2,45,"Checking visible condition…","Checking surfaces, housings, joints, pipes, valves, coatings, connections and other visible condition signals.");
+  setStatus("Checking visible condition and surface integrity…",true); await delay(700);
+  updateScan(3,65,"Finding defects and risk signals…","Comparing the evidence and technician notes for defect, wear, leak, corrosion, crack, heat, vibration and other risk indicators.");
+  setStatus("Searching for defects, anomalies and risk indicators…",true); await delay(650);
 
-  $("analyze").disabled = true;
-
-  const category = $("assetCategory").value;
-  const tag = $("assetTag").value.trim() || ("TAG-" + Math.floor(100 + Math.random() * 900));
-  const notes = $("notes").value.trim();
-  const isVideo = !!currentVideoFile;
-
-  setStatus("Verifying inspection engine connection...", true);
-  await delay(600);
-
-  const serverOnline = await checkServerHealth();
-
-  setStatus("Analyzing visual evidence...", true);
-  await delay(700);
-
-  setStatus("Detecting asset anomalies & condition...", true);
-  await delay(700);
-
-  setStatus("Synthesizing engineering recommendations...", true);
-  await delay(600);
-
-  let result = null;
-
+  let result=null, backendUsed=false;
+  const serverOnline=await checkServerHealth();
   if(serverOnline && currentImageFile){
     try{
-      const formData = new FormData();
-      formData.append("image", currentImageFile);
-      formData.append("notes", notes);
-      formData.append("category", category);
-      formData.append("tag", tag);
-
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        body: formData
-      });
-
+      updateScan(3,76,"Running connected AI visual analysis…","The image is being analyzed by the connected inspection service. Findings will appear here as soon as they are returned.");
+      setStatus("Connected AI engine is analyzing the image…",true);
+      const fd=new FormData(); fd.append("image",currentImageFile); fd.append("notes",notes); fd.append("category",category); fd.append("tag",tag);
+      const response=await fetch("/api/analyze",{method:"POST",body:fd});
       if(response.ok){
-        const apiData = await response.json();
-        result = formatApiResult(apiData, category, tag, notes, false);
+        const apiData=await response.json();
+        result=formatApiResult(apiData,category,tag,notes,isVideo); backendUsed=true;
+        const findings=result.findings||[];
+        updateScan(4,94,"Diagnosis assembled from AI findings…",result.summary || "The connected AI service returned an inspection result.");
+        showScanFindings(findings);
+        await delay(500);
+      }else{
+        throw new Error("Analysis service returned HTTP "+response.status);
       }
-    }catch(err){
-      console.warn("Backend call failed, using client vision fallback:", err);
-    }
+    }catch(err){ console.warn("Backend call failed:",err); }
   }
-
   if(!result){
-    result = createSmartInspection(category, tag, notes, isVideo);
+    result=createSmartInspection(category,tag,notes,isVideo);
+    updateScan(4,94,"Preparing the local inspection report…",result.summary);
+    showScanFindings(result.findings||[]);
+    await delay(400);
   }
-
-  result.imageDataUrl = currentImageDataUrl || currentImageUrl;
-
-  currentResult = result;
+  result.imageDataUrl=currentImageDataUrl||currentImageUrl;
+  result.analysisSource=backendUsed?"Connected AI visual analysis":"Local notes-based fallback";
+  finishScan();
+  currentResult=result;
   renderResult(currentResult);
   go("result");
-  toast("Inspection complete.");
+  toast(backendUsed?"Inspection complete — AI findings are ready.":"Inspection complete — local fallback used. Connect the AI service for image-specific diagnosis.");
+  analyzeBtn.disabled=false;
+}
+
+function updateScan(stage,percent,headline,insight){
+  const panel=$("scanProgress"); if(!panel)return;
+  panel.classList.remove("hidden");
+  $("scanHeadline").textContent=headline; $("scanPercent").textContent=Math.round(percent)+"%"; $("scanBar").style.width=Math.max(0,Math.min(100,percent))+"%";
+  $("scanInsights").textContent=insight||"";
+  document.querySelectorAll("#scanStageList>div").forEach((el,i)=>{el.classList.toggle("done",i<stage);el.classList.toggle("active",i===stage);});
+}
+function showScanFindings(findings){
+  const box=$("scanFindings"); if(!box)return;
+  box.innerHTML=(findings||[]).slice(0,6).map(f=>`<div class="scan-finding"><strong>${escapeHtml(f.title||"Finding")}</strong><span>${escapeHtml(f.severity||"Unclassified")} · ${Number(f.confidence||0)}% confidence${f.location?" · "+escapeHtml(f.location):""}</span><span>${escapeHtml(f.description||"")}</span></div>`).join("");
+}
+function finishScan(){
+  const panel=$("scanProgress"); if(!panel)return;
+  $("scanHeadline").textContent="Inspection complete"; $("scanPercent").textContent="100%"; $("scanBar").style.width="100%";
+  document.querySelectorAll("#scanStageList>div").forEach(el=>{el.classList.remove("active");el.classList.add("done");});
+}
+function getInspectionHints(notes){
+  const n=String(notes||"").toLowerCase(), a=[];
+  if(/leak|drip|wet|fluid/.test(n))a.push("Leak/fluid concern noted.");
+  if(/vibrat|bearing|noise|sound/.test(n))a.push("Vibration/bearing concern noted.");
+  if(/crack|fracture|break/.test(n))a.push("Crack/fracture concern noted.");
+  if(/rust|corros|oxid/.test(n))a.push("Corrosion/oxidation concern noted.");
+  if(/heat|hot|burn|overheat/.test(n))a.push("Heat/overheating concern noted.");
+  if(/wear|abras|damage|dent/.test(n))a.push("Wear/damage concern noted.");
+  return a.length?a.join(" "):"No specific technician issue keyword was supplied; image evidence is required for an evidence-based visual diagnosis.";
 }
 
 function formatApiResult(data, category, tag, notes, isVideo){
@@ -2111,20 +1712,10 @@ function createSmartInspection(category, tag, notes, isVideo){
     score = 65 + Math.floor(Math.random() * 16);
     severity = "Medium";
   } else {
-    const rand = Math.random();
-    if(rand < 0.35){
-      condition = "Attention";
-      score = 70 + Math.floor(Math.random() * 14);
-      severity = "Medium";
-    } else if(rand < 0.55){
-      condition = "At Risk";
-      score = 48 + Math.floor(Math.random() * 18);
-      severity = "High";
-    } else {
-      condition = "Healthy";
-      score = 88 + Math.floor(Math.random() * 11);
-      severity = "Low";
-    }
+    // Never invent a machine defect without visual AI output or technician evidence.
+    condition = "Attention";
+    score = 75;
+    severity = "Medium";
   }
 
   let asset = "Industrial equipment";
@@ -2139,6 +1730,9 @@ function createSmartInspection(category, tag, notes, isVideo){
   }
 
   const findings = [];
+  if(condition === "Attention" && !lowerNotes){
+    findings.push({title:"Image-specific diagnosis unavailable",description:"The connected AI analysis service did not return a machine-specific visual diagnosis. The local fallback will not invent a defect from an unseen image.",severity:"Medium",confidence:100,location:"Inspection evidence",evidence:isVideo?0:null});
+  }
   if(condition === "Healthy"){
     findings.push({
       title: "Surface profile and integrity intact",
@@ -2861,6 +2455,20 @@ function resetInspectionForm(){
 /* =====================================================
    INITIALIZATION
 ===================================================== */
+
+/* ===== Theme persistence ===== */
+(function(){
+  const root=document.documentElement, btn=document.getElementById("themeToggle");
+  const saved=localStorage.getItem("inspectiq-theme");
+  const systemDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+  function apply(theme){
+    root.dataset.theme=theme;
+    if(btn){const dark=theme==="dark";btn.setAttribute("aria-label",dark?"Switch to light mode":"Switch to dark mode");btn.title=dark?"Switch to light mode":"Switch to dark mode";btn.innerHTML=`<span>${dark?"☀":"☾"}</span><span class="theme-label">${dark?"Light":"Dark"}</span>`;}
+  }
+  apply(saved||(systemDark?"dark":"light"));
+  btn&&btn.addEventListener("click",()=>{const next=root.dataset.theme==="dark"?"light":"dark";localStorage.setItem("inspectiq-theme",next);apply(next);});
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   setupDragAndDrop();
 
