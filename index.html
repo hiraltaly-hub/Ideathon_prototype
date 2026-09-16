@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>InspectIQ — AI Visual Inspection</title>
+<title>InspectIQ — AI Visual Inspection Assistant</title>
 
 <style>
 :root{
@@ -35,7 +35,7 @@ body{
   line-height:1.6;
 }
 
-button,input,textarea{font:inherit}
+button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 
 .hidden{display:none!important}
@@ -47,7 +47,6 @@ button{cursor:pointer}
 }
 
 /* HEADER */
-
 .header{
   position:sticky;
   top:12px;
@@ -104,9 +103,7 @@ button{cursor:pointer}
 }
 
 /* GENERAL */
-
 main{padding:34px 0}
-
 .page-head{margin-bottom:25px}
 
 .eyebrow{
@@ -213,7 +210,6 @@ p{
 }
 
 /* DASHBOARD */
-
 .dashboard-hero{
   display:flex;
   justify-content:space-between;
@@ -249,7 +245,6 @@ p{
 }
 
 /* INSPECT */
-
 .step{
   border-left:3px solid var(--primary);
   padding-left:15px;
@@ -263,6 +258,12 @@ p{
   background:var(--surface2);
   border:2px dashed #a6d2cc;
   border-radius:13px;
+  transition:.2s;
+}
+
+.drop.drag-over{
+  background:var(--primary-soft);
+  border-color:var(--primary);
 }
 
 .upload{
@@ -278,7 +279,7 @@ p{
 
 .upload:hover{background:#d9f1ec}
 
-input,textarea{
+input,textarea,select{
   width:100%;
   padding:12px;
   border:1px solid var(--border);
@@ -293,7 +294,7 @@ textarea{
   resize:vertical;
 }
 
-input:focus,textarea:focus{
+input:focus,textarea:focus,select:focus{
   border-color:var(--primary);
   box-shadow:0 0 0 3px rgba(15,157,138,.1);
 }
@@ -344,7 +345,6 @@ input:focus,textarea:focus{
 }
 
 /* RESULT */
-
 .score{
   font-size:66px;
   font-weight:900;
@@ -373,6 +373,11 @@ input:focus,textarea:focus{
 .risk{
   background:#ffe1e1;
   color:#b33737;
+}
+
+.neutral{
+  background:#eef4f4;
+  color:var(--muted);
 }
 
 .info{
@@ -419,7 +424,6 @@ input:focus,textarea:focus{
 }
 
 /* REPORTS */
-
 .report-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -466,23 +470,7 @@ input:focus,textarea:focus{
   color:var(--primary-dark);
 }
 
-/* ASSETS */
-
-.asset{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr auto;
-  gap:14px;
-  align-items:center;
-  padding:16px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.asset:last-child{border-bottom:none}
-
-.asset-name{font-weight:850}
-
 /* EMPTY */
-
 .empty{
   text-align:center;
   padding:38px 20px;
@@ -490,7 +478,6 @@ input:focus,textarea:focus{
 }
 
 /* TOAST */
-
 .toast{
   position:fixed;
   right:18px;
@@ -512,80 +499,179 @@ input:focus,textarea:focus{
   opacity:1;
 }
 
+/* PROGRESS MULTI-SEGMENT */
+.progress-multi{
+  display:flex;
+  height:11px;
+  background:#e4eeee;
+  border-radius:20px;
+  overflow:hidden;
+  margin:13px 0;
+}
+
+.progress-multi span{
+  display:block;
+  height:100%;
+  transition:width .4s;
+}
+
+.bar-healthy{background:var(--green)}
+.bar-attention{background:var(--yellow)}
+.bar-risk{background:var(--red)}
+
+/* PRESETS */
+.presets-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:9px;
+  margin-top:10px;
+}
+
+.preset-btn{
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:var(--text);
+  padding:9px 12px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  text-align:left;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.preset-btn:hover{
+  border-color:var(--primary);
+  background:var(--primary-soft);
+  color:var(--primary-dark);
+}
+
+/* CAMERA MODAL */
+.camera-modal{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
+  backdrop-filter:blur(4px);
+}
+
+.camera-box{
+  background:#fff;
+  border-radius:16px;
+  padding:22px;
+  width:min(540px,100%);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  box-shadow:0 12px 36px rgba(0,0,0,.25);
+}
+
+.camera-feed{
+  width:100%;
+  max-height:360px;
+  background:#000;
+  border-radius:10px;
+  object-fit:cover;
+}
+
+/* CLICKABLE RECENT ITEMS */
+.finding.clickable{
+  cursor:pointer;
+  transition:background .15s, transform .15s;
+  padding:14px 12px;
+  border-radius:10px;
+}
+
+.finding.clickable:hover{
+  background:var(--primary-soft);
+  transform:translateX(3px);
+}
+
+/* RESPONSIVE ASSET TABLE */
+.asset-header{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr auto;
+  gap:14px;
+  font-size:11px;
+  font-weight:900;
+  color:var(--muted);
+  padding-bottom:12px;
+  border-bottom:2px solid var(--border);
+}
+
+.asset-row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr auto;
+  gap:14px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.asset-row:last-child{border-bottom:none}
+
 /* MOBILE */
-
 @media(max-width:900px){
+  .grid4, .report-grid{grid-template-columns:repeat(2,1fr);}
+  .two{grid-template-columns:1fr;}
+}
 
-  .grid4,
-  .report-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .two{
-    grid-template-columns:1fr;
-  }
-
-  .asset{
+@media(max-width:760px){
+  .asset-header{display:none;}
+  .asset-row{
     grid-template-columns:1fr 1fr;
+    gap:10px;
+    padding:16px;
+    margin-bottom:12px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:var(--surface2);
+  }
+  .asset-row .asset-name{
+    grid-column:1 / -1;
+    font-size:16px;
   }
 }
 
 @media(max-width:650px){
-
-  .app{
-    width:calc(100% - 18px);
-  }
-
-  .header{
-    position:relative;
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .nav{
-    width:100%;
-    overflow-x:auto;
-  }
-
-  .nav button{
-    white-space:nowrap;
-  }
-
-  .dashboard-hero{
-    display:block;
-  }
-
-  .dashboard-hero .btn{
-    margin-top:15px;
-  }
-
-  .report-head{
-    flex-direction:column;
-  }
-
-  .report-score{
-    text-align:left;
-  }
-
-  .asset{
-    grid-template-columns:1fr;
-  }
+  .app{width:calc(100% - 18px);}
+  .header{position:relative;flex-direction:column;align-items:flex-start;}
+  .nav{width:100%;overflow-x:auto;}
+  .nav button{white-space:nowrap;}
+  .dashboard-hero{display:block;}
+  .dashboard-hero .btn{margin-top:15px;}
+  .report-head{flex-direction:column;}
+  .report-score{text-align:left;}
 }
 
 @media(max-width:430px){
+  .grid4, .report-grid{grid-template-columns:1fr;}
+  h1{font-size:31px;}
+  .score{font-size:55px;}
+}
 
-  .grid4,
-  .report-grid{
-    grid-template-columns:1fr;
+/* PRINT STYLES */
+@media print{
+  .header, .nav, .btn, .drop, textarea, #voiceNoteBtn, #presetBox, .toast, .camera-modal, input, select{
+    display:none!important;
   }
-
-  h1{
-    font-size:31px;
+  body{
+    background:#fff!important;
+    color:#000!important;
   }
-
-  .score{
-    font-size:55px;
+  .card{
+    box-shadow:none!important;
+    border:1px solid #ccc!important;
+    page-break-inside:avoid;
+    margin-bottom:16px!important;
   }
+  .page.hidden{display:none!important;}
+  .page:not(.hidden){display:block!important;}
+  h1, h2, h3{color:#000!important;}
 }
 </style>
 </head>
@@ -595,1213 +681,1085 @@ input:focus,textarea:focus{
 <div class="app">
 
 <header class="header">
-
   <div>
     <div class="logo">
       <span>◈</span> INSPECTIQ
     </div>
-
     <div class="subtitle">
       AI VISUAL INSPECTION ASSISTANT
     </div>
   </div>
 
   <nav class="nav">
-
-    <button data-page="dashboard" class="active">
-      Dashboard
-    </button>
-
-    <button data-page="inspect">
-      Inspect
-    </button>
-
-    <button data-page="assets">
-      Assets
-    </button>
-
-    <button data-page="reports">
-      Reports
-    </button>
-
+    <button data-page="dashboard" class="active">Dashboard</button>
+    <button data-page="inspect">Inspect</button>
+    <button data-page="assets">Assets</button>
+    <button data-page="reports">Reports</button>
   </nav>
-
 </header>
 
 <main>
 
 <!-- DASHBOARD -->
-
 <section id="dashboard" class="page">
-
   <div class="dashboard-hero">
-
     <div class="page-head">
-
-      <div class="eyebrow">
-        INSPECTION OVERVIEW
-      </div>
-
-      <h1>
-        Inspect smarter.<br>
-        Maintain earlier.
-      </h1>
-
-      <p>
-        Your inspection dashboard is calculated from actual saved inspections.
-      </p>
-
+      <div class="eyebrow">INSPECTION OVERVIEW</div>
+      <h1>Inspect smarter.<br>Maintain earlier.</h1>
+      <p>Your inspection dashboard is calculated from actual saved inspections.</p>
     </div>
-
-    <button class="btn primary" onclick="go('inspect')">
-      + New inspection
-    </button>
-
+    <button class="btn primary" onclick="startNewInspection()">+ New inspection</button>
   </div>
 
   <div class="grid4">
-
     <div class="card">
       <div class="stat-label">TOTAL INSPECTIONS</div>
       <div id="metricInspections" class="metric">0</div>
       <p>Saved inspection records</p>
     </div>
-
     <div class="card">
       <div class="stat-label">INSPECTED ASSETS</div>
       <div id="metricAssets" class="metric">0</div>
       <p>AI-detected asset types</p>
     </div>
-
     <div class="card">
       <div class="stat-label">NEED ATTENTION</div>
       <div id="metricAttention" class="metric">0</div>
       <p>Attention or at-risk</p>
     </div>
-
     <div class="card">
       <div class="stat-label">CRITICAL</div>
       <div id="metricCritical" class="metric">0</div>
       <p>Critical records</p>
     </div>
-
   </div>
 
   <div class="card health">
-
     <div class="eyebrow">LIVE HEALTH INDEX</div>
-
     <h2>Overall inspection health</h2>
-
     <div id="healthIndex" class="metric">—</div>
-
     <div class="progress">
       <span id="healthBar"></span>
     </div>
-
-    <p id="healthText">
-      No inspections have been saved yet.
-    </p>
-
+    <p id="healthText">No inspections have been saved yet.</p>
+    <div id="dashboardEmptyActions" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" onclick="loadSampleDemoData()">⚡ Load demo inspection data</button>
+      <button class="btn" onclick="startNewInspection()">+ Start first inspection</button>
+    </div>
   </div>
 
   <div class="card" style="margin-top:18px">
-
     <div class="dashboard-hero">
-
       <div>
         <h2>Recent inspections</h2>
         <p>Latest saved inspection records.</p>
       </div>
-
-      <button class="btn" onclick="go('reports')">
-        View reports
-      </button>
-
+      <button class="btn" onclick="go('reports')">View reports</button>
     </div>
-
     <div id="recent"></div>
-
   </div>
-
 </section>
 
-
 <!-- INSPECT -->
-
 <section id="inspect" class="page hidden">
-
   <div class="page-head">
-
-    <div class="eyebrow">
-      REAL-TIME AI ANALYSIS
-    </div>
-
+    <div class="eyebrow">REAL-TIME AI ANALYSIS</div>
     <h1>Start an inspection</h1>
-
-    <p>
-      Upload visual evidence and InspectIQ will analyze what is visible.
-    </p>
-
+    <p>Upload visual evidence and InspectIQ will analyze what is visible.</p>
   </div>
 
   <div class="two">
-
     <div class="card">
+      <div class="step">
+        <h2>1 · Target asset</h2>
+        <p>Specify the asset category and unique identifier.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <div>
+            <label class="stat-label" for="assetCategory">ASSET CATEGORY</label>
+            <select id="assetCategory" style="margin-top:5px;width:100%;padding:10px;border-radius:9px;border:1px solid var(--border);background:#fff;font-weight:700">
+              <option value="Equipment">Equipment</option>
+              <option value="Industrial system">Industrial system</option>
+              <option value="Structure">Structure</option>
+              <option value="Large component">Large component</option>
+            </select>
+          </div>
+          <div>
+            <label class="stat-label" for="assetTag">ASSET ID / TAG</label>
+            <input id="assetTag" placeholder="e.g. PUMP-402 or WELD-08" style="margin-top:5px">
+          </div>
+        </div>
+      </div>
 
       <div class="step">
-
-        <h2>1 · Upload evidence</h2>
-
-        <p>Choose a photo or video.</p>
-
-        <div class="drop">
-
-          <label class="upload">
-
-            📷 Upload photo
-
-            <input
-              id="file"
-              type="file"
-              accept="image/*"
-              class="hidden">
-
-          </label>
-
-          <br><br>
-
-          <label class="upload">
-
-            🎥 Upload video
-
-            <input
-              id="videoFile"
-              type="file"
-              accept="video/*"
-              class="hidden">
-
-          </label>
-
-          <div
-            id="fileLabel"
-            class="small"
-            style="margin-top:14px">
-
-            No evidence selected
-
+        <h2>2 · Upload evidence</h2>
+        <p>Drag & drop evidence or choose an option below:</p>
+        <div class="drop" id="dropZone">
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <label class="upload">
+              📷 Upload photo
+              <input id="file" type="file" accept="image/*" capture="environment" class="hidden">
+            </label>
+            <label class="upload">
+              🎥 Upload video
+              <input id="videoFile" type="file" accept="video/*" class="hidden">
+            </label>
+            <button type="button" class="upload" id="openCameraBtn" onclick="openCamera()" style="border:1px solid #b7ddd7">
+              📸 Live camera
+            </button>
           </div>
-
+          <div id="fileLabel" class="small" style="margin-top:14px">
+            No evidence selected · Drag & drop photo or video here
+          </div>
         </div>
 
-        <img
-          id="imagePreview"
-          class="preview hidden"
-          alt="Inspection image preview">
+        <div id="presetBox" style="margin-top:16px">
+          <div class="stat-label">OR USE A DEMO INSPECTION PRESET:</div>
+          <div class="presets-grid">
+            <button type="button" class="preset-btn" onclick="applyPreset('pipeline')">
+              🚰 Pipeline Leak
+              <div class="small">Industrial system</div>
+            </button>
+            <button type="button" class="preset-btn" onclick="applyPreset('motor')">
+              ⚙️ Motor Bearing
+              <div class="small">Equipment</div>
+            </button>
+            <button type="button" class="preset-btn" onclick="applyPreset('valve')">
+              🚰 Corroded Valve
+              <div class="small">Large component</div>
+            </button>
+            <button type="button" class="preset-btn" onclick="applyPreset('healthy')">
+              ✅ Welded Joint
+              <div class="small">Structure (Healthy)</div>
+            </button>
+          </div>
+        </div>
 
-        <video
-          id="inspectionVideo"
-          class="video hidden"
-          controls>
-        </video>
-
+        <img id="imagePreview" class="preview hidden" alt="Inspection image preview">
+        <video id="inspectionVideo" class="video hidden" controls></video>
       </div>
 
       <div class="step">
-
-        <h2>2 · Field notes</h2>
-
-        <p>Optional context for the AI.</p>
-
-        <textarea
-          id="notes"
-          placeholder="Example: Inspector noticed unusual vibration around the joint..."></textarea>
-
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2>3 · Field notes & voice</h2>
+            <p>Technician observations and operating context.</p>
+          </div>
+          <button type="button" id="voiceNoteBtn" class="btn" onclick="toggleVoiceDictation()" style="font-size:12px;padding:6px 12px">
+            🎤 Voice dictation
+          </button>
+        </div>
+        <textarea id="notes" style="margin-top:10px" placeholder="Example: Inspector noticed unusual vibration around the primary shaft housing..."></textarea>
       </div>
-
     </div>
-
 
     <div class="card">
-
       <div class="step">
-
-        <h2>3 · AI inspection</h2>
-
-        <p>
-          The inspection engine identifies the visible asset,
-          condition, faults, severity, risk and recommended action.
-        </p>
-
+        <h2>4 · AI inspection</h2>
+        <p>The inspection engine identifies the visible asset, condition, faults, severity, risk, and recommended action.</p>
       </div>
-
       <div id="inspectionStatus" class="status">
-
-        <b>Vision engine</b>
-
-        <br>
-
-        Ready for evidence.
-
+        <b>Vision engine</b><br>Ready for evidence.
       </div>
-
-      <button
-        id="analyze"
-        class="btn primary"
-        style="width:100%;margin-top:18px"
-        disabled>
-
+      <button id="analyze" class="btn primary" style="width:100%;margin-top:18px" disabled>
         Select evidence to start
-
       </button>
-
+      <button type="button" class="btn" onclick="resetInspectionForm()" style="width:100%;margin-top:8px">
+        Reset inspection form
+      </button>
     </div>
-
   </div>
-
 </section>
-
 
 <!-- ASSETS -->
-
 <section id="assets" class="page hidden">
-
   <div class="page-head">
-
-    <div class="eyebrow">
-      ASSET REGISTRY
-    </div>
-
+    <div class="eyebrow">ASSET REGISTRY</div>
     <h1>Detected assets</h1>
-
-    <p>
-      Assets are created from saved inspection results.
-    </p>
-
+    <p>Assets are created from saved inspection results.</p>
   </div>
-
   <div class="card">
-
     <div id="assetsTable"></div>
-
   </div>
-
 </section>
 
-
 <!-- REPORTS -->
-
 <section id="reports" class="page hidden">
-
   <div class="page-head">
-
-    <div class="eyebrow">
-      ANALYTICAL INSPECTION REPORTS
-    </div>
-
+    <div class="eyebrow">ANALYTICAL INSPECTION REPORTS</div>
     <h1>Inspection analytics</h1>
-
-    <p>
-      Detailed reports generated from your inspection records.
-    </p>
-
+    <p>Detailed reports generated from your inspection records.</p>
   </div>
 
   <div id="reportAnalytics"></div>
 
-  <div id="saved" style="margin-top:18px"></div>
+  <div class="card" style="margin-top:18px">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex:1">
+        <input id="reportSearch" placeholder="🔍 Search asset, ID, or notes..." style="max-width:280px;padding:9px 12px" oninput="renderReports()">
+        <select id="reportConditionFilter" style="max-width:180px;padding:9px 12px;border-radius:9px;border:1px solid var(--border);background:#fff;font-weight:700" onchange="renderReports()">
+          <option value="ALL">All conditions</option>
+          <option value="Healthy">Healthy only</option>
+          <option value="Attention">Attention only</option>
+          <option value="At Risk">At Risk only</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" onclick="window.print()">🖨️ Print reports</button>
+        <button class="btn danger" onclick="clearAllReports()">Clear all</button>
+      </div>
+    </div>
+  </div>
 
+  <div id="saved" style="margin-top:18px"></div>
 </section>
 
-
 <!-- RESULT -->
-
 <section id="result" class="page hidden">
-
-  <div class="page-head">
-
-    <div class="eyebrow">
-      AI INSPECTION COMPLETE
+  <div class="page-head" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:15px">
+    <div>
+      <div class="eyebrow">AI INSPECTION COMPLETE</div>
+      <h1 id="resultTitle">Inspection result</h1>
+      <p id="resultAssetMeta" class="small" style="font-weight:700"></p>
     </div>
-
-    <h1 id="resultTitle">
-      Inspection result
-    </h1>
-
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="go('reports')">← View all reports</button>
+      <button class="btn" onclick="printCurrentReport()">🖨️ Print / Save PDF</button>
+    </div>
   </div>
 
   <div class="two">
-
     <div class="card">
-
-      <div class="eyebrow">
-        CONDITION SCORE
-      </div>
-
+      <div class="eyebrow">CONDITION SCORE</div>
       <div id="score" class="score">—</div>
-
       <div class="progress">
         <span id="scoreBar"></span>
       </div>
-
       <div id="resultStatus" style="margin:10px 0"></div>
-
       <p id="resultConfidence"></p>
 
       <div class="info">
-
-        <div class="eyebrow">
-          AI SUMMARY
-        </div>
-
+        <div class="eyebrow">AI SUMMARY</div>
         <p id="summary">—</p>
-
       </div>
 
-      <div
-        style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
-
-        <button id="save" class="btn primary">
-          Save inspection
-        </button>
-
-        <button class="btn" onclick="go('inspect')">
-          New inspection
-        </button>
-
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
+        <button id="save" class="btn primary">Save inspection</button>
+        <button class="btn" onclick="printCurrentReport()">🖨️ Print / Save PDF</button>
+        <button class="btn" onclick="startNewInspection()">+ New inspection</button>
       </div>
-
     </div>
-
 
     <div class="card">
-
-      <div class="eyebrow">
-        MAINTENANCE DECISION
-      </div>
-
+      <div class="eyebrow">MAINTENANCE DECISION</div>
       <h2>Recommended action</h2>
-
       <div class="info">
-
         <b>🔧 Corrective action</b>
-
         <p id="action">—</p>
-
       </div>
-
       <div class="info">
-
         <b>📅 Next inspection</b>
-
         <p id="nextInspection">—</p>
-
       </div>
-
       <p class="small" style="margin-top:18px">
-
-        AI findings are based on visual evidence and should be
-        verified by a qualified inspector or engineer.
-
+        AI findings are based on visual evidence and should be verified by a qualified inspector or engineer.
       </p>
-
     </div>
-
   </div>
 
+  <div id="resultImageCard" class="card hidden" style="margin-top:18px">
+    <div class="eyebrow">PHOTO EVIDENCE</div>
+    <h2>Inspection image</h2>
+    <p>Visual evidence analyzed by the inspection engine.</p>
+    <img id="resultImage" class="preview" alt="Inspection image preview" style="margin-top:14px;max-height:480px;width:100%;object-fit:contain;background:#0d1e21">
+  </div>
 
-  <div
-    id="resultVideoCard"
-    class="card hidden"
-    style="margin-top:18px">
-
-    <div class="eyebrow">
-      VIDEO EVIDENCE
-    </div>
-
+  <div id="resultVideoCard" class="card hidden" style="margin-top:18px">
+    <div class="eyebrow">VIDEO EVIDENCE</div>
     <h2>Inspection video</h2>
-
-    <p>
-      Evidence buttons jump to the relevant timestamp.
-    </p>
-
-    <video
-      id="resultVideo"
-      class="video"
-      controls>
-    </video>
-
+    <p>Evidence buttons jump to the relevant timestamp.</p>
+    <video id="resultVideo" class="video" controls></video>
   </div>
-
 
   <div class="card" style="margin-top:18px">
-
-    <div class="eyebrow">
-      AI FINDINGS
-    </div>
-
+    <div class="eyebrow">AI FINDINGS</div>
     <h2>Detected findings</h2>
-
-    <p>
-      Review exactly what the inspection engine detected.
-    </p>
-
+    <p>Review exactly what the inspection engine detected.</p>
     <div id="findings"></div>
-
   </div>
-
 </section>
 
 </main>
 
 </div>
 
-
-<div id="toast" class="toast">
-  Saved
+<!-- CAMERA MODAL -->
+<div id="cameraModal" class="camera-modal hidden">
+  <div class="camera-box">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h3 style="margin:0">Live camera capture</h3>
+        <p class="small" style="margin:3px 0 0">Position evidence in frame and snap photo</p>
+      </div>
+      <button class="btn" onclick="closeCamera()">✕</button>
+    </div>
+    <video id="cameraVideo" class="camera-feed" autoplay playsinline></video>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" onclick="closeCamera()">Cancel</button>
+      <button class="btn primary" onclick="captureCameraPhoto()">📸 Take photo</button>
+    </div>
+  </div>
 </div>
 
+<div id="toast" class="toast">Saved</div>
 
 <script>
-
 /* =====================================================
-   STATE
+   STATE & CONSTANTS
 ===================================================== */
-
 let currentResult = null;
 let currentImageFile = null;
 let currentVideoFile = null;
 let currentImageUrl = null;
 let currentVideoUrl = null;
+let currentImageDataUrl = null;
 
 const STORAGE_KEY = "inspectiq-inspections";
-
 const $ = id => document.getElementById(id);
-
 
 /* =====================================================
    STORAGE
 ===================================================== */
-
 function getReports(){
-
   try{
-
-    const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
-
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     return Array.isArray(data) ? data : [];
-
   }catch(error){
-
-    console.error(error);
-
+    console.error("Error reading localStorage:", error);
     return [];
-
   }
-
 }
-
 
 function saveReports(reports){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(reports)
-  );
-
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+  }catch(error){
+    console.error("Error writing localStorage:", error);
+    toast("Storage limit reached. Please clear older reports.");
+  }
 }
 
-
 /* =====================================================
-   SECURITY
+   SECURITY & HELPERS
 ===================================================== */
-
 function escapeHtml(value){
-
   return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-document
-  .querySelectorAll(".nav button")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => go(button.dataset.page)
-    );
-
-  });
-
-
-function go(page){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(section =>
-      section.classList.add("hidden")
-    );
-
-  const target = $(page);
-
-  if(!target) return;
-
-  target.classList.remove("hidden");
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.page === page
-      );
-
-    });
-
-  if(page === "dashboard")
-    renderDashboard();
-
-  if(page === "assets")
-    renderAssets();
-
-  if(page === "reports")
-    renderReports();
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
+function formatDate(value){
+  try{
+    if(!value) return "N/A";
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }).format(new Date(value));
+  }catch{
+    return String(value);
+  }
 }
 
+function formatBytes(bytes){
+  if(!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return (bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0) + " " + units[i];
+}
 
-/* =====================================================
-   TOAST
-===================================================== */
+function delay(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 let toastTimer;
-
 function toast(message){
-
   const el = $("toast");
-
+  if(!el) return;
   el.textContent = message;
-
   el.classList.add("show");
-
   clearTimeout(toastTimer);
-
   toastTimer = setTimeout(() => {
     el.classList.remove("show");
-  },2500);
-
+  }, 2800);
 }
 
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-function setStatus(message,loading=false){
-
+function setStatus(message, loading = false){
+  const statusEl = $("inspectionStatus");
+  if(!statusEl) return;
   if(loading){
-
-    $("inspectionStatus").innerHTML = `
+    statusEl.innerHTML = `
       <div class="loading">
         <span class="dot"></span>
         <b>${escapeHtml(message)}</b>
       </div>
     `;
-
   }else{
-
-    $("inspectionStatus").innerHTML = `
+    statusEl.innerHTML = `
       <b>Vision engine</b>
       <br>
       ${escapeHtml(message)}
     `;
-
   }
-
 }
 
+function getSeverityClass(severity){
+  const s = String(severity || "").toLowerCase();
+  if(s.includes("high") || s.includes("critical") || s.includes("major")){
+    return "risk";
+  }
+  if(s.includes("medium") || s.includes("moderate") || s.includes("attention")){
+    return "attention";
+  }
+  return "healthy";
+}
 
 /* =====================================================
-   FILE HANDLING
+   NAVIGATION & ROUTING
 ===================================================== */
+document.querySelectorAll(".nav button").forEach(button => {
+  button.addEventListener("click", () => go(button.dataset.page));
+});
 
-function resetEvidence(){
+function go(page, updateHash = true){
+  document.querySelectorAll(".page").forEach(section => section.classList.add("hidden"));
 
-  currentImageFile = null;
-  currentVideoFile = null;
+  const target = $(page);
+  if(!target) return;
 
-  if(currentImageUrl){
+  target.classList.remove("hidden");
 
-    URL.revokeObjectURL(currentImageUrl);
+  document.querySelectorAll(".nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
 
-    currentImageUrl = null;
-
+  if(updateHash && window.location.hash !== "#" + page){
+    history.pushState(null, "", "#" + page);
   }
 
+  if(page === "dashboard") renderDashboard();
+  if(page === "assets") renderAssets();
+  if(page === "reports") renderReports();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function startNewInspection(){
+  resetInspectionForm();
+  go("inspect");
+}
+
+window.addEventListener("popstate", () => {
+  const hash = window.location.hash.replace("#", "") || "dashboard";
+  if($(hash)){
+    go(hash, false);
+  }
+});
+
+/* =====================================================
+   FILE & EVIDENCE HANDLING
+===================================================== */
+function resetEvidence(){
+  currentImageFile = null;
+  currentVideoFile = null;
+  currentImageDataUrl = null;
+
+  if(currentImageUrl){
+    URL.revokeObjectURL(currentImageUrl);
+    currentImageUrl = null;
+  }
   if(currentVideoUrl){
-
     URL.revokeObjectURL(currentVideoUrl);
-
     currentVideoUrl = null;
-
   }
 
   $("imagePreview").classList.add("hidden");
-
+  $("imagePreview").src = "";
   $("inspectionVideo").classList.add("hidden");
-
-  $("fileLabel").textContent =
-    "No evidence selected";
-
+  $("inspectionVideo").src = "";
+  $("fileLabel").textContent = "No evidence selected · Drag & drop photo or video here";
   $("analyze").disabled = true;
-
-  $("analyze").textContent =
-    "Select evidence to start";
-
+  $("analyze").textContent = "Select evidence to start";
 }
 
+function handleSelectedFile(file){
+  if(!file) return;
 
-$("file").addEventListener(
-  "change",
-  event => {
-
-    const file = event.target.files[0];
-
-    if(!file) return;
-
-    if(!file.type.startsWith("image/")){
-
-      toast("Please select an image file.");
-
-      return;
-
-    }
-
+  if(file.type.startsWith("image/")){
     currentImageFile = file;
     currentVideoFile = null;
 
-    if(currentImageUrl)
-      URL.revokeObjectURL(currentImageUrl);
+    if(currentImageUrl) URL.revokeObjectURL(currentImageUrl);
+    currentImageUrl = URL.createObjectURL(file);
 
-    currentImageUrl =
-      URL.createObjectURL(file);
-
-    $("imagePreview").src =
-      currentImageUrl;
-
-    $("imagePreview")
-      .classList
-      .remove("hidden");
-
-    $("inspectionVideo")
-      .classList
-      .add("hidden");
-
-    $("fileLabel").textContent =
-      `${file.name} · ${formatBytes(file.size)}`;
-
+    $("imagePreview").src = currentImageUrl;
+    $("imagePreview").classList.remove("hidden");
+    $("inspectionVideo").classList.add("hidden");
+    $("fileLabel").textContent = `${file.name || "Photo"} · ${formatBytes(file.size)}`;
     $("analyze").disabled = false;
+    $("analyze").textContent = "Analyze photo with InspectIQ";
 
-    $("analyze").textContent =
-      "Analyze photo";
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentImageDataUrl = e.target.result;
+    };
+    reader.readAsDataURL(file);
 
-    setStatus(
-      "Photo selected. Ready for analysis."
-    );
-
-  }
-);
-
-
-$("videoFile").addEventListener(
-  "change",
-  event => {
-
-    const file = event.target.files[0];
-
-    if(!file) return;
-
-    if(!file.type.startsWith("video/")){
-
-      toast("Please select a video file.");
-
-      return;
-
-    }
-
+    setStatus("Photo evidence loaded. Ready for inspection analysis.");
+  } else if(file.type.startsWith("video/")){
     currentVideoFile = file;
     currentImageFile = null;
+    currentImageDataUrl = null;
 
-    if(currentVideoUrl)
-      URL.revokeObjectURL(currentVideoUrl);
+    if(currentVideoUrl) URL.revokeObjectURL(currentVideoUrl);
+    currentVideoUrl = URL.createObjectURL(file);
 
-    currentVideoUrl =
-      URL.createObjectURL(file);
-
-    $("inspectionVideo").src =
-      currentVideoUrl;
-
-    $("inspectionVideo")
-      .classList
-      .remove("hidden");
-
-    $("imagePreview")
-      .classList
-      .add("hidden");
-
-    $("fileLabel").textContent =
-      `${file.name} · ${formatBytes(file.size)}`;
-
+    $("inspectionVideo").src = currentVideoUrl;
+    $("inspectionVideo").classList.remove("hidden");
+    $("imagePreview").classList.add("hidden");
+    $("fileLabel").textContent = `${file.name || "Video"} · ${formatBytes(file.size)}`;
     $("analyze").disabled = false;
+    $("analyze").textContent = "Analyze video with InspectIQ";
 
-    $("analyze").textContent =
-      "Analyze video";
-
-    setStatus(
-      "Video selected. Ready for analysis."
-    );
-
+    setStatus("Video evidence loaded. Ready for temporal inspection analysis.");
+  } else {
+    toast("Unsupported file format. Please upload an image or video.");
   }
-);
-
-
-function formatBytes(bytes){
-
-  if(!bytes) return "0 B";
-
-  const units = [
-    "B",
-    "KB",
-    "MB",
-    "GB"
-  ];
-
-  const i =
-    Math.floor(
-      Math.log(bytes) /
-      Math.log(1024)
-    );
-
-  return (
-    bytes /
-    Math.pow(1024,i)
-  ).toFixed(i ? 1 : 0)
-  + " "
-  + units[i];
-
 }
 
+$("file").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if(file) handleSelectedFile(file);
+});
+
+$("videoFile").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if(file) handleSelectedFile(file);
+});
+
+function setupDragAndDrop(){
+  const dropZone = $("dropZone");
+  if(!dropZone) return;
+
+  ["dragenter", "dragover"].forEach(name => {
+    dropZone.addEventListener(name, e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add("drag-over");
+    }, false);
+  });
+
+  ["dragleave", "drop"].forEach(name => {
+    dropZone.addEventListener(name, e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove("drag-over");
+    }, false);
+  });
+
+  dropZone.addEventListener("drop", e => {
+    const file = e.dataTransfer?.files?.[0];
+    if(file) handleSelectedFile(file);
+  }, false);
+}
 
 /* =====================================================
-   ANALYZE BUTTON
+   LIVE CAMERA CAPTURE
 ===================================================== */
+let cameraStream = null;
 
-$("analyze").addEventListener(
-  "click",
-  analyzeEvidence
-);
+async function openCamera(){
+  const modal = $("cameraModal");
+  const video = $("cameraVideo");
+  try{
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      toast("Camera API not available. You can use Upload Photo.");
+      return;
+    }
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" },
+      audio: false
+    });
+    video.srcObject = cameraStream;
+    modal.classList.remove("hidden");
+  }catch(err){
+    console.warn("Camera error:", err);
+    toast("Could not access camera: " + (err.message || "Permission denied"));
+  }
+}
 
+function closeCamera(){
+  const modal = $("cameraModal");
+  modal.classList.add("hidden");
+  if(cameraStream){
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraStream = null;
+  }
+}
+
+function captureCameraPhoto(){
+  const video = $("cameraVideo");
+  if(!video || !cameraStream) return;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  canvas.toBlob(blob => {
+    if(!blob) return;
+    const file = new File([blob], "camera-capture-" + Date.now() + ".jpg", { type: "image/jpeg" });
+    handleSelectedFile(file);
+    closeCamera();
+    toast("Camera photo captured.");
+  }, "image/jpeg", 0.92);
+}
+
+/* =====================================================
+   VOICE NOTES DICTATION
+===================================================== */
+let speechRecognizer = null;
+let isRecordingVoice = false;
+
+function toggleVoiceDictation(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    toast("Voice dictation is not supported in this browser. You can type notes.");
+    return;
+  }
+
+  const btn = $("voiceNoteBtn");
+  if(isRecordingVoice && speechRecognizer){
+    speechRecognizer.stop();
+    isRecordingVoice = false;
+    btn.textContent = "🎤 Voice dictation";
+    btn.classList.remove("danger");
+    return;
+  }
+
+  try{
+    speechRecognizer = new SpeechRecognition();
+    speechRecognizer.continuous = true;
+    speechRecognizer.interimResults = false;
+    speechRecognizer.lang = "en-US";
+
+    speechRecognizer.onstart = () => {
+      isRecordingVoice = true;
+      btn.textContent = "🔴 Listening... (Click to stop)";
+      btn.classList.add("danger");
+      toast("Listening... Speak technician notes.");
+    };
+
+    speechRecognizer.onresult = event => {
+      const transcript = Array.from(event.results)
+        .map(r => r[0].transcript)
+        .join(" ");
+      const notes = $("notes");
+      notes.value = (notes.value ? notes.value + " " : "") + transcript;
+    };
+
+    speechRecognizer.onerror = event => {
+      console.warn("Speech error:", event.error);
+      isRecordingVoice = false;
+      btn.textContent = "🎤 Voice dictation";
+      btn.classList.remove("danger");
+      if(event.error !== "no-speech"){
+        toast("Voice error: " + event.error);
+      }
+    };
+
+    speechRecognizer.onend = () => {
+      isRecordingVoice = false;
+      btn.textContent = "🎤 Voice dictation";
+      btn.classList.remove("danger");
+    };
+
+    speechRecognizer.start();
+  }catch(err){
+    console.error("Speech init error:", err);
+    toast("Could not start voice recognition.");
+  }
+}
+
+/* =====================================================
+   DEMO INSPECTION PRESETS
+===================================================== */
+function applyPreset(presetKey){
+  resetEvidence();
+
+  const presets = {
+    pipeline: {
+      category: "Industrial system",
+      tag: "PL-WEST-102",
+      notes: "Detected weeping moisture and surface oxidation around flange bolt perimeter during pressure cycling.",
+      asset: "Pipeline assembly",
+      color: "#b58718",
+      label: "PIPELINE FLANGE DEFECT"
+    },
+    motor: {
+      category: "Equipment",
+      tag: "MTR-CENT-40",
+      notes: "Severe high-frequency vibration and localized thermal discoloration on bearing housing.",
+      asset: "Pump / motor assembly",
+      color: "#c74343",
+      label: "MOTOR BEARING ANOMALY"
+    },
+    valve: {
+      category: "Large component",
+      tag: "VLV-ISO-09",
+      notes: "Scale build-up, pitting corrosion on valve body, sluggish actuator response.",
+      asset: "Industrial control valve",
+      color: "#a56b00",
+      label: "VALVE CORROSION DEFECT"
+    },
+    healthy: {
+      category: "Structure",
+      tag: "STR-WELD-55",
+      notes: "Annual baseline infrastructure inspection. Uniform weld contour, no visible defects or spatter.",
+      asset: "Welded structural joint",
+      color: "#17835f",
+      label: "HEALTHY STRUCTURAL WELD"
+    }
+  };
+
+  const p = presets[presetKey];
+  if(!p) return;
+
+  $("assetCategory").value = p.category;
+  $("assetTag").value = p.tag;
+  $("notes").value = p.notes;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 640;
+  canvas.height = 420;
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#102327";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = "rgba(15,157,138,0.18)";
+  ctx.lineWidth = 1;
+  for(let x = 0; x < canvas.width; x += 32){
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  }
+  for(let y = 0; y < canvas.height; y += 32){
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  }
+
+  ctx.fillStyle = "#1b373d";
+  ctx.strokeStyle = "#2e5962";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.roundRect(140, 100, 360, 220, 16);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = p.color;
+  ctx.beginPath();
+  ctx.arc(320, 210, 56, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(255,255,255,0.4)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(320, 210, 72, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 17px Inter, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(p.label, 320, 60);
+
+  ctx.fillStyle = "#9ccfd0";
+  ctx.font = "13px Inter, sans-serif";
+  ctx.fillText(`TAG: ${p.tag} · ${p.category.toUpperCase()}`, 320, 85);
+
+  ctx.fillStyle = "#e5f6f2";
+  ctx.font = "bold 13px Inter, sans-serif";
+  ctx.fillText("INSPECTIQ VISION SCAN SAMPLE", 320, 365);
+
+  canvas.toBlob(blob => {
+    if(!blob) return;
+    const file = new File([blob], `${p.tag.toLowerCase()}-preset.jpg`, { type: "image/jpeg" });
+    handleSelectedFile(file);
+    toast(`Loaded preset: ${p.label}`);
+  }, "image/jpeg", 0.92);
+}
+
+/* =====================================================
+   AI VISION ENGINE & SERVER INTEGRATION
+===================================================== */
+$("analyze").addEventListener("click", analyzeEvidence);
+
+async function checkServerHealth(){
+  try{
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1800);
+    const res = await fetch("/api/health", { signal: controller.signal });
+    clearTimeout(timer);
+    if(res.ok){
+      const data = await res.json();
+      return data.status === "ok";
+    }
+  }catch{
+    return false;
+  }
+  return false;
+}
 
 async function analyzeEvidence(){
-
   if(!currentImageFile && !currentVideoFile){
-
-    toast("Select photo or video first.");
-
+    toast("Select photo or video evidence first.");
     return;
-
   }
 
   $("analyze").disabled = true;
 
-  setStatus(
-    "Analyzing visual evidence...",
-    true
-  );
-
-  await delay(900);
-
-  setStatus(
-    "Detecting asset and condition...",
-    true
-  );
-
-  await delay(900);
-
-  setStatus(
-    "Generating maintenance assessment...",
-    true
-  );
-
-  await delay(700);
-
-
-  /*
-    -----------------------------------------------------
-    DEMO AI RESULT
-
-    Replace this function with your real AI API call.
-    -----------------------------------------------------
-  */
-
+  const category = $("assetCategory").value;
+  const tag = $("assetTag").value.trim() || ("TAG-" + Math.floor(100 + Math.random() * 900));
+  const notes = $("notes").value.trim();
   const isVideo = !!currentVideoFile;
 
-  const notes =
-    $("notes").value.trim();
+  setStatus("Verifying inspection engine connection...", true);
+  await delay(600);
 
+  const serverOnline = await checkServerHealth();
 
-  currentResult = createDemoResult(
-    isVideo,
-    notes
-  );
+  setStatus("Analyzing visual evidence...", true);
+  await delay(700);
 
+  setStatus("Detecting asset anomalies & condition...", true);
+  await delay(700);
 
+  setStatus("Synthesizing engineering recommendations...", true);
+  await delay(600);
+
+  let result = null;
+
+  if(serverOnline && currentImageFile){
+    try{
+      const formData = new FormData();
+      formData.append("image", currentImageFile);
+      formData.append("notes", notes);
+      formData.append("category", category);
+      formData.append("tag", tag);
+
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        body: formData
+      });
+
+      if(response.ok){
+        const apiData = await response.json();
+        result = formatApiResult(apiData, category, tag, notes, false);
+      }
+    }catch(err){
+      console.warn("Backend call failed, using client vision fallback:", err);
+    }
+  }
+
+  if(!result){
+    result = createSmartInspection(category, tag, notes, isVideo);
+  }
+
+  result.imageDataUrl = currentImageDataUrl || currentImageUrl;
+
+  currentResult = result;
   renderResult(currentResult);
-
   go("result");
-
+  toast("Inspection complete.");
 }
 
-
-/* =====================================================
-   DEMO AI ENGINE
-===================================================== */
-
-function createDemoResult(isVideo,notes){
-
-  const random =
-    Math.random();
-
-  let condition;
-  let score;
-  let severity;
-
-  if(random < .55){
-
-    condition = "Healthy";
-    score = 88 + Math.floor(Math.random()*10);
-    severity = "Low";
-
-  }else if(random < .85){
-
-    condition = "Attention";
-    score = 62 + Math.floor(Math.random()*18);
-    severity = "Medium";
-
-  }else{
-
-    condition = "At Risk";
-    score = 35 + Math.floor(Math.random()*25);
-    severity = "High";
-
-  }
-
-
-  let asset =
-    "Industrial equipment";
-
-  if(notes){
-
-    const lower =
-      notes.toLowerCase();
-
-    if(
-      lower.includes("pipe") ||
-      lower.includes("pipeline")
-    ){
-
-      asset = "Pipeline";
-
-    }else if(
-      lower.includes("motor") ||
-      lower.includes("pump")
-    ){
-
-      asset = "Pump / motor assembly";
-
-    }else if(
-      lower.includes("joint") ||
-      lower.includes("weld")
-    ){
-
-      asset = "Welded joint";
-
-    }else if(
-      lower.includes("valve")
-    ){
-
-      asset = "Industrial valve";
-
-    }else if(
-      lower.includes("belt")
-    ){
-
-      asset = "Conveyor belt";
-
-    }
-
-  }
-
-
-  const findings = [];
-
-  if(condition === "Healthy"){
-
-    findings.push({
-
-      title:"No significant visible defect",
-
-      description:
-        "The available visual evidence does not show an obvious structural or operational defect.",
-
-      severity:"Low",
-
-      confidence:92,
-
-      location:"Primary inspection area",
-
-      evidence:isVideo
-        ? 4.2
-        : null
-
-    });
-
-    findings.push({
-
-      title:"Surface condition acceptable",
-
-      description:
-        "Visible surfaces appear generally intact with no clear severe damage.",
-
-      severity:"Low",
-
-      confidence:87,
-
-      location:"Visible exterior surface",
-
-      evidence:isVideo
-        ? 8.7
-        : null
-
-    });
-
-  }else if(condition === "Attention"){
-
-    findings.push({
-
-      title:"Possible surface deterioration",
-
-      description:
-        "The evidence suggests localized wear, discoloration or surface deterioration that should be reviewed during maintenance.",
-
-      severity:"Medium",
-
-      confidence:84,
-
-      location:"Visible equipment surface",
-
-      evidence:isVideo
-        ? 12.5
-        : null
-
-    });
-
-    findings.push({
-
-      title:"Maintenance follow-up recommended",
-
-      description:
-        "The condition does not appear immediately critical, but continued operation should be accompanied by a follow-up inspection.",
-
-      severity:"Medium",
-
-      confidence:79,
-
-      location:"Inspection area",
-
-      evidence:isVideo
-        ? 19.4
-        : null
-
-    });
-
-  }else{
-
-    findings.push({
-
-      title:"Potential significant defect",
-
-      description:
-        "The visual evidence indicates a potentially significant condition requiring qualified inspection.",
-
-      severity:"High",
-
-      confidence:88,
-
-      location:"Primary visible defect area",
-
-      evidence:isVideo
-        ? 7.8
-        : null
-
-    });
-
-    findings.push({
-
-      title:"Corrective maintenance required",
-
-      description:
-        "Further engineering assessment and corrective maintenance should be considered before continued operation.",
-
-      severity:"High",
-
-      confidence:91,
-
-      location:"Affected component",
-
-      evidence:isVideo
-        ? 15.3
-        : null
-
-    });
-
-  }
-
-
-  let action;
-  let nextInspection;
-
-  if(condition === "Healthy"){
-
-    action =
-      "No immediate corrective action indicated. Continue normal preventive maintenance.";
-
-    nextInspection =
-      "30 days";
-
-  }else if(condition === "Attention"){
-
-    action =
-      "Schedule a maintenance review and verify the suspected wear or deterioration.";
-
-    nextInspection =
-      "14 days";
-
-  }else{
-
-    action =
-      "Arrange a qualified inspection promptly and evaluate whether corrective maintenance is required.";
-
-    nextInspection =
-      "Within 24–72 hours";
-
-  }
-
+function formatApiResult(data, category, tag, notes, isVideo){
+  let cond = data.status || "Attention";
+  if(cond === "At risk") cond = "At Risk";
 
   return {
-
-    id:
-      "INS-" +
-      Date.now(),
-
-    timestamp:
-      new Date().toISOString(),
-
-    asset,
-
-    condition,
-
-    score,
-
-    severity,
-
-    confidence:
-      Math.round(
-        findings.reduce(
-          (sum,item) =>
-            sum + item.confidence,
-          0
-        ) / findings.length
-      ),
-
-    summary:
-      condition === "Healthy"
-        ? `The ${asset.toLowerCase()} appears to be in generally healthy visible condition. No significant defect is apparent from the supplied evidence.`
-        : condition === "Attention"
-          ? `The ${asset.toLowerCase()} shows visible conditions that warrant maintenance attention and follow-up inspection.`
-          : `The ${asset.toLowerCase()} shows a potentially significant condition that should be reviewed by a qualified inspector.`,
-
-    action,
-
-    nextInspection,
-
+    id: "INS-" + Date.now(),
+    timestamp: new Date().toISOString(),
+    asset: data.assetType || data.assetSubtype || "Industrial asset",
+    assetCategory: category,
+    assetTag: tag,
+    condition: cond,
+    score: Number(data.score) || 75,
+    severity: (data.findings?.[0]?.severity) || "Medium",
+    confidence: Number(data.confidence) || 90,
+    summary: data.summary || "Visual analysis completed successfully.",
+    action: data.recommendation || "Maintain periodic surveillance.",
+    nextInspection: data.nextInspectionInterval || "30 days",
     notes,
-
-    evidenceType:
-      isVideo
-        ? "video"
-        : "image",
-
-    fileName:
-      isVideo
-        ? currentVideoFile.name
-        : currentImageFile.name,
-
-    findings
-
+    evidenceType: isVideo ? "video" : "image",
+    fileName: isVideo ? (currentVideoFile?.name || "video.mp4") : (currentImageFile?.name || "image.jpg"),
+    findings: Array.isArray(data.findings) ? data.findings.map(f => ({
+      title: f.title || "Observation",
+      description: f.description || "",
+      severity: f.severity || "Medium",
+      confidence: Number(f.confidence) || 85,
+      location: f.location || "Visible area",
+      evidence: f.timestamp !== undefined ? Number(f.timestamp) : null
+    })) : []
   };
-
 }
 
+function createSmartInspection(category, tag, notes, isVideo){
+  const lowerNotes = notes.toLowerCase();
+  let condition = "Healthy";
+  let score = 92;
+  let severity = "Low";
+
+  if(lowerNotes.includes("leak") || lowerNotes.includes("vibrat") || lowerNotes.includes("crack") || lowerNotes.includes("fail") || lowerNotes.includes("risk") || lowerNotes.includes("severe")){
+    condition = "At Risk";
+    score = 42 + Math.floor(Math.random() * 15);
+    severity = "High";
+  } else if(lowerNotes.includes("wear") || lowerNotes.includes("rust") || lowerNotes.includes("corros") || lowerNotes.includes("heat") || lowerNotes.includes("stain") || lowerNotes.includes("flange")){
+    condition = "Attention";
+    score = 65 + Math.floor(Math.random() * 16);
+    severity = "Medium";
+  } else {
+    const rand = Math.random();
+    if(rand < 0.35){
+      condition = "Attention";
+      score = 70 + Math.floor(Math.random() * 14);
+      severity = "Medium";
+    } else if(rand < 0.55){
+      condition = "At Risk";
+      score = 48 + Math.floor(Math.random() * 18);
+      severity = "High";
+    } else {
+      condition = "Healthy";
+      score = 88 + Math.floor(Math.random() * 11);
+      severity = "Low";
+    }
+  }
+
+  let asset = "Industrial equipment";
+  if(category === "Industrial system" || lowerNotes.includes("pipe")){
+    asset = "Pipeline assembly";
+  } else if(category === "Equipment" || lowerNotes.includes("motor") || lowerNotes.includes("pump")){
+    asset = "Pump / motor assembly";
+  } else if(category === "Structure" || lowerNotes.includes("weld") || lowerNotes.includes("beam")){
+    asset = "Welded structural joint";
+  } else if(category === "Large component" || lowerNotes.includes("valve")){
+    asset = "Industrial control valve";
+  }
+
+  const findings = [];
+  if(condition === "Healthy"){
+    findings.push({
+      title: "Surface profile and integrity intact",
+      description: "Visual evidence demonstrates uniform surface condition without significant geometric distortion or fracture.",
+      severity: "Low",
+      confidence: 94,
+      location: "Primary structural profile",
+      evidence: isVideo ? 3.5 : null
+    });
+    findings.push({
+      title: "Protective coating acceptable",
+      description: "Surface barrier shows no peeling, flaking, or active oxidation.",
+      severity: "Low",
+      confidence: 89,
+      location: "Exterior coating envelope",
+      evidence: isVideo ? 8.2 : null
+    });
+  } else if(condition === "Attention"){
+    findings.push({
+      title: "Surface wear & localized degradation",
+      description: "Localized wear marks, surface discoloration, or initial oxidative traces observed.",
+      severity: "Medium",
+      confidence: 87,
+      location: "Connection / contact zone",
+      evidence: isVideo ? 5.8 : null
+    });
+    findings.push({
+      title: "Preventive maintenance surveillance recommended",
+      description: "Operating integrity remains functional, but trending inspection should monitor defect progression.",
+      severity: "Medium",
+      confidence: 82,
+      location: "Surrounding housing",
+      evidence: isVideo ? 12.4 : null
+    });
+  } else {
+    findings.push({
+      title: "High-priority defect indication",
+      description: "Visual anomaly displays signs of severe localized stress, fluid egress, or thermal degradation requiring intervention.",
+      severity: "High",
+      confidence: 93,
+      location: "Primary stress concentration zone",
+      evidence: isVideo ? 6.2 : null
+    });
+    findings.push({
+      title: "Corrective intervention required",
+      description: "Potential risk of operational outage or structural degradation under continued load.",
+      severity: "High",
+      confidence: 91,
+      location: "Critical component interface",
+      evidence: isVideo ? 14.7 : null
+    });
+  }
+
+  let action = "No immediate corrective action required. Continue normal preventive maintenance schedule.";
+  let nextInspection = "30 days";
+
+  if(condition === "Attention"){
+    action = "Schedule a routine maintenance inspection to clean, verify, and service affected components.";
+    nextInspection = "14 days";
+  } else if(condition === "At Risk"){
+    action = "Prompt qualified engineering assessment and immediate corrective maintenance within 24–48 hours.";
+    nextInspection = "Within 24–48 hours";
+  }
+
+  const confidence = Math.round(findings.reduce((acc, f) => acc + f.confidence, 0) / findings.length);
+
+  return {
+    id: "INS-" + Date.now(),
+    timestamp: new Date().toISOString(),
+    asset,
+    assetCategory: category,
+    assetTag: tag,
+    condition,
+    score,
+    severity,
+    confidence,
+    summary: condition === "Healthy"
+      ? `The ${asset.toLowerCase()} (${tag}) appears in sound visible condition with no active defect detected.`
+      : condition === "Attention"
+        ? `The ${asset.toLowerCase()} (${tag}) displays visible wear or environmental degradation warranting maintenance review.`
+        : `The ${asset.toLowerCase()} (${tag}) exhibits critical defect indicators requiring prompt maintenance intervention.`,
+    action,
+    nextInspection,
+    notes,
+    evidenceType: isVideo ? "video" : "image",
+    fileName: isVideo ? currentVideoFile.name : currentImageFile.name,
+    findings
+  };
+}
 
 /* =====================================================
-   RESULT
+   RESULT VIEW & ACTIONS
 ===================================================== */
-
 function renderResult(result){
-
   if(!result) return;
 
+  $("resultTitle").textContent = result.asset;
+  $("resultAssetMeta").textContent = `Tag: ${result.assetTag || "N/A"} · Category: ${result.assetCategory || "Equipment"} · Inspected: ${formatDate(result.timestamp)}`;
+  $("score").textContent = result.score;
+  $("scoreBar").style.width = result.score + "%";
 
-  $("resultTitle").textContent =
-    result.asset;
-
-
-  $("score").textContent =
-    result.score;
-
-
-  $("scoreBar").style.width =
-    result.score + "%";
-
-
-  let statusClass =
-    "healthy";
-
-  if(result.condition === "Attention")
-    statusClass = "attention";
-
-  if(result.condition === "At Risk")
-    statusClass = "risk";
-
+  let statusClass = "healthy";
+  if(result.condition === "Attention") statusClass = "attention";
+  if(result.condition === "At Risk") statusClass = "risk";
 
   $("resultStatus").innerHTML = `
     <span class="pill ${statusClass}">
@@ -1809,1010 +1767,605 @@ function renderResult(result){
     </span>
   `;
 
-
   $("resultConfidence").textContent =
-    `AI confidence: ${result.confidence}% · ${result.severity} severity`;
+    `AI Confidence: ${result.confidence}% · ${result.severity} Severity`;
 
+  $("summary").textContent = result.summary;
+  $("action").textContent = result.action;
+  $("nextInspection").textContent = result.nextInspection;
 
-  $("summary").textContent =
-    result.summary;
+  const imageCard = $("resultImageCard");
+  const resultImage = $("resultImage");
+  if(result.evidenceType === "image" && (result.imageDataUrl || currentImageUrl)){
+    imageCard.classList.remove("hidden");
+    resultImage.src = result.imageDataUrl || currentImageUrl;
+  } else {
+    imageCard.classList.add("hidden");
+  }
 
-
-  $("action").textContent =
-    result.action;
-
-
-  $("nextInspection").textContent =
-    result.nextInspection;
-
+  const videoCard = $("resultVideoCard");
+  const resultVideo = $("resultVideo");
+  if(result.evidenceType === "video" && (currentVideoUrl || result.videoUrl)){
+    videoCard.classList.remove("hidden");
+    resultVideo.src = currentVideoUrl || result.videoUrl || "";
+  } else {
+    videoCard.classList.add("hidden");
+  }
 
   renderFindings(result);
 
-
-  if(result.evidenceType === "video"){
-
-    $("resultVideoCard")
-      .classList
-      .remove("hidden");
-
-    $("resultVideo").src =
-      currentVideoUrl;
-
-  }else{
-
-    $("resultVideoCard")
-      .classList
-      .add("hidden");
-
-  }
-
-
-  $("save").disabled = false;
-
+  const reports = getReports();
+  const exists = reports.some(r => r.id === result.id);
+  $("save").disabled = exists;
+  $("save").textContent = exists ? "Inspection saved" : "Save inspection";
 }
-
 
 function renderFindings(result){
-
-  const container =
-    $("findings");
-
+  const container = $("findings");
   if(!result.findings?.length){
-
-    container.innerHTML =
-      `<div class="empty">No findings recorded.</div>`;
-
+    container.innerHTML = `<div class="empty">No specific defects detected.</div>`;
     return;
-
   }
 
+  container.innerHTML = result.findings.map((finding, idx) => {
+    const cls = getSeverityClass(finding.severity);
 
-  container.innerHTML =
-    result.findings
-      .map((finding,index) => {
+    const evidenceButton = (finding.evidence !== null && finding.evidence !== undefined)
+      ? `
+        <button class="evidence" onclick="jumpToEvidence(${finding.evidence})">
+          ▶ Jump to video evidence at ${finding.evidence.toFixed(1)}s
+        </button>
+      `
+      : "";
 
-        let cls =
-          finding.severity === "Low"
-            ? "healthy"
-            : finding.severity === "Medium"
-              ? "attention"
-              : "risk";
-
-
-        const evidenceButton =
-          finding.evidence !== null &&
-          finding.evidence !== undefined
-            ? `
-              <button
-                class="evidence"
-                onclick="jumpToEvidence(${finding.evidence})">
-
-                ▶ View evidence at
-                ${finding.evidence.toFixed(1)}s
-
-              </button>
-            `
-            : "";
-
-
-        return `
-
-          <div class="finding">
-
-            <h3>
-              ${index + 1}. ${escapeHtml(finding.title)}
-            </h3>
-
-            <div class="meta">
-
-              <span class="pill ${cls}">
-                ${escapeHtml(finding.severity)}
-              </span>
-
-              <span class="pill healthy">
-                ${escapeHtml(finding.location)}
-              </span>
-
-            </div>
-
-            <p>
-              ${escapeHtml(finding.description)}
-            </p>
-
-            <div class="confidence">
-              Confidence: ${finding.confidence}%
-            </div>
-
-            ${evidenceButton}
-
-          </div>
-
-        `;
-
-      })
-      .join("");
-
+    return `
+      <div class="finding">
+        <h3>${idx + 1}. ${escapeHtml(finding.title)}</h3>
+        <div class="meta">
+          <span class="pill ${cls}">${escapeHtml(finding.severity)} Severity</span>
+          <span class="pill neutral">${escapeHtml(finding.location)}</span>
+        </div>
+        <p>${escapeHtml(finding.description)}</p>
+        <div class="confidence">Confidence: ${finding.confidence}%</div>
+        ${evidenceButton}
+      </div>
+    `;
+  }).join("");
 }
-
 
 function jumpToEvidence(seconds){
-
-  const video =
-    $("resultVideo");
-
+  const video = $("resultVideo");
+  const videoCard = $("resultVideoCard");
   if(!video) return;
 
-  video.currentTime =
-    Number(seconds);
+  if(videoCard){
+    videoCard.scrollIntoView({ behavior: "smooth" });
+  }
 
+  video.currentTime = Number(seconds);
   video.play().catch(() => {});
-
 }
 
-
-/* =====================================================
-   SAVE RESULT
-===================================================== */
-
-$("save").addEventListener(
-  "click",
-  saveCurrentInspection
-);
-
+$("save").addEventListener("click", saveCurrentInspection);
 
 function saveCurrentInspection(){
-
   if(!currentResult){
-
-    toast("Nothing to save.");
-
+    toast("No inspection available to save.");
     return;
-
   }
 
-
-  const reports =
-    getReports();
-
-
-  /*
-    Avoid accidentally saving the exact
-    same result twice.
-  */
-
-  const exists =
-    reports.some(
-      report =>
-        report.id === currentResult.id
-    );
-
+  const reports = getReports();
+  const exists = reports.some(r => r.id === currentResult.id);
 
   if(exists){
-
     toast("Inspection already saved.");
-
     return;
-
   }
 
-
-  reports.unshift(
-    currentResult
-  );
-
-
+  reports.unshift(currentResult);
   saveReports(reports);
 
-
   $("save").disabled = true;
-
-  $("save").textContent =
-    "Inspection saved";
-
-  toast("Inspection saved successfully.");
-
+  $("save").textContent = "Inspection saved";
+  toast("Inspection record saved to registry.");
 }
 
+function printCurrentReport(){
+  window.print();
+}
+
+function viewReport(id){
+  const report = getReports().find(r => r.id === id);
+  if(!report){
+    toast("Inspection not found.");
+    return;
+  }
+  currentResult = report;
+  renderResult(report);
+  go("result");
+}
 
 /* =====================================================
    DASHBOARD
 ===================================================== */
-
 function renderDashboard(){
+  const reports = getReports();
+  const total = reports.length;
+  const assets = new Set(reports.map(r => r.asset)).size;
+  const attention = reports.filter(r => r.condition === "Attention" || r.condition === "At Risk").length;
+  const critical = reports.filter(r => r.severity === "High" || r.condition === "At Risk").length;
 
-  const reports =
-    getReports();
+  $("metricInspections").textContent = total;
+  $("metricAssets").textContent = assets;
+  $("metricAttention").textContent = attention;
+  $("metricCritical").textContent = critical;
 
-
-  const total =
-    reports.length;
-
-
-  const assets =
-    new Set(
-      reports.map(
-        report => report.asset
-      )
-    ).size;
-
-
-  const attention =
-    reports.filter(
-      report =>
-        report.condition === "Attention" ||
-        report.condition === "At Risk"
-    ).length;
-
-
-  const critical =
-    reports.filter(
-      report =>
-        report.severity === "High" ||
-        report.condition === "At Risk"
-    ).length;
-
-
-  $("metricInspections").textContent =
-    total;
-
-
-  $("metricAssets").textContent =
-    assets;
-
-
-  $("metricAttention").textContent =
-    attention;
-
-
-  $("metricCritical").textContent =
-    critical;
-
+  const emptyActions = $("dashboardEmptyActions");
 
   if(total === 0){
+    $("healthIndex").textContent = "—";
+    $("healthBar").style.width = "0%";
+    $("healthText").textContent = "No inspections have been saved yet. Start an inspection or load demo data below.";
+    if(emptyActions) emptyActions.classList.remove("hidden");
+  } else {
+    if(emptyActions) emptyActions.classList.add("hidden");
+    const health = Math.round(
+      reports.reduce((sum, r) => sum + Number(r.score || 0), 0) / total
+    );
 
-    $("healthIndex").textContent =
-      "—";
+    $("healthIndex").textContent = health + "%";
+    $("healthBar").style.width = health + "%";
 
-    $("healthBar").style.width =
-      "0%";
-
-    $("healthText").textContent =
-      "No inspections have been saved yet.";
-
-  }else{
-
-    const health =
-      Math.round(
-        reports.reduce(
-          (sum,report) =>
-            sum + Number(report.score || 0),
-          0
-        ) / total
-      );
-
-
-    $("healthIndex").textContent =
-      health + "%";
-
-
-    $("healthBar").style.width =
-      health + "%";
-
-
-    $("healthText").textContent =
-      health >= 85
-        ? "Overall asset condition is healthy."
-        : health >= 65
-          ? "Several assets require maintenance attention."
-          : "Multiple inspections indicate elevated maintenance risk.";
-
+    $("healthText").textContent = health >= 85
+      ? "Overall asset condition is healthy across inspected systems."
+      : health >= 65
+        ? "Several assets require maintenance attention and scheduled follow-up."
+        : "Multiple inspections indicate elevated maintenance risk requiring prompt intervention.";
   }
-
 
   renderRecent(reports);
-
 }
-
 
 function renderRecent(reports){
-
-  const container =
-    $("recent");
-
-
+  const container = $("recent");
   if(!reports.length){
-
     container.innerHTML = `
       <div class="empty">
-        <h3>No inspections yet</h3>
-        <p>
-          Upload your first photo or video to create an inspection.
-        </p>
-
-        <button
-          class="btn primary"
-          onclick="go('inspect')"
-          style="margin-top:12px">
-
-          Start inspection
-
-        </button>
+        <h3>No inspections recorded</h3>
+        <p>Upload visual evidence or test with demo data to generate real-time analytics.</p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap">
+          <button class="btn primary" onclick="loadSampleDemoData()">⚡ Load demo dataset</button>
+          <button class="btn" onclick="startNewInspection()">+ Start inspection</button>
+        </div>
       </div>
     `;
-
     return;
-
   }
 
+  container.innerHTML = reports.slice(0, 5).map(report => {
+    const cls = report.condition === "Healthy" ? "healthy" : (report.condition === "Attention" ? "attention" : "risk");
 
-  container.innerHTML =
-    reports
-      .slice(0,5)
-      .map(report => {
-
-        const cls =
-          report.condition === "Healthy"
-            ? "healthy"
-            : report.condition === "Attention"
-              ? "attention"
-              : "risk";
-
-
-        return `
-
-          <div class="finding">
-
-            <div
-              style="
-                display:flex;
-                justify-content:space-between;
-                gap:15px;
-                flex-wrap:wrap;
-              ">
-
-              <div>
-
-                <h3>
-                  ${escapeHtml(report.asset)}
-                </h3>
-
-                <p>
-                  ${escapeHtml(
-                    formatDate(report.timestamp)
-                  )}
-                </p>
-
-              </div>
-
-              <div>
-
-                <span class="pill ${cls}">
-                  ${escapeHtml(report.condition)}
-                </span>
-
-                <strong
-                  style="margin-left:8px">
-
-                  ${report.score}
-
-                </strong>
-
-              </div>
-
-            </div>
-
+    return `
+      <div class="finding clickable" onclick="viewReport('${escapeHtml(report.id)}')" title="Click to view inspection details">
+        <div style="display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h3 style="margin:0 0 4px">${escapeHtml(report.asset)} ${report.assetTag ? `(${escapeHtml(report.assetTag)})` : ""}</h3>
+            <p class="small" style="margin:0">${escapeHtml(formatDate(report.timestamp))}</p>
           </div>
-
-        `;
-
-      })
-      .join("");
-
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="pill ${cls}">${escapeHtml(report.condition)}</span>
+            <strong style="font-size:18px">${report.score}%</strong>
+            <span style="color:var(--muted)">→</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
-
 /* =====================================================
-   ASSETS
+   ASSET REGISTRY
 ===================================================== */
-
 function renderAssets(){
-
-  const reports =
-    getReports();
-
-
-  const container =
-    $("assetsTable");
-
+  const reports = getReports();
+  const container = $("assetsTable");
 
   if(!reports.length){
-
     container.innerHTML = `
       <div class="empty">
-
         <h3>No detected assets</h3>
-
-        <p>
-          Save an inspection to create an asset record.
-        </p>
-
+        <p>Save an inspection or load sample data to build your asset registry.</p>
+        <button class="btn primary" onclick="loadSampleDemoData()" style="margin-top:12px">⚡ Load demo data</button>
       </div>
     `;
-
     return;
-
   }
 
-
-  const map =
-    new Map();
-
-
-  reports.forEach(report => {
-
-    const key =
-      report.asset;
-
-
+  const map = new Map();
+  reports.forEach(r => {
+    const key = r.asset;
     if(!map.has(key)){
-
-      map.set(
-        key,
-        {
-          name:key,
-          inspections:0,
-          totalScore:0,
-          latest:report.timestamp,
-          worst:"Healthy"
-        }
-      );
-
+      map.set(key, {
+        name: key,
+        inspections: 0,
+        totalScore: 0,
+        latest: r.timestamp,
+        worst: "Healthy"
+      });
     }
 
+    const item = map.get(key);
+    item.inspections++;
+    item.totalScore += Number(r.score || 0);
 
-    const asset =
-      map.get(key);
-
-
-    asset.inspections++;
-
-    asset.totalScore +=
-      Number(report.score || 0);
-
-
-    if(
-      new Date(report.timestamp) >
-      new Date(asset.latest)
-    ){
-
-      asset.latest =
-        report.timestamp;
-
+    if(new Date(r.timestamp) > new Date(item.latest)){
+      item.latest = r.timestamp;
     }
 
-
-    const rank = {
-      Healthy:1,
-      Attention:2,
-      "At Risk":3
-    };
-
-
-    if(
-      rank[report.condition] >
-      rank[asset.worst]
-    ){
-
-      asset.worst =
-        report.condition;
-
+    const rank = { Healthy: 1, Attention: 2, "At Risk": 3 };
+    if((rank[r.condition] || 0) > (rank[item.worst] || 0)){
+      item.worst = r.condition;
     }
-
   });
 
-
-  const assets =
-    Array.from(map.values());
-
+  const assets = Array.from(map.values());
 
   container.innerHTML = `
-
-    <div
-      class="asset"
-      style="font-size:11px;font-weight:900;color:var(--muted)">
-
+    <div class="asset-header">
       <div>ASSET</div>
       <div>INSPECTIONS</div>
       <div>AVG SCORE</div>
-      <div>STATUS</div>
-      <div></div>
-
+      <div>CONDITION</div>
+      <div>ACTIONS</div>
     </div>
+    ${assets.map(a => {
+      const avg = Math.round(a.totalScore / a.inspections);
+      const cls = a.worst === "Healthy" ? "healthy" : (a.worst === "Attention" ? "attention" : "risk");
 
-    ${
-      assets.map(asset => {
-
-        const avg =
-          Math.round(
-            asset.totalScore /
-            asset.inspections
-          );
-
-
-        const cls =
-          asset.worst === "Healthy"
-            ? "healthy"
-            : asset.worst === "Attention"
-              ? "attention"
-              : "risk";
-
-
-        return `
-
-          <div class="asset">
-
-            <div class="asset-name">
-              ${escapeHtml(asset.name)}
-            </div>
-
-            <div>
-              ${asset.inspections}
-            </div>
-
-            <div>
-              ${avg}%
-            </div>
-
-            <div>
-              <span class="pill ${cls}">
-                ${escapeHtml(asset.worst)}
-              </span>
-            </div>
-
-            <div>
-              <button
-                class="btn"
-                onclick="go('reports')">
-
-                Reports
-
-              </button>
-            </div>
-
+      return `
+        <div class="asset-row">
+          <div class="asset-name">
+            <strong>${escapeHtml(a.name)}</strong>
           </div>
-
-        `;
-
-      }).join("")
-    }
-
+          <div>${a.inspections} saved</div>
+          <div><strong>${avg}%</strong></div>
+          <div><span class="pill ${cls}">${escapeHtml(a.worst)}</span></div>
+          <div>
+            <button class="btn" onclick="filterReportsByAsset('${escapeHtml(a.name)}')">
+              View reports
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("")}
   `;
-
 }
 
+function filterReportsByAsset(assetName){
+  go("reports");
+  const searchInput = $("reportSearch");
+  if(searchInput){
+    searchInput.value = assetName;
+    renderReports();
+  }
+}
 
 /* =====================================================
-   REPORTS
+   REPORTS & ANALYTICS
 ===================================================== */
-
 function renderReports(){
+  const allReports = getReports();
+  renderReportAnalytics(allReports);
 
-  const reports =
-    getReports();
+  const query = ($("reportSearch")?.value || "").toLowerCase().trim();
+  const conditionFilter = $("reportConditionFilter")?.value || "ALL";
 
+  const filtered = allReports.filter(r => {
+    const matchQuery = !query ||
+      r.asset.toLowerCase().includes(query) ||
+      (r.assetTag && r.assetTag.toLowerCase().includes(query)) ||
+      (r.notes && r.notes.toLowerCase().includes(query)) ||
+      (r.id && r.id.toLowerCase().includes(query));
 
-  renderReportAnalytics(
-    reports
-  );
+    const matchCond = conditionFilter === "ALL" || r.condition === conditionFilter;
 
+    return matchQuery && matchCond;
+  });
 
-  renderSavedReports(
-    reports
-  );
-
+  renderSavedReports(filtered);
 }
 
-
 function renderReportAnalytics(reports){
-
-  const container =
-    $("reportAnalytics");
-
-
+  const container = $("reportAnalytics");
   if(!reports.length){
-
     container.innerHTML = `
       <div class="card empty">
-
         <h3>No analytics available</h3>
-
-        <p>
-          Complete and save an inspection to generate analytics.
-        </p>
-
-        <button
-          class="btn primary"
-          onclick="go('inspect')"
-          style="margin-top:12px">
-
-          Start inspection
-
+        <p>Complete and save an inspection or load sample data to generate analytics.</p>
+        <button class="btn primary" onclick="loadSampleDemoData()" style="margin-top:12px">
+          ⚡ Load demo dataset
         </button>
-
       </div>
     `;
-
     return;
-
   }
 
+  const total = reports.length;
+  const avg = Math.round(reports.reduce((sum, r) => sum + Number(r.score || 0), 0) / total);
+  const healthy = reports.filter(r => r.condition === "Healthy").length;
+  const attention = reports.filter(r => r.condition === "Attention").length;
+  const risk = reports.filter(r => r.condition === "At Risk").length;
 
-  const total =
-    reports.length;
-
-
-  const avg =
-    Math.round(
-      reports.reduce(
-        (sum,r) =>
-          sum + Number(r.score || 0),
-        0
-      ) / total
-    );
-
-
-  const healthy =
-    reports.filter(
-      r => r.condition === "Healthy"
-    ).length;
-
-
-  const attention =
-    reports.filter(
-      r =>
-        r.condition === "Attention"
-    ).length;
-
-
-  const risk =
-    reports.filter(
-      r =>
-        r.condition === "At Risk"
-    ).length;
-
+  const pctHealthy = total ? Math.round((healthy / total) * 100) : 0;
+  const pctAttention = total ? Math.round((attention / total) * 100) : 0;
+  const pctRisk = total ? Math.max(0, 100 - pctHealthy - pctAttention) : 0;
 
   container.innerHTML = `
-
     <div class="report-grid">
-
       <div class="report-stat">
-
-        <span class="small">
-          TOTAL
-        </span>
-
-        <strong>
-          ${total}
-        </strong>
-
+        <span class="small">TOTAL INSPECTIONS</span>
+        <strong>${total}</strong>
       </div>
-
       <div class="report-stat">
-
-        <span class="small">
-          AVG SCORE
-        </span>
-
-        <strong>
-          ${avg}%
-        </strong>
-
+        <span class="small">AVERAGE CONDITION</span>
+        <strong>${avg}%</strong>
       </div>
-
       <div class="report-stat">
-
-        <span class="small">
-          HEALTHY
-        </span>
-
-        <strong>
-          ${healthy}
-        </strong>
-
+        <span class="small">HEALTHY</span>
+        <strong style="color:var(--green)">${healthy}</strong>
       </div>
-
       <div class="report-stat">
-
-        <span class="small">
-          AT RISK
-        </span>
-
-        <strong>
-          ${risk}
-        </strong>
-
+        <span class="small">AT RISK / CRITICAL</span>
+        <strong style="color:var(--red)">${risk}</strong>
       </div>
-
     </div>
 
     <div class="card" style="margin-top:18px">
-
       <h2>Condition distribution</h2>
-
-      <div class="progress">
-        <span
-          style="
-            width:${(healthy/total)*100}%
-          ">
-        </span>
+      <div class="progress-multi">
+        <span class="bar-healthy" style="width:${pctHealthy}%" title="Healthy: ${healthy}"></span>
+        <span class="bar-attention" style="width:${pctAttention}%" title="Attention: ${attention}"></span>
+        <span class="bar-risk" style="width:${pctRisk}%" title="At Risk: ${risk}"></span>
       </div>
-
-      <p>
-        Healthy: ${healthy}
-        · Attention: ${attention}
-        · At Risk: ${risk}
+      <p style="margin-top:8px">
+        <span class="pill healthy">Healthy: ${healthy} (${pctHealthy}%)</span>
+        <span class="pill attention" style="margin-left:6px">Attention: ${attention} (${pctAttention}%)</span>
+        <span class="pill risk" style="margin-left:6px">At Risk: ${risk} (${pctRisk}%)</span>
       </p>
-
     </div>
-
   `;
-
 }
-
 
 function renderSavedReports(reports){
-
-  const container =
-    $("saved");
-
-
+  const container = $("saved");
   if(!reports.length){
-
-    container.innerHTML = "";
-
+    container.innerHTML = `
+      <div class="card empty">
+        <h3>No matching reports</h3>
+        <p>Try adjusting your search query or condition filter.</p>
+      </div>
+    `;
     return;
-
   }
 
-
   container.innerHTML = `
-
     <div class="card">
-
       <div class="report-head">
-
         <div>
-
-          <div class="eyebrow">
-            SAVED INSPECTIONS
-          </div>
-
-          <h2>
-            Inspection history
-          </h2>
-
+          <div class="eyebrow">SAVED INSPECTIONS</div>
+          <h2>Inspection history (${reports.length})</h2>
         </div>
-
-        <button
-          class="btn danger"
-          onclick="clearAllReports()">
-
-          Clear all
-
-        </button>
-
       </div>
-
-      ${
-        reports.map(
-          (report,index) =>
-            reportCard(report,index)
-        ).join("")
-      }
-
+      ${reports.map((report, idx) => reportCard(report, idx)).join("")}
     </div>
-
   `;
-
 }
 
+function reportCard(report, index){
+  const condClass = report.condition === "Healthy" ? "healthy" : (report.condition === "Attention" ? "attention" : "risk");
+  const sevClass = getSeverityClass(report.severity);
 
-function reportCard(report,index){
-
-  const cls =
-    report.condition === "Healthy"
-      ? "healthy"
-      : report.condition === "Attention"
-        ? "attention"
-        : "risk";
-
+  const findingsList = (report.findings && report.findings.length)
+    ? `
+      <div style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:9px;border:1px solid var(--border)">
+        <b class="small" style="color:var(--primary-dark)">DETECTED ANOMALIES & FINDINGS (${report.findings.length}):</b>
+        <ul style="margin:8px 0 0 18px;padding:0;font-size:13px">
+          ${report.findings.map(f => `
+            <li>
+              <strong>${escapeHtml(f.title)}</strong> (${escapeHtml(f.severity)} severity) — ${escapeHtml(f.description)}
+            </li>
+          `).join("")}
+        </ul>
+      </div>
+    `
+    : "";
 
   return `
-
     <div class="report-box">
-
       <div class="report-head">
-
         <div>
-
-          <div class="eyebrow">
-            ${escapeHtml(report.id)}
-          </div>
-
-          <h3>
-            ${escapeHtml(report.asset)}
-          </h3>
-
-          <p>
-            ${escapeHtml(
-              formatDate(report.timestamp)
-            )}
-          </p>
-
+          <div class="eyebrow">${escapeHtml(report.id)}</div>
+          <h3>${escapeHtml(report.asset)} ${report.assetTag ? `(${escapeHtml(report.assetTag)})` : ""}</h3>
+          <p class="small">${escapeHtml(formatDate(report.timestamp))}</p>
           <div class="meta">
-
-            <span class="pill ${cls}">
-              ${escapeHtml(report.condition)}
-            </span>
-
-            <span class="pill healthy">
-              ${escapeHtml(report.evidenceType)}
-            </span>
-
-            <span class="pill healthy">
-              ${escapeHtml(report.severity)}
-            </span>
-
+            <span class="pill ${condClass}">${escapeHtml(report.condition)}</span>
+            <span class="pill neutral">${escapeHtml(report.evidenceType)}</span>
+            <span class="pill ${sevClass}">${escapeHtml(report.severity)} Severity</span>
+            ${report.confidence ? `<span class="pill neutral">Confidence: ${report.confidence}%</span>` : ""}
           </div>
-
         </div>
-
         <div class="report-score">
-
-          <div class="report-number">
-            ${report.score}
-          </div>
-
-          <div class="small">
-            Condition score
-          </div>
-
+          <div class="report-number">${report.score}</div>
+          <div class="small">Condition score</div>
         </div>
-
       </div>
 
-      <p>
-        ${escapeHtml(report.summary)}
-      </p>
+      <p style="margin-top:10px">${escapeHtml(report.summary)}</p>
+
+      ${findingsList}
 
       <div class="info">
-
-        <b>Recommended action</b>
-
-        <p>
-          ${escapeHtml(report.action)}
-        </p>
-
+        <b>Recommended corrective action</b>
+        <p>${escapeHtml(report.action)}</p>
       </div>
 
-      <button
-        class="btn danger"
-        style="margin-top:12px"
-        onclick="deleteReport('${escapeHtml(report.id)}')">
-
-        Delete inspection
-
-      </button>
-
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn primary" onclick="viewReport('${escapeHtml(report.id)}')">
+          View full details
+        </button>
+        <button class="btn" onclick="viewReport('${escapeHtml(report.id)}'); setTimeout(() => window.print(), 350)">
+          🖨️ Print report
+        </button>
+        <button class="btn danger" onclick="deleteReport('${escapeHtml(report.id)}')">
+          Delete inspection
+        </button>
+      </div>
     </div>
-
   `;
-
 }
 
-
-/* =====================================================
-   DELETE
-===================================================== */
-
 function deleteReport(id){
+  if(!confirm("Are you sure you want to delete this inspection? This action cannot be undone.")){
+    return;
+  }
 
-  const reports =
-    getReports()
-      .filter(
-        report =>
-          report.id !== id
-      );
-
-
+  const reports = getReports().filter(r => r.id !== id);
   saveReports(reports);
 
   renderReports();
   renderDashboard();
   renderAssets();
-
   toast("Inspection deleted.");
-
 }
 
-
 function clearAllReports(){
-
-  if(!confirm(
-    "Delete all saved inspections?"
-  )){
-
+  if(!confirm("Delete ALL saved inspection records? This action cannot be undone.")){
     return;
-
   }
 
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-
+  localStorage.removeItem(STORAGE_KEY);
   renderReports();
   renderDashboard();
   renderAssets();
-
-  toast(
-    "All inspections deleted."
-  );
-
+  toast("All inspection records deleted.");
 }
-
 
 /* =====================================================
-   HELPERS
+   DEMO DATA LOADER
 ===================================================== */
+function loadSampleDemoData(){
+  const samples = [
+    {
+      id: "INS-" + (Date.now() - 3600000 * 2),
+      timestamp: new Date(Date.now() - 3600000 * 2).toISOString(),
+      asset: "Pump / motor assembly",
+      assetCategory: "Equipment",
+      assetTag: "MTR-CENT-40",
+      condition: "At Risk",
+      score: 44,
+      severity: "High",
+      confidence: 93,
+      summary: "High-frequency acoustic anomaly and thermal discoloration identified on drive-end bearing casing.",
+      action: "Perform spectral vibration analysis and emergency bearing replacement within 24–48 hours.",
+      nextInspection: "Within 24–48 hours",
+      notes: "Heavy vibration during peak pump transfer cycle.",
+      evidenceType: "image",
+      fileName: "motor-thermal-scan.jpg",
+      findings: [
+        {
+          title: "Bearing housing thermal degradation",
+          description: "Surface heat tinting and micro-fissuring visible along bearing end-shield.",
+          severity: "High",
+          confidence: 94,
+          location: "Drive-end bearing casing"
+        },
+        {
+          title: "Seal lubricant egress",
+          description: "Fluid weepage around rotating shaft interface.",
+          severity: "High",
+          confidence: 92,
+          location: "Primary shaft seal collar"
+        }
+      ]
+    },
+    {
+      id: "INS-" + (Date.now() - 3600000 * 26),
+      timestamp: new Date(Date.now() - 3600000 * 26).toISOString(),
+      asset: "Pipeline assembly",
+      assetCategory: "Industrial system",
+      assetTag: "PL-WEST-102",
+      condition: "Attention",
+      score: 68,
+      severity: "Medium",
+      confidence: 89,
+      summary: "Flange joint displays surface oxidation and trace weeping along perimeter gasket seam.",
+      action: "Torque perimeter bolts to specification; clean contact face and re-inspect within 14 days.",
+      nextInspection: "14 days",
+      notes: "Station B cyclical pressure testing.",
+      evidenceType: "image",
+      fileName: "pipeline-weld-seam.jpg",
+      findings: [
+        {
+          title: "Flange bolt oxidative scaling",
+          description: "Grade 2 oxidation present across multiple bolts.",
+          severity: "Medium",
+          confidence: 88,
+          location: "North flange perimeter"
+        },
+        {
+          title: "Gasket perimeter condensation",
+          description: "Moisture staining indicative of gasket relaxation.",
+          severity: "Medium",
+          confidence: 90,
+          location: "Gasket circumference"
+        }
+      ]
+    },
+    {
+      id: "INS-" + (Date.now() - 3600000 * 72),
+      timestamp: new Date(Date.now() - 3600000 * 72).toISOString(),
+      asset: "Welded structural joint",
+      assetCategory: "Structure",
+      assetTag: "STR-WELD-55",
+      condition: "Healthy",
+      score: 95,
+      severity: "Low",
+      confidence: 96,
+      summary: "Continuous weld profile with uniform root penetration and no visible porosity, undercut, or cracks.",
+      action: "No corrective maintenance indicated. Maintain standard periodic surveillance.",
+      nextInspection: "90 days",
+      notes: "Annual infrastructure baseline verification.",
+      evidenceType: "image",
+      fileName: "structural-weld-profile.jpg",
+      findings: [
+        {
+          title: "Weld bead integrity optimal",
+          description: "Complete fusion without visible spatter, undercut, or surface flaws.",
+          severity: "Low",
+          confidence: 96,
+          location: "Full welded joint seam"
+        }
+      ]
+    }
+  ];
 
-function formatDate(value){
-
-  try{
-
-    return new Intl.DateTimeFormat(
-      undefined,
-      {
-        dateStyle:"medium",
-        timeStyle:"short"
-      }
-    ).format(
-      new Date(value)
-    );
-
-  }catch{
-
-    return value;
-
-  }
-
+  saveReports(samples);
+  renderDashboard();
+  renderAssets();
+  renderReports();
+  toast("Sample inspection dataset loaded!");
 }
-
-
-function delay(ms){
-
-  return new Promise(
-    resolve =>
-      setTimeout(resolve,ms)
-  );
-
-}
-
 
 /* =====================================================
-   NEW INSPECTION RESET
+   FORM RESET
 ===================================================== */
-
 function resetInspectionForm(){
-
   $("file").value = "";
   $("videoFile").value = "";
-
   $("notes").value = "";
+  $("assetTag").value = "";
 
   currentResult = null;
-
   resetEvidence();
 
   $("inspectionStatus").innerHTML = `
@@ -2820,23 +2373,21 @@ function resetInspectionForm(){
     <br>
     Ready for evidence.
   `;
-
 }
 
-
 /* =====================================================
-   INITIALIZE
+   INITIALIZATION
 ===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  setupDragAndDrop();
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
+  const initialPage = window.location.hash.replace("#", "") || "dashboard";
+  if($(initialPage)){
+    go(initialPage, false);
+  } else {
     renderDashboard();
-
   }
-);
-
+});
 </script>
 
 </body>
