@@ -1154,6 +1154,92 @@ select:focus-visible{
   .engine-badge{display:none;}
 }
 
+
+/* =========================================================
+   DARK / LIGHT MODE
+   ========================================================= */
+html[data-theme="dark"]{
+  --bg:#0b1120;
+  --surface:#111827;
+  --surface2:#172033;
+  --border:#263247;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --primary:#60a5fa;
+  --primary-dark:#93c5fd;
+  --primary-soft:#172554;
+  --green:#4ade80;
+  --yellow:#fbbf24;
+  --red:#f87171;
+  --red-soft:#3f1d24;
+  --shadow:0 10px 30px rgba(0,0,0,.25);
+  --shadow-lg:0 18px 50px rgba(0,0,0,.35);
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  transition:background .2s ease,color .2s ease;
+}
+
+.app, header, main, section, article, .card, .panel, .modal,
+input, textarea, select, button{
+  transition:background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select{
+  background:var(--surface2);
+  color:var(--text);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder{
+  color:#7f8aa0;
+}
+
+html[data-theme="dark"] .nav button{
+  color:#cbd5e1;
+}
+
+html[data-theme="dark"] .nav button.active{
+  color:#fff;
+  background:#1e3a8a;
+}
+
+html[data-theme="dark"] .engine-badge{
+  border-color:#14532d;
+  background:#052e16;
+  color:#86efac;
+}
+
+.theme-toggle{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:999px;
+  padding:8px 12px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 3px 10px rgba(15,23,42,.06);
+}
+.theme-toggle:hover{
+  background:var(--surface2);
+}
+.theme-icon{font-size:14px;line-height:1}
+.theme-label{white-space:nowrap}
+
+@media(max-width:900px){
+  .theme-toggle .theme-label{display:none;}
+  .theme-toggle{padding:8px 10px;}
+}
+
 </style>
 </head>
 
@@ -1172,6 +1258,10 @@ select:focus-visible{
   </div>
 
   <div class="engine-badge" aria-label="Inspection engine ready"><span class="engine-dot"></span> AI ENGINE READY</div>
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+    <span class="theme-icon" aria-hidden="true">☾</span>
+    <span class="theme-label">Dark</span>
+  </button>
 
 <nav class="nav">
     <button data-page="dashboard" class="active">Dashboard</button>
@@ -2861,6 +2951,41 @@ function resetInspectionForm(){
 /* =====================================================
    INITIALIZATION
 ===================================================== */
+
+/* =====================================================
+   THEME SWITCHER
+===================================================== */
+(function(){
+  const root = document.documentElement;
+  const button = document.getElementById("themeToggle");
+  const savedTheme = localStorage.getItem("inspectiq-theme");
+  const prefersDark = window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  function applyTheme(theme){
+    root.setAttribute("data-theme", theme);
+    if(button){
+      const dark = theme === "dark";
+      button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+      button.title = dark ? "Switch to light mode" : "Switch to dark mode";
+      button.innerHTML = `
+        <span class="theme-icon" aria-hidden="true">${dark ? "☀" : "☾"}</span>
+        <span class="theme-label">${dark ? "Light" : "Dark"}</span>
+      `;
+    }
+  }
+
+  applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
+
+  if(button){
+    button.addEventListener("click", function(){
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      localStorage.setItem("inspectiq-theme", next);
+      applyTheme(next);
+    });
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   setupDragAndDrop();
 
